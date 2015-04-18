@@ -127,15 +127,18 @@ public class BaseAttachment : MonoBehaviour
 		}
 		else
 		{
-			Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
-			knockbackSpeed.y = 1.0f;
-			knockbackSpeed *= m_TotalStats.m_Knockback;
-
-			health.Damage(m_TotalStats.m_Damage, knockbackSpeed);
-
-			foreach(MiscEffects effect in m_MiscEffects)
+			if(health.GetComponentInChildren<BaseAttachment>() != this)
 			{
-				effect.DoEffect(health);
+				Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
+				knockbackSpeed.y = 1.0f;
+				knockbackSpeed *= m_TotalStats.m_Knockback;
+
+				health.Damage(m_TotalStats.m_Damage, knockbackSpeed);
+
+				foreach(MiscEffects effect in m_MiscEffects)
+				{
+					effect.DoEffect(health);
+				}
 			}
 		}
 	}

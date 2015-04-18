@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
 	float m_CurrentHealth;
 
 	EnemyController m_Controller;
+	PlayerMovement m_Movement;
 
 	float m_OngoingEffectTimer;
 	float m_OngoingEffectDamageRate;
@@ -19,6 +20,11 @@ public class Health : MonoBehaviour
 	void Start () 
 	{
 		m_Controller = GetComponent<EnemyController> ();
+
+		if(m_Controller == null)
+		{
+			m_Movement = GetComponent<PlayerMovement>();
+		}
 	}
 	
 	// Update is called once per frame
@@ -30,9 +36,11 @@ public class Health : MonoBehaviour
 		{
 			m_CurrentHealth -= m_OngoingEffectDamageRate * Time.deltaTime;
 
+			m_OngoingEffectTimer -= Time.deltaTime;
+
 			if(m_CurrentHealth <= 0)
 			{
-				m_Controller.SetState(EnemyController.EnemyState.Dead);
+				Die ();
 			}
 
 			if(m_OngoingEffectTimer <= 0.0f)
@@ -52,20 +60,54 @@ public class Health : MonoBehaviour
 
 			if(m_CurrentHealth <= 0.0f)
 			{
-				m_Controller.SetState(EnemyController.EnemyState.Dead);
+				Die ();
 			}
+
+			Knockback(knockback);
 		}
 	}
 
+	void Die()
+	{
+		if(m_Controller)
+		{
+			m_Controller.SetState(EnemyController.EnemyState.Dead);
+		}
+		else
+		{
+			// TODO: have player die
+		}
+	}
+
+	void Knockback(Vector3 knockback)
+	{
+		if(m_Controller)
+		{
+			m_Controller.Knockback(knockback);
+		}
+		else
+		{
+			m_Movement.Knockback(knockback);
+		}
+	}
+		
 	public void SetOnFire(float time, float damageRate, GameObject flameParticles)
 	{
 		m_OngoingEffectTimer = time;
 		m_OngoingEffectDamageRate = damageRate;
 
-		GameObject flameObject = (GameObject)Instantiate (flameParticles, transform.position, transform.rotation);
-		flameObject.transform.parent = transform;
-		flameObject.transform.localScale = Vector3.one;
+		if(m_FlameParticles == null)
+		{
+			GameObject flameObject = (GameObject)Instantiate (flameParticles, transform.position, transform.rotation);
+			flameObject.transform.parent = transform;
+			flameObject.transform.localScale = Vector3.one;
 
-		m_FlameParticles = flameObject.GetComponent<ParticleSystem> ();
+			m_FlameParticles = flameObject.GetComponent<ParticleSystem> ();
+		}
+		else
+		{
+			m_FlameParticles.loop = true;
+			m_FlameParticles.Play ();
+		}
 	}
 }
