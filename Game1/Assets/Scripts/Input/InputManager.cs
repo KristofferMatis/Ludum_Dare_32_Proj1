@@ -45,14 +45,10 @@ public class InputManager : Singleton<InputManager>
 
         public enum PlayerAction
         {
-            MoveLeft = 0,
-            MoveRight,
-            MoveForward,
-            MoveBackward,
-            LookRight,
-            LookLeft,
-            LookUp,
-            LookDown,
+            MoveLeftRight = 0,
+            MoveForwardBack,
+            LookRightLeft,
+            LookUpDown,
             Jump,
             Attack1
         }
@@ -345,7 +341,7 @@ public class InputManager : Singleton<InputManager>
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveRight)
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveLeftRight)
             {
                 continue;
             }
@@ -367,7 +363,7 @@ public class InputManager : Singleton<InputManager>
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveForward)
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveForwardBack)
             {
                 continue;
             }
@@ -389,7 +385,7 @@ public class InputManager : Singleton<InputManager>
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookRight)
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookRightLeft)
             {
                 continue;
             }
@@ -411,7 +407,7 @@ public class InputManager : Singleton<InputManager>
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookUp)
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookUpDown)
             {
                 continue;
             }
