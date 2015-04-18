@@ -1,0 +1,12 @@
+Knockback
+PlayerSpeed
+damage
+recover time
+start up time
+Mount Points
+
+misc effects
+ - scales what it hits
+ - lights things on fire
+ - drunk
+ - fear
