@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : Singleton<CameraManager>
 {
     public CameraBase CameraMovement;
-
-
+    
     CameraBase m_CurrentCameraAction;
     // Use this for initialization
     void Start()
