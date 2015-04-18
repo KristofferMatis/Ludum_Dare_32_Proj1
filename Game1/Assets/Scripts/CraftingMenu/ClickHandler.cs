@@ -9,6 +9,11 @@ public class ClickHandler
     LayerMask m_RaycastMask = new LayerMask();
 	string[] m_RaycastLayers = new string[] {"Interactive Menu Piece"};
 
+    public string[] RaycastLayers
+    {
+        get { return m_RaycastLayers; }
+    }
+
 	LayerMask m_DragAndDropRaycastMask = new LayerMask();
 	string[] m_DragAndDropRaycastLayers = new string[] {"Drag and Drop"};
 
@@ -83,17 +88,65 @@ public class ClickHandler
             {//hit something
                 if (itemSlots.Length > 0)
                 {
-                    if (itemSlots[0].CanAcceptItem(m_ItemBeingDragged))
-                    {
-                        m_ItemBeingDragged.OnDisMount();
-                        itemSlots[0].OnMount(m_ItemBeingDragged);
+                    if (itemSlots[0] != m_ItemBeingDragged.MountedTo && itemSlots[0].CanAcceptItem(m_ItemBeingDragged) && m_ItemBeingDragged.MountedTo.CanAcceptItem(itemSlots[0].getItem()))
+                    {//the item being dragged is valid to place in the slot
+
+                        if(itemSlots[0].getItem() != null)
+                        {
+                            SwapItems(itemSlots[0], m_ItemBeingDragged.MountedTo);
+							return;
+                        }
+                        else
+                        {
+                            m_ItemBeingDragged.OnDisMount();
+                            itemSlots[0].OnMount(m_ItemBeingDragged);                            
+                        }
                     }
                 }
             }
-			m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
-			m_ItemBeingDragged = null;
+            m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
+            m_ItemBeingDragged = null;
         }
 	}
+
+    void SwapItems(ItemSlot slot1, ItemSlot slot2)
+    {
+        if(slot1.GetType() == typeof(BaseWeaponSlot))
+        {
+            if(!checkBaseWeaponMounts(slot2.getItem()))
+            {
+                return;
+            }
+        }
+        else if (slot2.GetType() == typeof(BaseWeaponSlot))
+        {
+            if (!checkBaseWeaponMounts(slot1.getItem()))
+            {
+                return;
+            }
+        }
+
+        Item tempItem = slot1.OnDisMount();
+        slot1.OnMount(slot2.OnDisMount());
+        slot2.OnMount(tempItem);
+
+        slot1.getItem().DraggedToPos = slot1.getItem().MountedTo.i_MountPoint.position;
+        slot2.getItem().DraggedToPos = slot2.getItem().MountedTo.i_MountPoint.position;
+
+        m_ItemBeingDragged = null;
+
+		//Debug.Log(slot1 + "    " + slot1.getItem() + "    " + slot1.getItem().MountedTo);
+		//Debug.Log(slot2 + "    " + slot2.getItem() + "    " + slot2.getItem().MountedTo);
+    }
+
+    bool checkBaseWeaponMounts(Item notInUse)
+    {
+        if(notInUse.WeaponStats.m_MountPoints.Count >= CraftingMenu.Instance.getTotalInUseAtachmentSlots())
+        {
+            return true;
+        }
+        return false;
+    }
 
     /// <summary>
     /// Raycasts from the mouse

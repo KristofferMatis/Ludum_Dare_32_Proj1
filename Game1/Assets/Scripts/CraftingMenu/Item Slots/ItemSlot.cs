@@ -15,10 +15,7 @@ public class ItemSlot : MonoBehaviour
     //will be used by children classes that can only take attachments or base weapons
     public virtual bool CanAcceptItem(Item item)
     {
-        if (m_Item == null)
-            return true;
-        else
-            return false;
+        return true;
     }
 
     //used to get the current item

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CraftingMenu : Singleton<CraftingMenu>
 {
+    public GameObject i_ItemPrefab;
+
     const int TOTAL_ITEM_SLOTS = 7;
     ItemSlot[] m_InventorySlots;
     AttachmentSlot[] m_AttachmentSlots;
@@ -65,15 +67,29 @@ public class CraftingMenu : Singleton<CraftingMenu>
         m_BaseWeaponSlot = gameObject.GetComponentInChildren<BaseWeaponSlot>();
 
 
-        for (int i = 0; i < m_InventorySlots.Length; i++)
+		for (int i = 0; i < Inventory.Instance.getIventory().Length; i++)
         {
-            m_InventorySlots[i].OnMount(Inventory.Instance.getIventory()[i]);
+            m_InventorySlots[i].OnMount( GameObject.Instantiate(i_ItemPrefab).AddComponent<Item>());
+            m_InventorySlots[i].getItem().start(Inventory.Instance.getIventory()[i]);
+
+			//TODO: replace ArtClone With the Menu art version of the asset
+			GameObject artClone = (GameObject)(GameObject.Instantiate(Inventory.Instance.getIventory()[i].gameObject, 
+			                                                          m_InventorySlots[i].getItem().transform.position,
+			                                                          m_InventorySlots[i].getItem().transform.rotation));
+
+            m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
+            artClone.transform.parent = m_InventorySlots[i].getItem().transform;
+
+			MeshCollider meshCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshCollider.GetComponentInChildren<MeshFilter>().mesh;
+
+            m_InventorySlots[i].getItem().gameObject.layer = LayerMask.NameToLayer(m_ClickHandler.RaycastLayers[0]);
         }
 
         //TODO: get the current baseWeapon
         //TODO: get the current attachments from the baseWeapon
 
-        
+        UpdateAttachmentSlots();
 	}
 	
 	// Update is called once per frame
@@ -151,5 +167,16 @@ public class CraftingMenu : Singleton<CraftingMenu>
             }
             m_AttachmentSlots[i].IsEnabled = false;
         }
+    }
+
+    public int getTotalInUseAtachmentSlots()
+    {
+        int counter = 0;
+        for(int i =0; i <m_AttachmentSlots.Length; i++)
+        {
+            if (m_AttachmentSlots[i].getItem() != null)
+                counter++;
+        }
+        return counter;
     }
 }

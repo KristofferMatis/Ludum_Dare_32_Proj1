@@ -5,14 +5,14 @@ public class Inventory : Singleton<Inventory>
 {
     public GameObject i_AttachmentPrefab;
     public GameObject i_BaseWeaponPrefab;
-    Item[] m_Items = new Item[7];
+    BaseAttachment[] m_Inventory = new BaseAttachment[7];
 
 	// Use this for initialization
 	void Awake () 
     {
-	    for(int i = 0; i < m_Items.Length; i ++)
+	    for(int i = 0; i < m_Inventory.Length; i ++)
         {
-            m_Items[i] = GameObject.Instantiate((Random.Range(0,2) > 0) ? i_AttachmentPrefab : i_BaseWeaponPrefab).GetComponentInChildren<Item>();
+            m_Inventory[i] = GameObject.Instantiate((Random.Range(0, 2) > 0) ? i_AttachmentPrefab : i_BaseWeaponPrefab).GetComponentInChildren<BaseAttachment>();
         }
 	}
 	
@@ -22,9 +22,9 @@ public class Inventory : Singleton<Inventory>
 	
 	}
 
-    public Item[] getIventory()
+    public BaseAttachment[] getIventory()
     {
         //TODO: Implement This
-        return m_Items;
+        return m_Inventory;
     }
 }

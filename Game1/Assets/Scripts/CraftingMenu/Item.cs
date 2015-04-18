@@ -44,10 +44,10 @@ public class Item : MonoBehaviour
     }
 
 	// Use this for initialization
-	void Start () 
+	public void start (BaseAttachment Original) 
     {
-        m_Attachment = (BaseAttachment)gameObject.GetComponent(typeof(BaseAttachment));
-        m_BaseWeapon = (BaseBaseWeapon)gameObject.GetComponent(typeof(BaseBaseWeapon));
+        m_Attachment = Original;
+        m_BaseWeapon = Original as BaseBaseWeapon;
 	}
 	
 	// Update is called once per frame
