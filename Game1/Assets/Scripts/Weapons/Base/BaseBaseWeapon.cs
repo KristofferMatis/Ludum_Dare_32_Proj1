@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseBaseWeapon : MonoBehaviour {
+public class BaseBaseWeapon : BaseAttachment 
+{
+    public Transform i_MountPoint;
+    const float MOUNTING_LERP_SPEED = 0.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -9,7 +12,11 @@ public class BaseBaseWeapon : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+    {
+	    if(i_MountPoint != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, i_MountPoint.position, MOUNTING_LERP_SPEED * Time.deltaTime);
+        }
 	}
 }

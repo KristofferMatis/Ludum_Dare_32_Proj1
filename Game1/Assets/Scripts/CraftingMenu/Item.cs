@@ -21,7 +21,7 @@ public class Item : MonoBehaviour
     }
 
     Transform m_CurrentMountPoint;
-    const float ITEM_LERP_SPEED = 0.05f;
+    const float ITEM_LERP_SPEED = 0.5f;
 
     bool m_IsBeingDragged = false;
     public bool IsBeingDragged
@@ -45,7 +45,7 @@ public class Item : MonoBehaviour
         {
             if (m_CurrentMountPoint != null)
             {
-                transform.position = Vector3.Lerp(transform.position, m_CurrentMountPoint.position, ITEM_LERP_SPEED);
+                transform.position = Vector3.Lerp(transform.position, m_CurrentMountPoint.position, ITEM_LERP_SPEED * Time.deltaTime);
             }
         }
         else
