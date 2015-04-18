@@ -39,7 +39,7 @@ public class BaseAttachment : MonoBehaviour
 	{
 		if(mountPointIndex < m_Stats.m_MountPoints.Count)
 		{
-			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0);
+			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0).gameObject;
 			attachment.transform.parent = null;
 
 			return attachment;
@@ -54,7 +54,7 @@ public class BaseAttachment : MonoBehaviour
 	{
 		if(mountPointIndex < m_Stats.m_MountPoints.Count)
 		{
-			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0);			
+			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0).gameObject;			
 			return attachment;
 		}
 		else
