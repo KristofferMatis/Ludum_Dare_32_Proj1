@@ -21,7 +21,7 @@ public class BaseAttachment : MonoBehaviour
 
 		SetTotalStatsAfterCrafting ();
 
-		ToggleCollider (false);
+		//ToggleCollider (false);
 	}
 
 	WeaponStats GetStats()
@@ -93,6 +93,11 @@ public class BaseAttachment : MonoBehaviour
 
 	public void ToggleCollider(bool isToggled)
 	{
+		if(m_Collider == null)
+		{
+			m_Collider = GetComponent<BoxCollider> ();
+		}
+
 		m_Collider.enabled = isToggled;
 
 		foreach(Transform attachment in m_Stats.m_MountPoints)

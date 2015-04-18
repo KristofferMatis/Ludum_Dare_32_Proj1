@@ -1,26 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Flaming : MonoBehaviour 
+public class Flaming : MiscEffects 
 {
+	GameObject m_FlameParticles;
+
+	public float m_EffectTime;
+	public float m_EffectDamageRate;
+
 	// Use this for initialization
 	void Start () 
 	{
 		MeshFilter meshFilter = GetComponentInChildren<MeshFilter> ();
 
-		GameObject flameParticles = (GameObject)Instantiate (Resources.Load<GameObject> ("Prefabs/Flaming"), meshFilter.transform.position, meshFilter.transform.rotation);
+		m_FlameParticles = (GameObject)Instantiate (Resources.Load<GameObject> ("Prefabs/Flaming"), meshFilter.transform.position, meshFilter.transform.rotation);
 
-		flameParticles.transform.parent = meshFilter.transform;
+		m_FlameParticles.transform.parent = meshFilter.transform;
 
-		flameParticles.transform.localPosition = Vector3.zero;
-		flameParticles.transform.localRotation = Quaternion.identity;
-		flameParticles.transform.localScale = Vector3.one;
+		m_FlameParticles.transform.localPosition = Vector3.zero;
+		m_FlameParticles.transform.localRotation = Quaternion.identity;
+		m_FlameParticles.transform.localScale = Vector3.one;
 
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	protected override void DoEffectVirtual (Health otherHealth)
 	{
-	
+		otherHealth.SetOnFire (m_EffectTime, m_EffectDamageRate, m_FlameParticles);
 	}
 }
