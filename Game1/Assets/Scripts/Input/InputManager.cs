@@ -53,6 +53,10 @@ public class InputManager : Singleton<InputManager>
             MoveRight,
             MoveForward,
             MoveBackward,
+            LookRight,
+            LookLeft,
+            LookUp,
+            LookDown,
             Jump,
             Attack1
         }
@@ -450,6 +454,50 @@ public class InputManager : Singleton<InputManager>
         return 0.0f;
     }
 
+    public float PlayerMoveForward()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveForward)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
+        return 0.0f;
+    }
+
+    public float PlayerMoveBackward()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveBackward)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
+        return 0.0f;
+    }
+
     public float PlayerMoveLeft()
     {
         for (int i = 0; i < Buttons.Length; i++)
@@ -468,6 +516,94 @@ public class InputManager : Singleton<InputManager>
             }
         }
 
+        return 0.0f;
+    }
+
+    public float PlayerLookRight()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookRight)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
+        return 0.0f;
+    }
+
+    public float PlayerLookLeft()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookLeft)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
+        return 0.0f;
+    }
+
+    public float PlayerLookUp()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookUp)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
+        return 0.0f;
+    }
+
+    public float PlayerLookDown()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Move Right
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookDown)
+            {
+                continue;
+            }
+
+            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
+            //TODO.......
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
+            }
+        }
+
+        //if it gets here that means nothing is pressed
         return 0.0f;
     }
 
