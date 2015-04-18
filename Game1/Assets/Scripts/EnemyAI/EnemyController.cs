@@ -24,13 +24,18 @@ public class EnemyController : MonoBehaviour
 	//The horde of this enemy (null means it will wander on it's own)
 	HordeController m_Horde;
 
+	Vector3 m_KnockBackSpeed;
+	float m_Gravity = -10.0f;
+	float m_KnockbackTimer;
+
 	//Current enemy state
 	public enum EnemyState
 	{
 		Wander = 0,
 		Search,
 		Chase,
-		Dead
+		Dead,
+		Knockback
 	};
 	public EnemyState m_State = EnemyState.Wander;
 
@@ -94,6 +99,21 @@ public class EnemyController : MonoBehaviour
 			}
 			break;
 		}	
+		case EnemyState.Knockback:
+		{
+			transform.position += m_KnockBackSpeed * Time.deltaTime;
+
+			m_KnockBackSpeed.y += m_Gravity * Time.deltaTime;
+
+			m_KnockbackTimer -= Time.deltaTime;
+
+			if(m_KnockbackTimer <= 0.0f)
+			{
+				SetState(EnemyState.Wander);
+			}
+
+			break;
+		}
 		default:
 		{
 			break;
@@ -161,5 +181,14 @@ public class EnemyController : MonoBehaviour
 	public void SetHorde (HordeController horde)
 	{
 		m_Horde = horde;
+	}
+
+	public void Knockback(Vector3 knockbackSpeed)
+	{
+		m_KnockBackSpeed = knockbackSpeed;
+
+		SetState (EnemyState.Knockback);
+
+		m_KnockbackTimer = 1.0f; // BAD MAGIC NUMBERS, SORRY FOR THAT... SIGNED: Quentin
 	}
 }

@@ -4,15 +4,31 @@ using System.Collections.Generic;
 
 public class BaseAttachment : MonoBehaviour 
 {
+	[SerializeField]
 	public WeaponStats m_Stats;
 
-	public WeaponStats GetStats()
+	WeaponStats m_TotalStats;
+
+	BoxCollider m_Collider;
+
+	BaseAttachment m_ParentAttachment;
+
+	List<MiscEffects> m_MiscEffects = new List<MiscEffects>();
+
+	protected void Start()
+	{
+		m_Collider = GetComponent<BoxCollider> ();
+
+		SetTotalStatsAfterCrafting ();
+	}
+
+	WeaponStats GetStats()
 	{
 		WeaponStats stats = new WeaponStats (m_Stats);
 
 		foreach(Transform attachment in m_Stats.m_MountPoints)
 		{
-			if(attachment.GetChild (0) != null)
+			if(attachment.childCount > 0)
 			{
 				WeaponStats attachmentStats = attachment.GetChild (0).GetComponent<BaseAttachment>().GetStats ();
 
@@ -27,20 +43,30 @@ public class BaseAttachment : MonoBehaviour
 		return stats;
 	}
 
+	public void SetParentAttachment(BaseAttachment attachment)
+	{
+		m_ParentAttachment = attachment;
+	}
+
 	public void AddAttachment(GameObject newAttachment, int mountPointIndex)
 	{
 		if(mountPointIndex < m_Stats.m_MountPoints.Count)
 		{
 			newAttachment.transform.parent = m_Stats.m_MountPoints[mountPointIndex];
+			newAttachment.transform.localPosition = Vector3.zero;
+			newAttachment.transform.rotation = Quaternion.identity;
+
+			newAttachment.GetComponent<BaseAttachment>().SetParentAttachment(this);
 		}
 	}
 
 	public GameObject RemoveAttachment(int mountPointIndex)
 	{
-		if(mountPointIndex < m_Stats.m_MountPoints.Count)
+		if(mountPointIndex < m_Stats.m_MountPoints.Count && m_Stats.m_MountPoints [mountPointIndex].childCount > 0)
 		{
 			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0).gameObject;
 			attachment.transform.parent = null;
+			attachment.GetComponent<BaseAttachment>().SetParentAttachment(null);
 
 			return attachment;
 		}
@@ -52,7 +78,7 @@ public class BaseAttachment : MonoBehaviour
 
 	public GameObject GetAttachment(int mountPointIndex)
 	{
-		if(mountPointIndex < m_Stats.m_MountPoints.Count)
+		if(mountPointIndex < m_Stats.m_MountPoints.Count && m_Stats.m_MountPoints [mountPointIndex].childCount > 0)
 		{
 			GameObject attachment = m_Stats.m_MountPoints [mountPointIndex].GetChild (0).gameObject;			
 			return attachment;
@@ -60,6 +86,60 @@ public class BaseAttachment : MonoBehaviour
 		else
 		{
 			return null;
+		}
+	}
+
+	public void ToggleCollider(bool isToggled)
+	{
+		m_Collider.enabled = isToggled;
+
+		foreach(Transform attachment in m_Stats.m_MountPoints)
+		{
+			if(attachment.childCount > 0)
+			{
+				attachment.GetChild (0).GetComponent<BaseAttachment>().ToggleCollider(isToggled);
+			}
+		}
+	}
+
+	void OnTriggerEnter(Collider otherCollider)
+	{
+		Health otherHealth = otherCollider.GetComponent<Health>();
+
+		if(otherHealth != null)
+		{
+			HandleHit (otherHealth);
+		}
+	}
+
+	public void HandleHit(Health health)
+	{
+		if(m_ParentAttachment != null)
+		{
+			m_ParentAttachment.HandleHit (health);
+		}
+		else
+		{
+			Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
+			knockbackSpeed.y = 1.0f;
+			knockbackSpeed *= m_TotalStats.m_Knockback;
+
+			health.Damage(m_TotalStats.m_Damage, knockbackSpeed);
+
+			foreach(MiscEffects effect in m_MiscEffects)
+			{
+				effect.DoEffect(health);
+			}
+		}
+	}
+
+	public void SetTotalStatsAfterCrafting()
+	{
+		m_TotalStats = GetStats ();
+
+		foreach(MiscEffects effect in GetComponentsInChildren<MiscEffects>())
+		{
+			m_MiscEffects.Add (effect);
 		}
 	}
 }
