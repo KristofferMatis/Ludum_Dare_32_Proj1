@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour
 	Vector3 m_LeashPosition;
 
 	//The horde of this enemy (null means it will wander on it's own)
-	public HordeController m_Horde;
+	HordeController m_Horde;
 
 	//Current enemy state
 	public enum EnemyState
@@ -48,14 +48,10 @@ public class EnemyController : MonoBehaviour
 		SetState (state);
 	}
 
-	//If the enemy was placed inot the scene
+	//If the enemy was placed in the scene directly
 	void Start ()
 	{
 		m_LeashPosition = transform.position;
-		if (m_Horde != null)
-		{
-			m_Horde.AddEnemy (this);
-		}
 		OnSpawn (m_State);
 	}
 
@@ -151,10 +147,19 @@ public class EnemyController : MonoBehaviour
 		m_State = state;
 	}
 
+	//Gets a new wander to position
 	void GetNewWanderPosition ()
 	{
 		MoveTowards	(m_LeashPosition + (LEASH_DISTANCE + 1f) *
 		            (new Vector3(Random.Range(0f, 1f), 0.0f, Random.Range(0f, 1f)) +
 		 			(m_LeashPosition - transform.position).normalized).normalized);
+	}
+
+	/// <summary>
+	/// Sets the horde.
+	/// </summary>
+	public void SetHorde (HordeController horde)
+	{
+		m_Horde = horde;
 	}
 }

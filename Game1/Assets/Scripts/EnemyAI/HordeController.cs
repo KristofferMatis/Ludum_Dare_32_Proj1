@@ -4,18 +4,24 @@ using System.Collections.Generic;
 public class HordeController : MonoBehaviour
 {
 	//The enemies for this horde
-	List<EnemyController> m_Enemies;
+	public List<EnemyController> m_Enemies;
+
+	//Tell enemies we exist
+	void Start ()
+	{
+		Vector3 hordePos = GetHordePosition ();
+		for (int i = 0; i < m_Enemies.Count; i++)
+		{
+			m_Enemies[i].SetHorde (this);
+			m_Enemies[i].SetLeashPosition (hordePos);
+		}
+	}
 	
 	//Update each enemies awareness of their horde
 	void Update ()
 	{
 		//Define where the horde currently is
-		Vector3 hordePos = Vector3.zero;
-		for (int i = 0; i < m_Enemies.Count; i++)
-		{
-			hordePos += m_Enemies[i].transform.position;
-		}
-		hordePos /= m_Enemies.Count;
+		Vector3 hordePos = GetHordePosition ();
 		for (int i = 0; i < m_Enemies.Count; i++)
 		{
 			if (m_Enemies[i] != null)
@@ -23,6 +29,18 @@ public class HordeController : MonoBehaviour
 				m_Enemies[i].SetLeashPosition (hordePos);
 			}
 		}
+	}
+
+	//Gets the average position of this horde of enemies
+	Vector3 GetHordePosition ()
+	{
+		Vector3 hordePos = Vector3.zero;
+		for (int i = 0; i < m_Enemies.Count; i++)
+		{
+			hordePos += m_Enemies[i].transform.position;
+		}
+		hordePos /= m_Enemies.Count;
+		return hordePos;
 	}
 	
 	/// <summary>
@@ -37,7 +55,7 @@ public class HordeController : MonoBehaviour
 			if (controller != null)
 			{
 				controller.OnSpawn (state);
-				controller.m_Horde = this;
+				controller.SetHorde (this);
 				m_Enemies.Add(controller);
 			}
 			else
@@ -70,6 +88,7 @@ public class HordeController : MonoBehaviour
 		}
 		if (enemy != null)
 		{
+			enemy.SetHorde (this);
 			m_Enemies.Add(enemy);
 		}
 	}
