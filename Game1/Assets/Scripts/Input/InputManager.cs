@@ -37,14 +37,10 @@ public class InputManager : Singleton<InputManager>
             DPAD_RIGHT,
             L_TMBSTK_PRESS,
             R_TMBSTK_PRESS,
-            L_TMBSTK_LEFT,
-            L_TMBSTK_RIGHT,
-            L_TMBSTK_UP,
-            L_TMBSTK_DOWN,
-            R_TMBSTK_LEFT,
-            R_TMBSTK_RIGHT,
-            R_TMBSTK_UP,
-            R_TMBSTK_DOWN
+            L_TMBSTK_RIGHT_LEFT,
+            L_TMBSTK_UP_DOWN,
+            R_TMBSTK_RIGHT_LEFT,
+            R_TMBSTK_UP_DOWN,
         }
 
         public enum PlayerAction
@@ -127,82 +123,22 @@ public class InputManager : Singleton<InputManager>
 
         float IsLTMBSKTRight()
         {
-            if (Input.GetAxis("Horizontal") > 0.0f)
-            {
-                return Input.GetAxis("Horizontal");
-            }
-
-            return 0.0f;
-        }
-
-        float IsLTMBSKTLeft()
-        {
-            if (Input.GetAxis("Horizontal") < 0.0f)
-            {
-                return Input.GetAxis("Horizontal");
-            }
-
-            return 0.0f;
+            return Input.GetAxis("Horizontal");
         }
 
         float IsLTMBSKTUp()
         {
-            if (Input.GetAxis("Vertical") > 0.0f)
-            {
-                return Input.GetAxis("Vertical");
-            }
-
-            return 0.0f;
-        }
-
-        float IsLTMBSKTDown()
-        {
-            if (Input.GetAxis("Vertical") < 0.0f)
-            {
-                return Input.GetAxis("Vertical");
-            }
-
-            return 0.0f;
+            return Input.GetAxis("Vertical");
         }
 
         float IsRTMBSKTRight()
         {
-            if (Input.GetAxis("RSTKHor") > 0.0f)
-            {
-                return Input.GetAxis("RSTKHor");
-            }
-
-            return 0.0f;
-        }
-
-        float IsRTMBSKTLeft()
-        {
-            if (Input.GetAxis("RSTKHor") < 0.0f)
-            {
-                return Input.GetAxis("RSTKHor");
-            }
-
-            return 0.0f;
+            return Input.GetAxis("RSTKHor");
         }
 
         float IsRTMBSKTUp()
         {
-            if (Input.GetAxis("RSTKVer") > 0.0f)
-            {
-                return Input.GetAxis("RSTKVer");
-            }
-
-            return 0.0f;
-        }
-
-        float IsRTMBSKTDown()
-        {
-            if (Input.GetAxis("RSTKVer") < 0.0f)
-            {
-                return Input.GetAxis("RSTKVer");
-            }
-
-            return 0.0f;
+            return Input.GetAxis("RSTKVer");
         }
 
 
@@ -329,59 +265,31 @@ public class InputManager : Singleton<InputManager>
                     #endregion
 
                     #region Front Face Axis
-                    case GamePadButtons.L_TMBSTK_RIGHT:
+                    case GamePadButtons.L_TMBSTK_RIGHT_LEFT:
                         {
                             returnInfo.IsPressed = false;
                             returnInfo.AxisValue = IsLTMBSKTRight();
                         }
                         break;
 
-                    case GamePadButtons.L_TMBSTK_LEFT:
-                        {
-                            returnInfo.IsPressed = false;
-                            returnInfo.AxisValue = IsLTMBSKTLeft();
-                        }
-                        break;
-
-                    case GamePadButtons.L_TMBSTK_UP:
+                    case GamePadButtons.L_TMBSTK_UP_DOWN:
                         {
                             returnInfo.IsPressed = false;
                             returnInfo.AxisValue = IsLTMBSKTUp();
                         }
                         break;
 
-                    case GamePadButtons.L_TMBSTK_DOWN:
-                        {
-                            returnInfo.IsPressed = false;
-                            returnInfo.AxisValue = IsLTMBSKTDown();
-                        }
-                        break;
-
-                    case GamePadButtons.R_TMBSTK_RIGHT:
+                    case GamePadButtons.R_TMBSTK_RIGHT_LEFT:
                         {
                             returnInfo.IsPressed = false;
                             returnInfo.AxisValue = IsRTMBSKTRight();
                         }
                         break;
 
-                    case GamePadButtons.R_TMBSTK_LEFT:
-                        {
-                            returnInfo.IsPressed = false;
-                            returnInfo.AxisValue = IsRTMBSKTLeft();
-                        }
-                        break;
-
-                    case GamePadButtons.R_TMBSTK_UP:
+                    case GamePadButtons.R_TMBSTK_UP_DOWN:
                         {
                             returnInfo.IsPressed = false;
                             returnInfo.AxisValue = IsRTMBSKTUp();
-                        }
-                        break;
-
-                    case GamePadButtons.R_TMBSTK_DOWN:
-                        {
-                            returnInfo.IsPressed = false;
-                            returnInfo.AxisValue = IsRTMBSKTDown();
                         }
                         break;
                     #endregion
@@ -432,7 +340,7 @@ public class InputManager : Singleton<InputManager>
 
     }
 
-    public float PlayerMoveRight()
+    public float PlayerMoveRightLeft()
     {
         for (int i = 0; i < Buttons.Length; i++)
         {
@@ -454,7 +362,7 @@ public class InputManager : Singleton<InputManager>
         return 0.0f;
     }
 
-    public float PlayerMoveForward()
+    public float PlayerMoveForwardBack()
     {
         for (int i = 0; i < Buttons.Length; i++)
         {
@@ -476,50 +384,7 @@ public class InputManager : Singleton<InputManager>
         return 0.0f;
     }
 
-    public float PlayerMoveBackward()
-    {
-        for (int i = 0; i < Buttons.Length; i++)
-        {
-            //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveBackward)
-            {
-                continue;
-            }
-
-            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
-            //TODO.......
-            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
-            {
-                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
-            }
-        }
-
-        //if it gets here that means nothing is pressed
-        return 0.0f;
-    }
-
-    public float PlayerMoveLeft()
-    {
-        for (int i = 0; i < Buttons.Length; i++)
-        {
-            //checks if the player action is not move left
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.MoveLeft)
-            {
-                continue;
-            }
-
-            //goes through the buttons and returns the axis keyboard and contorl are not fully set up
-            //TODO.....
-            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
-            {
-                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
-            }
-        }
-
-        return 0.0f;
-    }
-
-    public float PlayerLookRight()
+    public float PlayerLookRightLeft()
     {
         for (int i = 0; i < Buttons.Length; i++)
         {
@@ -541,56 +406,12 @@ public class InputManager : Singleton<InputManager>
         return 0.0f;
     }
 
-    public float PlayerLookLeft()
-    {
-        for (int i = 0; i < Buttons.Length; i++)
-        {
-            //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookLeft)
-            {
-                continue;
-            }
-
-            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
-            //TODO.......
-            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
-            {
-                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
-            }
-        }
-
-        //if it gets here that means nothing is pressed
-        return 0.0f;
-    }
-
-    public float PlayerLookUp()
+    public float PlayerLookUpDown()
     {
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
             if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookUp)
-            {
-                continue;
-            }
-
-            //goes through all the button maps and returns the axis not set up to work seperately from keyboard and mouse
-            //TODO.......
-            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
-            {
-                return Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).AxisValue;
-            }
-        }
-
-        //if it gets here that means nothing is pressed
-        return 0.0f;
-    }
-
-    public float PlayerLookDown()
-    {
-        for (int i = 0; i < Buttons.Length; i++)
-        {
-            //checks to see if the player action is not Move Right
-            if (Buttons[i].ActionName != ButtonControls.PlayerAction.LookDown)
             {
                 continue;
             }
