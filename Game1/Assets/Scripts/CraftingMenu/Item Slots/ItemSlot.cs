@@ -37,9 +37,23 @@ public class ItemSlot : MonoBehaviour
     }
 
     //used to dismount the current item
-    public virtual Item OnDisMount()
+    public virtual void OnDisMount(out Item item)
     {
-        m_Item.OnDisMount();
-        return m_Item;
+        item = null;
+        if (m_Item != null)
+        {
+            m_Item.OnDisMount();
+            item = m_Item;
+            m_Item = null;
+        }
+    }
+
+    public virtual void OnDisMount()
+    {
+        if (m_Item != null)
+        {
+            m_Item.OnDisMount();
+            m_Item = null;
+        }
     }
 }

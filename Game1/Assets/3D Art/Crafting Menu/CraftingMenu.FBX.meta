@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 5f12897582cd4fd4d8c2798c16afeaf1
+timeCreated: 1429369286
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: CRAFTING
+    100002: //RootNode
+    100004: Dummy_Inventory
+    100006: Dummy_WeaponDisplay
+    100008: Dummy_WeaponSlots
+    100010: Exit
+    100012: Garbage
+    100014: InventorySlots
+    100016: ItemSlot
+    100018: ItemSlot001
+    100020: ItemSlot002
+    100022: ItemSlot003
+    100024: ItemSlot004
+    100026: ItemSlot005
+    100028: ItemSlot006
+    100030: ItemSlot007
+    100032: ItemSlot008
+    100034: ItemSlot009
+    100036: ItemSlot010
+    100038: ItemSlot011
+    100040: ItemSlot012
+    100042: ItemSlot013
+    100044: MenuBackGround
+    100046: Weapon Stats
+    100048: WeaponSlots
+    400000: CRAFTING
+    400002: //RootNode
+    400004: Dummy_Inventory
+    400006: Dummy_WeaponDisplay
+    400008: Dummy_WeaponSlots
+    400010: Exit
+    400012: Garbage
+    400014: InventorySlots
+    400016: ItemSlot
+    400018: ItemSlot001
+    400020: ItemSlot002
+    400022: ItemSlot003
+    400024: ItemSlot004
+    400026: ItemSlot005
+    400028: ItemSlot006
+    400030: ItemSlot007
+    400032: ItemSlot008
+    400034: ItemSlot009
+    400036: ItemSlot010
+    400038: ItemSlot011
+    400040: ItemSlot012
+    400042: ItemSlot013
+    400044: MenuBackGround
+    400046: Weapon Stats
+    400048: WeaponSlots
+    2300000: CRAFTING
+    2300002: Exit
+    2300004: Garbage
+    2300006: ItemSlot
+    2300008: ItemSlot001
+    2300010: ItemSlot002
+    2300012: ItemSlot003
+    2300014: ItemSlot004
+    2300016: ItemSlot005
+    2300018: ItemSlot006
+    2300020: ItemSlot007
+    2300022: ItemSlot008
+    2300024: ItemSlot009
+    2300026: ItemSlot010
+    2300028: ItemSlot011
+    2300030: ItemSlot012
+    2300032: ItemSlot013
+    2300034: MenuBackGround
+    2300036: Weapon Stats
+    3300000: CRAFTING
+    3300002: Exit
+    3300004: Garbage
+    3300006: ItemSlot
+    3300008: ItemSlot001
+    3300010: ItemSlot002
+    3300012: ItemSlot003
+    3300014: ItemSlot004
+    3300016: ItemSlot005
+    3300018: ItemSlot006
+    3300020: ItemSlot007
+    3300022: ItemSlot008
+    3300024: ItemSlot009
+    3300026: ItemSlot010
+    3300028: ItemSlot011
+    3300030: ItemSlot012
+    3300032: ItemSlot013
+    3300034: MenuBackGround
+    3300036: Weapon Stats
+    4300000: MenuBackGround
+    4300002: ItemSlot006
+    4300004: ItemSlot005
+    4300006: ItemSlot004
+    4300008: ItemSlot003
+    4300010: ItemSlot002
+    4300012: ItemSlot001
+    4300014: ItemSlot
+    4300016: ItemSlot007
+    4300018: ItemSlot008
+    4300020: ItemSlot009
+    4300022: ItemSlot010
+    4300024: ItemSlot011
+    4300026: ItemSlot012
+    4300028: ItemSlot013
+    4300030: Exit
+    4300032: Garbage
+    4300034: Weapon Stats
+    4300036: CRAFTING
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

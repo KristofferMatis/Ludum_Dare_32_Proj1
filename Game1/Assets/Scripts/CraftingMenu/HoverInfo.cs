@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HoverInfo
 {
-    public CrafingMenu m_CraftingMenu;
+    public CraftingMenu m_CraftingMenu;
 
 	// Use this for initialization
     public void Start() 

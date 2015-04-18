@@ -20,9 +20,14 @@ public class Item : MonoBehaviour
         get { return m_BaseWeapon; }
     }
 
-    Transform m_CurrentMountPoint;
-    const float ITEM_LERP_SPEED = 0.5f;
+    ItemSlot m_MountedTo = null;
+    public ItemSlot MountedTo
+    {
+        get { return m_MountedTo; }
+    }
+    const float ITEM_LERP_SPEED = 10.0f;
 
+    //============================================
     bool m_IsBeingDragged = false;
     public bool IsBeingDragged
     {
@@ -30,6 +35,12 @@ public class Item : MonoBehaviour
         set { m_IsBeingDragged = value; }
     }
 
+    Vector3 m_DragedToPos = Vector3.zero;
+    public Vector3 DraggedToPos
+    {
+        get { return m_DragedToPos; }
+        set { m_DragedToPos = value; }
+    }
 
 	// Use this for initialization
 	void Start () 
@@ -43,24 +54,28 @@ public class Item : MonoBehaviour
     {
         if (!m_IsBeingDragged)
         {
-            if (m_CurrentMountPoint != null)
+            if (m_MountedTo != null && m_MountedTo.i_MountPoint != null)
             {
-                transform.position = Vector3.Lerp(transform.position, m_CurrentMountPoint.position, ITEM_LERP_SPEED * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, m_MountedTo.i_MountPoint.position, ITEM_LERP_SPEED * Time.deltaTime);
             }
         }
         else
         {
-            //TODO: lerp to mouse pos
+            transform.position = Vector3.Lerp(transform.position, m_DragedToPos, ITEM_LERP_SPEED * Time.deltaTime);
         }
 	}
 
     public void OnMount(ItemSlot itemSlot)
     {
-        m_CurrentMountPoint = itemSlot.i_MountPoint;
+        m_MountedTo = itemSlot;
     }
 
     public void OnDisMount()
     {
-        m_CurrentMountPoint = null;
+        if(m_MountedTo != null)
+        {
+            m_MountedTo.OnDisMount();
+            m_MountedTo = null;
+        }        
     }
 }

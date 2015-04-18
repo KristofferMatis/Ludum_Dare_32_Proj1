@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Inventory : MonoBehaviour 
+public class Inventory : Singleton<Inventory> 
 {
+    public GameObject i_ItemPrefab;
+    Item[] m_Items = new Item[7];
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
     {
-	
+	    for(int i = 0; i < m_Items.Length; i ++)
+        {
+            m_Items[i] = GameObject.Instantiate(i_ItemPrefab).GetComponentInChildren<Item>();
+        }
 	}
 	
 	// Update is called once per frame
@@ -19,6 +24,6 @@ public class Inventory : MonoBehaviour
     public Item[] getIventory()
     {
         //TODO: Implement This
-        return new Item[0];
+        return m_Items;
     }
 }
