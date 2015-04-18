@@ -60,10 +60,12 @@
      <Compile Include="Assets\Scripts\EnemyAI\HordeController.cs" />
      <Compile Include="Assets\Scripts\Input\InputManager.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
+     <Compile Include="Assets\Scripts\Player\Health.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Universal\Singleton.cs" />
      <Compile Include="Assets\Scripts\Weapons\Attatchments\BaseAttachment.cs" />
      <Compile Include="Assets\Scripts\Weapons\Base\BaseBaseWeapon.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Misc Effects\MiscEffects.cs" />
      <Compile Include="Assets\Scripts\Weapons\WeaponStats.cs" />
      <None Include="Assets\Resources\Materials\New Text Document.txt" />
      <None Include="Assets\Resources\Prefabs\New Text Document.txt" />
