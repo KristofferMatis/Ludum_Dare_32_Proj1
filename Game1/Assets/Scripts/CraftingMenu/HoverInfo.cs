@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HoverInfo : MonoBehaviour {
+public class HoverInfo
+{
+    public CrafingMenu m_CraftingMenu;
 
 	// Use this for initialization
-	void Start () {
-	
+    public void Start() 
+    {
+	    
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	public void Update () 
+    {
+        if (!m_CraftingMenu.IsActive)
+            return;
 	}
 }
