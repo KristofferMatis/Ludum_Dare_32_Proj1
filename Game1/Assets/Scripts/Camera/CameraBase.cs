@@ -17,4 +17,9 @@ public abstract class CameraBase : MonoBehaviour
     {
 
     }
+
+	public virtual void CameraHandleFixedUpdate()
+	{
+		
+	}
 }

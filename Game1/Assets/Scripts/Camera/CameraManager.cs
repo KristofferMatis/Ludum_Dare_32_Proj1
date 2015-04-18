@@ -9,12 +9,16 @@ public class CameraManager : Singleton<CameraManager>
     // Use this for initialization
     void Start()
     {
-
+		m_CurrentCameraAction = CameraMovement;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+		m_CurrentCameraAction.CameraHandleFixedUpdate ();
     }
+	void Update()
+	{
+		m_CurrentCameraAction.CameraHandleUpdate ();
+	}
 }
