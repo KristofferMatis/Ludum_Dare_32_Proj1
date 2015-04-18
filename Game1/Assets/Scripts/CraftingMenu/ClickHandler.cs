@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class ClickHandler 
 {
-    public CraftingMenu m_CraftingMenu;
     Camera m_MainCamera;
 
     LayerMask m_RaycastMask = new LayerMask();
@@ -29,7 +28,7 @@ public class ClickHandler
 	// Update is called once per frame
     public void Update() 
 	{
-        if (!m_CraftingMenu.IsActive)
+        if (!CraftingMenu.Instance.IsActive)
             return;
 
         if(Input.GetMouseButtonDown(0))
@@ -84,8 +83,11 @@ public class ClickHandler
             {//hit something
                 if (itemSlots.Length > 0)
                 {
-                    m_ItemBeingDragged.OnDisMount();
-                    itemSlots[0].OnMount(m_ItemBeingDragged);
+                    if (itemSlots[0].CanAcceptItem(m_ItemBeingDragged))
+                    {
+                        m_ItemBeingDragged.OnDisMount();
+                        itemSlots[0].OnMount(m_ItemBeingDragged);
+                    }
                 }
             }
 			m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;

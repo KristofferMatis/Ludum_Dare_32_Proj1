@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Inventory : Singleton<Inventory> 
 {
-    public GameObject i_ItemPrefab;
+    public GameObject i_AttachmentPrefab;
+    public GameObject i_BaseWeaponPrefab;
     Item[] m_Items = new Item[7];
 
 	// Use this for initialization
@@ -11,7 +12,7 @@ public class Inventory : Singleton<Inventory>
     {
 	    for(int i = 0; i < m_Items.Length; i ++)
         {
-            m_Items[i] = GameObject.Instantiate(i_ItemPrefab).GetComponentInChildren<Item>();
+            m_Items[i] = GameObject.Instantiate((Random.Range(0,2) > 0) ? i_AttachmentPrefab : i_BaseWeaponPrefab).GetComponentInChildren<Item>();
         }
 	}
 	

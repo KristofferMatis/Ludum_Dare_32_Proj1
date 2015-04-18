@@ -41,9 +41,6 @@ public class CraftingMenu : Singleton<CraftingMenu>
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
-        m_ClickHandler.m_CraftingMenu = this;
-        m_HoverInfo.m_CraftingMenu = this;
-
 		m_ClickHandler.Start ();
 		m_HoverInfo.Start ();
 		
@@ -72,6 +69,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
         {
             m_InventorySlots[i].OnMount(Inventory.Instance.getIventory()[i]);
         }
+
+        //TODO: get the current baseWeapon
+        //TODO: get the current attachments from the baseWeapon
+
+        
 	}
 	
 	// Update is called once per frame
@@ -80,6 +82,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
         m_ClickHandler.Update();
         m_HoverInfo.Update();   
 
+        //TODO: REMOVE THIS IT IS FOR TESTING ONLY
 		if (Input.GetKeyDown (KeyCode.Alpha0)) 
 		{
 			EnterMenu();
@@ -119,13 +122,34 @@ public class CraftingMenu : Singleton<CraftingMenu>
         //TODO: set  inventory item list
     }
 
-    void OnMountItem(Item item, ItemSlot itemSlot)
+    public void OnMountItem(Item item, ItemSlot itemSlot)
     {
-        //TODO: check total attachment slots allowed and update accordingly
+        if(itemSlot.GetType() == typeof(BaseWeaponSlot))
+        {
+            UpdateAttachmentSlots();
+        }
     }
 
-    void OnDisMountItem(Item item, ItemSlot itemSlot)
+    public void OnDisMountItem(Item item, ItemSlot itemSlot)
     {
-        //TODO: check total attachment slots allowed and update accordingly
+        if (itemSlot.GetType() == typeof(BaseWeaponSlot))
+        {
+            UpdateAttachmentSlots();
+        }
+    }
+
+    void UpdateAttachmentSlots()
+    {
+        int counter = 0;
+        for (int i = 0; i < m_AttachmentSlots.Length; i++)
+        {
+            if (m_BaseWeaponSlot.getItem() != null && counter < m_BaseWeaponSlot.getItem().WeaponStats.m_MountPoints.Count)
+            {
+                m_AttachmentSlots[i].IsEnabled = true;
+                counter++;
+                continue;
+            }
+            m_AttachmentSlots[i].IsEnabled = false;
+        }
     }
 }

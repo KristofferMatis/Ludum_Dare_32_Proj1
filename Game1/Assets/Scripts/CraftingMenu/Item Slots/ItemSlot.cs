@@ -11,17 +11,14 @@ public class ItemSlot : MonoBehaviour
     {
 	
 	}
-	
-	// Update is called once per frame
-    protected virtual void Update() 
-    {
-	
-	}
 
     //will be used by children classes that can only take attachments or base weapons
     public virtual bool CanAcceptItem(Item item)
     {
-        return true;
+        if (m_Item == null)
+            return true;
+        else
+            return false;
     }
 
     //used to get the current item
@@ -33,27 +30,23 @@ public class ItemSlot : MonoBehaviour
     //used to mount an item
     public virtual void OnMount(Item item)
     {
-        item.OnMount(this);
+        m_Item = item;
+        m_Item.OnMount(this);
+
+        CraftingMenu.Instance.OnMountItem(m_Item, this);
     }
 
     //used to dismount the current item
-    public virtual void OnDisMount(out Item item)
-    {
-        item = null;
-        if (m_Item != null)
-        {
-            m_Item.OnDisMount();
-            item = m_Item;
-            m_Item = null;
-        }
-    }
-
-    public virtual void OnDisMount()
+    public virtual Item OnDisMount()
     {
         if (m_Item != null)
         {
-            m_Item.OnDisMount();
+            Item temp = m_Item;
             m_Item = null;
+            temp.OnDisMount();
+            CraftingMenu.Instance.OnDisMountItem(temp, this);
+            return temp;
         }
+        return null;
     }
 }

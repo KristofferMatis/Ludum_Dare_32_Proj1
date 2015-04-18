@@ -5,7 +5,8 @@ public class Item : MonoBehaviour
 {
     public WeaponStats WeaponStats
     {
-        get { return m_Attachment.m_Stats; }
+        get { return (m_Attachment != null) ? m_Attachment.m_Stats : 
+                                            (m_BaseWeapon != null) ? m_BaseWeapon.m_Stats : null; }
     }
 
     BaseAttachment m_Attachment;
@@ -74,8 +75,9 @@ public class Item : MonoBehaviour
     {
         if(m_MountedTo != null)
         {
-            m_MountedTo.OnDisMount();
+            ItemSlot temp = m_MountedTo;
             m_MountedTo = null;
+            temp.OnDisMount();            
         }        
     }
 }
