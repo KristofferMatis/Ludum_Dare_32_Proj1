@@ -13,12 +13,16 @@ public class HordeController : MonoBehaviour
 	Vector3 m_SearchPosition;
 	Transform m_PlayerTransform;
 
+	//Spawner
+	HordeSpawner m_Spawner;
+
 
 	//When this horde is spawned
 	public void OnCreateHorde ()
 	{
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
 		m_SearchPosition = m_PlayerTransform.position;
+		m_Spawner = GameObject.FindObjectOfType<HordeSpawner> ().GetComponent<HordeSpawner>();
 		if (m_Enemies == null)
 		{
 			m_Enemies = new List<EnemyController>();
@@ -82,7 +86,7 @@ public class HordeController : MonoBehaviour
 		for (int i = 0; i < numberOfEnemies; i++)
 		{
 			GameObject tempEnemy = GameObject.Instantiate(enemy);
-			tempEnemy.transform.position = HordeSpawner.m_Instance.GetSpawnPosition(this);
+			tempEnemy.transform.position = m_Spawner.GetSpawnPosition(this);
 			EnemyController controller = tempEnemy.GetComponent<EnemyController>();
 			if (controller != null)
 			{

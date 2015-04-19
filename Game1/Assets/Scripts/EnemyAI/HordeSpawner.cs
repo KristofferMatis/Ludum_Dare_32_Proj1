@@ -8,9 +8,6 @@ public class HordeSpawner : MonoBehaviour
 	bool IsDay = true;
 	int SpecialSpawnCount = 0;
 
-	//This is a singleton
-	public static HordeSpawner m_Instance;
-
 	//The player
 	Transform m_PlayerTransform;
 
@@ -21,9 +18,11 @@ public class HordeSpawner : MonoBehaviour
 
 	//Spawning
 	const float INITIAL_SPAWN_TIME = 20f;
+	const float MIN_SPAWN_TIME = 10f;
 	float m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 	float m_TimeSinceLastSpawn = INITIAL_SPAWN_TIME;
 	public int BasicSpawnCount = 5;
+	const int DIFFICULTY_ADJUSTMENT = 1;
 
 	//Enemy prefabs
 	public List<GameObject> SpawnableEnemies;
@@ -35,7 +34,6 @@ public class HordeSpawner : MonoBehaviour
 	//Iinitialization
 	void Start ()
 	{
-		m_Instance = this;
 		m_Hordes = new List<HordeController>();
 		HordeController[] hordes = GameObject.FindObjectsOfType<HordeController> ();
 		m_Hordes.AddRange (hordes);
@@ -50,12 +48,16 @@ public class HordeSpawner : MonoBehaviour
 			m_TimeSinceLastSpawn -= Time.deltaTime;
 			if (m_TimeSinceLastSpawn < 0f)
 			{
-				//Acclerate
-				m_MaxTimeBetweenSpawns--;
+				//Acclerate spawns as day goes on
+				if (m_MaxTimeBetweenSpawns > MIN_SPAWN_TIME)
+				{
+					m_MaxTimeBetweenSpawns -= DIFFICULTY_ADJUSTMENT;
+				}
 				m_TimeSinceLastSpawn = m_MaxTimeBetweenSpawns;
 
 				//Spawn basic horde
 				SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
+				SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 
 				//Spawn specials
 				for (int i = 0; i < SpecialSpawnCount; i++)
@@ -72,8 +74,8 @@ public class HordeSpawner : MonoBehaviour
 	public void SetDay (bool isDay)
 	{
 		IsDay = isDay;
-		BasicSpawnCount++;
-		SpecialSpawnCount++;
+		BasicSpawnCount += DIFFICULTY_ADJUSTMENT;
+		SpecialSpawnCount += DIFFICULTY_ADJUSTMENT;
 
 		//Spawn hordless wandering enemies
 		if (SpawnableEnemies.Count > 0)

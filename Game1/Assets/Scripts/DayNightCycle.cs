@@ -9,6 +9,9 @@ public class DayNightCycle : MonoBehaviour
 	const float NIGHT_LENGTH = 60f;
 	float m_CycleTimer = 0f;
 
+	//Spawner
+	HordeSpawner m_Spawner;
+
 	void Start ()
 	{
 		if (m_IsDay)
@@ -22,6 +25,7 @@ public class DayNightCycle : MonoBehaviour
 
 		//Since update is called immediatly
 		m_IsDay = !m_IsDay;
+		m_Spawner = GameObject.FindObjectOfType<HordeSpawner> ().GetComponent<HordeSpawner>();
 	}
 
 	// Update is called once per frame
@@ -43,7 +47,7 @@ public class DayNightCycle : MonoBehaviour
 			{
 				m_CycleTimer = NIGHT_LENGTH;
 			}
-			HordeSpawner.m_Instance.SetDay(m_IsDay);
+			m_Spawner.SetDay(m_IsDay);
 		}
 	}
 }
