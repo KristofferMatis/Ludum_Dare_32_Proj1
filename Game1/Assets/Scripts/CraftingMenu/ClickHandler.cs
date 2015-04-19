@@ -195,8 +195,7 @@ public class ClickHandler
     {
         items = new Item[0];
 		itemSlots = new ItemSlot[0];
-        //hitInfo = Physics.RaycastAll(m_MainCamera.ScreenPointToRay(Input.mousePosition), m_MainCamera.transform.forward, RAYCAST_DISTANCE, m_RaycastMask.value);
-		hitInfo = Physics.RaycastAll (m_MainCamera.ScreenPointToRay (Input.mousePosition), RAYCAST_DISTANCE, m_RaycastMask.value);
+        hitInfo = Physics.RaycastAll (m_MainCamera.ScreenPointToRay (Input.mousePosition), RAYCAST_DISTANCE, m_RaycastMask.value);
 		Debug.DrawLine (m_MainCamera.ScreenPointToRay(Input.mousePosition).origin, m_MainCamera.ScreenPointToRay(Input.mousePosition).origin + (m_MainCamera.ScreenPointToRay(Input.mousePosition).direction * RAYCAST_DISTANCE), Color.black, 1.0f);
 
         if(hitInfo.Length > 0)

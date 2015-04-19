@@ -27,4 +27,23 @@ public class Inventory : Singleton<Inventory>
         //TODO: Implement This
         return m_Inventory;
     }
+
+    public bool setAttachment(BaseAttachment attachment)
+    {
+        for(int i = 0; i < m_Inventory.Length; i++)
+        {
+            if(m_Inventory[i] == null)
+            {
+                m_Inventory[i] = attachment;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setAttachment(BaseAttachment attachment, int index)
+    {
+        if(index >= 0 && index < m_Inventory.Length)
+            m_Inventory[index] = attachment;
+    }
 }

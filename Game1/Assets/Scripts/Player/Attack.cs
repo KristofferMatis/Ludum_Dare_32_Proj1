@@ -21,6 +21,7 @@ public class Attack : MonoBehaviour
 		if(m_WeaponEquipped)
 		{
 			EquipWeapon (m_WeaponEquipped);
+            DrawWeapon(true);
 		}
 	}
 	
