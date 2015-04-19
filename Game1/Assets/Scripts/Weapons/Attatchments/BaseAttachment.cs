@@ -20,8 +20,6 @@ public class BaseAttachment : MonoBehaviour
 		m_Collider = GetComponent<BoxCollider> ();
 
 		SetTotalStatsAfterCrafting ();
-
-		//ToggleCollider (false);
 	}
 
 	WeaponStats GetStats()
@@ -112,6 +110,21 @@ public class BaseAttachment : MonoBehaviour
 		{
 			return null;
 		}
+	}
+
+	public void SwapAttachment(int firstIndex, int secondIndex)
+	{
+		Transform temp = m_Stats.m_MountPoints [firstIndex].GetChild (0);
+		temp.parent = m_Stats.m_MountPoints [secondIndex];
+		temp.localPosition = Vector3.zero;
+		temp.localRotation = Quaternion.identity;
+		temp.localScale = Vector3.one;
+
+		temp = m_Stats.m_MountPoints [secondIndex].GetChild (0);
+		temp.parent = m_Stats.m_MountPoints [firstIndex];
+		temp.localPosition = Vector3.zero;
+		temp.localRotation = Quaternion.identity;
+		temp.localScale = Vector3.one;
 	}
 
 	public void ToggleCollider(bool isToggled)
