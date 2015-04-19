@@ -37,14 +37,27 @@ public class CraftingCamera : CameraBase
 	            m_Camera.cullingMask ^= m_MenuLayers.value;
 			}
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+    }
+
+    public void SetIsOn(bool isOn)
+    {
+        if (isOn)
         {
-			if(CraftingMenu.Instance.IsActive)
-			{
-	            CraftingMenu.Instance.ExitMenu();
-	            CameraManager.Instance.CurrentCameraAction = m_OtherCameraScript;
-	            m_Camera.cullingMask ^= m_MenuLayers.value;
-			}
+            if (!CraftingMenu.Instance.IsActive)
+            {
+                CraftingMenu.Instance.EnterMenu();
+                CameraManager.Instance.CurrentCameraAction = this;
+                m_Camera.cullingMask ^= m_MenuLayers.value;
+            }
+        }
+        else
+        {
+            if (CraftingMenu.Instance.IsActive)
+            {
+                CraftingMenu.Instance.ExitMenu();
+                CameraManager.Instance.CurrentCameraAction = m_OtherCameraScript;
+                m_Camera.cullingMask ^= m_MenuLayers.value;
+            }
         }
     }
 	

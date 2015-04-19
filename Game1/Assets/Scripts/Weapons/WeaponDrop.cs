@@ -53,7 +53,7 @@ public class WeaponDrop : MonoBehaviour
 	
     void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag(Constants.PLAYER_TAG))
         {//the player found us
             if(InputManager.Instance.PlayerInteract())
             {

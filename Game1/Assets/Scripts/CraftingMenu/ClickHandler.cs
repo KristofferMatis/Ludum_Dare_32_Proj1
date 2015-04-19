@@ -21,6 +21,8 @@ public class ClickHandler
 
     Item m_ItemBeingDragged = null;
 
+    public CraftingCamera m_CraftingCamera;
+
 	// Use this for initialization
     public void Start() 
 	{
@@ -62,6 +64,18 @@ public class ClickHandler
                 items[0].IsBeingDragged = true;
                 m_ItemBeingDragged = items[0];
                 m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.transform.position;
+            }
+            else
+            {
+                for(int i = 0; i < hitInfo.Length; i++)
+                {
+                    if (hitInfo[i].collider.CompareTag(Constants.EXIT_BUTTON_TAG))
+                    {
+                        //CraftingMenu.Instance.ExitMenu();
+                        m_CraftingCamera.SetIsOn(false);
+                        return;
+                    }
+                }
             }
         }
     }

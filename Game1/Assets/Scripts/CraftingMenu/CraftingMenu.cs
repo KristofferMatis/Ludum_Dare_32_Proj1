@@ -9,7 +9,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
     ItemSlot[] m_InventorySlots;
     AttachmentSlot[] m_AttachmentSlots;
     BaseWeaponSlot m_BaseWeaponSlot;
-    
+    public CraftingCamera m_CraftingCamera;
  
     //=========================================================================
 
@@ -51,7 +51,9 @@ public class CraftingMenu : Singleton<CraftingMenu>
         //Cursor.visible = false;
 
 		m_ClickHandler.Start ();
-		m_HoverInfo.Start ();
+        m_ClickHandler.m_CraftingCamera = m_CraftingCamera;
+        
+        m_HoverInfo.Start ();
 		
 		//since attachment slots and base weapon slots inherit from item slot we need to sort them
         m_InventorySlots = gameObject.GetComponentsInChildren<ItemSlot>();
