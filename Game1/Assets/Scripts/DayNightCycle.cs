@@ -3,11 +3,13 @@ using System.Collections;
 
 public class DayNightCycle : MonoBehaviour
 {
+	//Day or night
 	public bool m_IsDay = true;
 
-	const float DAY_LENGTH = 120f;
-	const float NIGHT_LENGTH = 60f;
-	float m_CycleTimer = 0f;
+	//Length of day and night
+	public const float DAY_LENGTH = 120f;
+	public const float NIGHT_LENGTH = 80f;
+	public float m_CycleTimer = 0f;
 
 	//Spawner
 	HordeSpawner m_Spawner;
