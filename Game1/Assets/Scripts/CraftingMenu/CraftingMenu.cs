@@ -59,7 +59,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
         int counter = 0;
         for (int i = 0; i < m_InventorySlots.Length; i++)
         {
-            if(m_InventorySlots.GetType() != typeof(AttachmentSlot) && m_InventorySlots.GetType() != typeof(BaseWeaponSlot))
+            if (m_InventorySlots.GetType() != typeof(AttachmentSlot) && m_InventorySlots.GetType() != typeof(BaseWeaponSlot) && m_InventorySlots.GetType() != typeof(ItemRemove))
             {//its an item slot
                 tempSlots[counter++] = m_InventorySlots[i];
                 if(counter>=TOTAL_ITEM_SLOTS)

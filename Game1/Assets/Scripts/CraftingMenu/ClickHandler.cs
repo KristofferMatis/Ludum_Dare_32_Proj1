@@ -61,6 +61,7 @@ public class ClickHandler
             {
                 items[0].IsBeingDragged = true;
                 m_ItemBeingDragged = items[0];
+                m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.transform.position;
             }
         }
     }
