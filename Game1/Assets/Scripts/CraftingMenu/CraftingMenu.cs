@@ -123,7 +123,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
             m_InventorySlots[i].getItem().start(Inventory.Instance.getIventory()[i]);
 
             //TODO: replace ArtClone With the Menu art version of the asset
-            GameObject artClone = (GameObject)(GameObject.Instantiate(Inventory.Instance.getIventory()[i].gameObject,
+            GameObject artClone = (GameObject)(GameObject.Instantiate(Inventory.Instance.getIventory()[i].MenuPrefab,
                                                                       m_InventorySlots[i].getItem().transform.position,
                                                                       m_InventorySlots[i].getItem().transform.rotation));
 
@@ -155,7 +155,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
     {
 		m_IsActive = false;
 
-		i_AttackPlayer.m_WeaponEquipped.SetTotalStatsAfterCrafting ();
+		if( i_AttackPlayer.m_WeaponEquipped != null)
+			i_AttackPlayer.m_WeaponEquipped.SetTotalStatsAfterCrafting ();
         i_AttackPlayer.DrawWeapon(true);
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
