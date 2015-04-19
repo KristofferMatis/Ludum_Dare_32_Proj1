@@ -4,21 +4,21 @@ using System.Collections;
 public class EnemyController : MonoBehaviour
 {
 	//Distances
-	const float CHASE_DISTANCE = 35.0f;
+	const float CHASE_DISTANCE = 40.0f;
 	const float LEASH_DISTANCE = 30.0f;
 	const float WANDER_DISTANCE = 10.0f;
-	const float KNOWN_DISTANCE = 10.0f;
+	const float KNOWN_DISTANCE = 12.0f;
 
 	//Chasing
 	const float SIGHT_ANGLE = 0f;
 
 	//Speed of the enemy
 	const float WANDER_SPEED = 2.0f;
-	const float SEARCH_SPEED = 3.5f;
-	const float CHASE_SPEED = 5.0f;
-	const float WANDER_ACCELERATION = 0.25f;
-	const float SEARCH_ACCELERATION = 1.0f;
-	const float CHASE_ACCELERATION = 2.0f;
+	const float SEARCH_SPEED = 6.0f;
+	const float CHASE_SPEED = 10.0f;
+	const float WANDER_ACCELERATION = 0.5f;
+	const float SEARCH_ACCELERATION = 4.0f;
+	const float CHASE_ACCELERATION = 8.0f;
 
 	//Knockback
 	Vector3 m_KnockBackSpeed;
@@ -42,8 +42,6 @@ public class EnemyController : MonoBehaviour
 	//The horde of this enemy (null means it will wander on it's own)
 	HordeController m_Horde;
 
-	//Wnader position
-	Vector3 m_LastWanderPos;
 
 	//Current enemy state
 	public enum EnemyState
@@ -96,7 +94,7 @@ public class EnemyController : MonoBehaviour
 		{
 			//Set timer
 			m_SearchTimer -= Time.deltaTime;
-			if (m_SearchTimer < 0f)
+			if (m_SearchTimer < 0f || Vector3.Distance (transform.position, m_Agent.destination) <= m_Agent.stoppingDistance)
 			{
 				SetState(EnemyState.Wander);
 			}
@@ -114,7 +112,7 @@ public class EnemyController : MonoBehaviour
 		case EnemyState.Wander:
 		{	
 			//Check if we need a new position to wander to
-			if (Vector3.Distance (transform.position, m_LastWanderPos) <= m_Agent.stoppingDistance ||
+			if (Vector3.Distance (transform.position, m_Agent.destination) <= m_Agent.stoppingDistance ||
 			    Vector3.Distance(transform.position, m_LeashPosition) > LEASH_DISTANCE)
 			{
 				GetNewWanderPosition ();
@@ -271,13 +269,10 @@ public class EnemyController : MonoBehaviour
 	//Gets a new wander to position
 	void GetNewWanderPosition ()
 	{
-		//Wander position
-		m_LastWanderPos = m_LeashPosition + WANDER_DISTANCE *
-			(new Vector3(Random.Range(0f, 1f), 0f, Random.Range(0f, 1f)) +
-			 (m_LeashPosition - transform.position).normalized).normalized;
-
 		//Move to there
-		MoveTowards	(m_LastWanderPos);
+		MoveTowards	(m_LeashPosition + WANDER_DISTANCE *
+		             (new Vector3(Random.Range(0f, 1f), 0f, Random.Range(0f, 1f)) +
+		 (m_LeashPosition - transform.position).normalized).normalized);
 	}
 
 	/// <summary>

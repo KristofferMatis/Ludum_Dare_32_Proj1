@@ -12,17 +12,17 @@ public class HordeSpawner : MonoBehaviour
 	Transform m_PlayerTransform;
 
 	//How far to spawn hordes and enemies
-	const float SPAWN_DISTANCE_FROM_HORDE = 15f;
-	const float MIN_FIRST_SPAWN_DISTANCE = 50f;
+	const float SPAWN_DISTANCE_FROM_HORDE = 25f;
+	const float MIN_FIRST_SPAWN_DISTANCE = 75f;
 	const float MAX_FIRST_SPAWN_DISTANCE = 100f;
 
 	//Spawning
-	const float INITIAL_SPAWN_TIME = 20f;
-	const float MIN_SPAWN_TIME = 10f;
+	const float INITIAL_SPAWN_TIME = 30f;
+	const float MIN_SPAWN_TIME = 15f;
 	float m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 	float m_TimeSinceLastSpawn = INITIAL_SPAWN_TIME;
-	public int BasicSpawnCount = 5;
-	const int DIFFICULTY_ADJUSTMENT = 1;
+	int BasicSpawnCount = 6;
+	const int DIFFICULTY_ADJUSTMENT = 2;
 
 	//Enemy prefabs
 	public List<GameObject> SpawnableEnemies;
@@ -77,14 +77,21 @@ public class HordeSpawner : MonoBehaviour
 		BasicSpawnCount += DIFFICULTY_ADJUSTMENT;
 		SpecialSpawnCount += DIFFICULTY_ADJUSTMENT;
 
-		//Spawn hordless wandering enemies
 		if (SpawnableEnemies.Count > 0)
 		{
+			//Spawn basic horde
+			SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 			SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
+
+			//Spawn specials
+			for (int i = 0; i < SpecialSpawnCount; i++)
+			{
+				m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+			}
 		}
 
 		//Reset time between spawns when the day ends
-		if (!IsDay)
+		if (IsDay)
 		{
 			m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 		}
@@ -128,14 +135,27 @@ public class HordeSpawner : MonoBehaviour
 	//Gets where to spawn the ennemy
 	public Vector3 GetSpawnPosition (HordeController horde = null)
 	{
+		Vector3 pos = Vector3.zero;
 		if (horde != null && horde.m_Enemies.Count > 0)
 		{
-			return horde.GetHordePosition () + new Vector3(Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE), 0f, Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE));
+			pos = horde.GetHordePosition () + new Vector3(Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE), 0f, Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE));
 		}
 		else
 		{
-			return m_PlayerTransform.position + Random.Range(MIN_FIRST_SPAWN_DISTANCE, MAX_FIRST_SPAWN_DISTANCE) *
+			pos = m_PlayerTransform.position + Random.Range(MIN_FIRST_SPAWN_DISTANCE, MAX_FIRST_SPAWN_DISTANCE) *
 				new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
 		}
+		NavMeshHit hit = new NavMeshHit();
+		if (NavMesh.FindClosestEdge (pos, out hit, NavMesh.AllAreas))
+		{
+			pos = hit.position;
+		}
+
+		//Try again
+		if (Vector3.Distance(pos, m_PlayerTransform.position) < MIN_FIRST_SPAWN_DISTANCE)
+		{
+			pos = GetSpawnPosition (horde);
+		}
+		return pos;
 	}
 }

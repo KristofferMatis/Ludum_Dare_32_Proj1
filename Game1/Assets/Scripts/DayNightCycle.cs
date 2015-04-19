@@ -9,7 +9,7 @@ public class DayNightCycle : MonoBehaviour
 	//Length of day and night
 	public const float DAY_LENGTH = 120f;
 	public const float NIGHT_LENGTH = 80f;
-	public float m_CycleTimer = 0f;
+	float m_CycleTimer = 0f;
 
 	//Spawner
 	HordeSpawner m_Spawner;
