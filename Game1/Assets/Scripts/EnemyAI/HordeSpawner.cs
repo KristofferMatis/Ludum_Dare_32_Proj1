@@ -16,8 +16,8 @@ public class HordeSpawner : MonoBehaviour
 
 	//How far to spawn hordes and enemies
 	const float SPAWN_DISTANCE_FROM_HORDE = 15f;
-	const float MIN_FIRST_SPAWN_DISTANCE = 40f;
-	const float MAX_FIRST_SPAWN_DISTANCE = 80f;
+	const float MIN_FIRST_SPAWN_DISTANCE = 50f;
+	const float MAX_FIRST_SPAWN_DISTANCE = 100f;
 
 	//Spawning
 	const float INITIAL_SPAWN_TIME = 20f;
