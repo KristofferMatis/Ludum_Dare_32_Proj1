@@ -83,6 +83,6 @@ public class Attack : MonoBehaviour
 
 	public void DoAttack()
 	{
-
+		m_StartUpTimer = m_WeaponEquipped.TotalStats.m_StartUpTime;
 	}
 }

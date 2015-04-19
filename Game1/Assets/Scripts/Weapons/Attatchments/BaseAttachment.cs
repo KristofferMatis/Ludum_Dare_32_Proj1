@@ -15,6 +15,14 @@ public class BaseAttachment : MonoBehaviour
 
 	List<MiscEffects> m_MiscEffects = new List<MiscEffects>();
 
+	public WeaponStats TotalStats
+	{
+		get
+		{
+			return m_TotalStats;
+		}
+	}
+
 	protected void Start()
 	{
 		m_Collider = GetComponent<BoxCollider> ();
@@ -34,7 +42,7 @@ public class BaseAttachment : MonoBehaviour
 
 				stats.m_Damage += attachmentStats.m_Damage;
 				stats.m_Knockback += attachmentStats.m_Knockback;
-				stats.m_PlayerSpeed += attachmentStats.m_PlayerSpeed;
+				stats.m_AttackType += attachmentStats.m_AttackType;
 				stats.m_StartUpTime += attachmentStats.m_StartUpTime;
 				stats.m_RecoveryTime += attachmentStats.m_RecoveryTime;
 			}

@@ -30,15 +30,21 @@ public class CraftingCamera : CameraBase
         //TODO: REMOVE THIS IT IS FOR TESTING ONLY
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            CraftingMenu.Instance.EnterMenu();
-            CameraManager.Instance.CurrentCameraAction = this;
-            m_Camera.cullingMask ^= m_MenuLayers.value;
+			if(!CraftingMenu.Instance.IsActive)
+			{
+	            CraftingMenu.Instance.EnterMenu();
+	            CameraManager.Instance.CurrentCameraAction = this;
+	            m_Camera.cullingMask ^= m_MenuLayers.value;
+			}
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            CraftingMenu.Instance.ExitMenu();
-            CameraManager.Instance.CurrentCameraAction = m_OtherCameraScript;
-            m_Camera.cullingMask ^= m_MenuLayers.value;
+			if(CraftingMenu.Instance.IsActive)
+			{
+	            CraftingMenu.Instance.ExitMenu();
+	            CameraManager.Instance.CurrentCameraAction = m_OtherCameraScript;
+	            m_Camera.cullingMask ^= m_MenuLayers.value;
+			}
         }
     }
 	
