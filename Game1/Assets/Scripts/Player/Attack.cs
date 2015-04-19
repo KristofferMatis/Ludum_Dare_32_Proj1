@@ -39,11 +39,11 @@ public class Attack : MonoBehaviour
 
 				if(m_IsAttacking)
 				{
-
+					m_WeaponEquipped.ToggleCollider(true);
 				}
 				else
 				{
-
+					m_WeaponEquipped.ToggleCollider(false);
 				}
 			}
 			else

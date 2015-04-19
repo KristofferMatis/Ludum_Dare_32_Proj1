@@ -11,7 +11,6 @@ public class WeaponCrate : MonoBehaviour
 	public float m_ExplosionRadius;
 
 	public float m_ChanceOfSpawningWeapon;
-	public float m_ChanceOfSpawningMiscEffect;
 
 	public float m_GroundCheckDistance = 1.0f;
 
@@ -21,7 +20,6 @@ public class WeaponCrate : MonoBehaviour
 	bool m_IsBroken;
 
 	public List<GameObject> m_WeaponPrefabs;
-	public List<MiscEffectType> m_MiscEffects;
 
 	void Start()
 	{
@@ -79,49 +77,7 @@ public class WeaponCrate : MonoBehaviour
 	}
 
 	void SpawnWeapon(Vector3 position)
-	{
-        
+	{        
         Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
-        /*
-        float miscEffectTest = 0.0f;
-        int index = 0;
-
-        do 
-        {
-            miscEffectTest = Random.value;
-
-            if (index < m_MiscEffects.Count && miscEffectTest <= m_ChanceOfSpawningMiscEffect)
-            {
-                switch(m_MiscEffects[index])
-                {
-                    case MiscEffectType.e_Flaming:
-                    {
-                        newWeapon.AddComponent<Flaming> ();
-                        break;
-                    }
-
-                    case MiscEffectType.e_Scaling:
-                    {
-                        newWeapon.AddComponent<Scaling> ();
-                        break;
-                    }
-
-                    case MiscEffectType.e_Drunk:
-                    {
-                        newWeapon.AddComponent<Drunk> ();
-                        break;
-                    }
-
-                    case MiscEffectType.e_Afraid:
-                    {
-                        newWeapon.AddComponent<Afraid> ();
-                        break;
-                    }
-                }
-                index++;
-            }
-        }
-        while(miscEffectTest <= m_ChanceOfSpawningMiscEffect && index < m_MiscEffects.Count);
-        */
     }
 }

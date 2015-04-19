@@ -49,6 +49,9 @@ public class WeaponDrop : MonoBehaviour
             counter += 1.0f;
             addEffect();
         }
+
+		GameObject newWeapon = (GameObject)Instantiate (GamePrefab, transform.position, Quaternion.identity);
+		newWeapon.transform.parent = transform;
 	}
 	
     void OnTriggerStay(Collider other)

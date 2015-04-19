@@ -14,7 +14,16 @@ public class Health : MonoBehaviour
 	float m_OngoingEffectTimer;
 	float m_OngoingEffectDamageRate;
 
+	public float m_UnderwaterDamageRate;
+
 	ParticleSystem m_FlameParticles;
+
+	public ParticleSystem m_UnderwaterParticles;
+
+	public GameObject m_Water;
+
+	float m_WaterToMouthMaxDistance = 3.82f;
+	float m_BaseStartLifetime;
 
 	// Use this for initialization
 	void Start () 
@@ -25,6 +34,10 @@ public class Health : MonoBehaviour
 		{
 			m_Movement = GetComponent<PlayerMovement>();
 		}
+
+		m_CurrentHealth = m_MaxHealth;
+
+		m_BaseStartLifetime = m_UnderwaterParticles.startLifetime;
 	}
 	
 	// Update is called once per frame
@@ -38,15 +51,32 @@ public class Health : MonoBehaviour
 
 			m_OngoingEffectTimer -= Time.deltaTime;
 
-			if(m_CurrentHealth <= 0)
-			{
-				Die ();
-			}
-
 			if(m_OngoingEffectTimer <= 0.0f)
 			{
 				m_FlameParticles.loop = false;
 			}
+		}
+
+		if(m_UnderwaterParticles.transform.position.y < m_Water.transform.position.y)
+		{
+			m_CurrentHealth -= m_UnderwaterDamageRate * Time.deltaTime;
+
+			m_UnderwaterParticles.startLifetime = m_BaseStartLifetime * 
+				Mathf.Clamp(Mathf.Abs(m_UnderwaterParticles.transform.position.y - m_Water.transform.position.y) / m_WaterToMouthMaxDistance, 0.0f, 1.0f);
+
+			if(!m_UnderwaterParticles.isPlaying)
+			{
+				m_UnderwaterParticles.Play();
+			}
+		}
+		else
+		{
+			m_UnderwaterParticles.Stop();
+		}
+		
+		if(m_CurrentHealth <= 0.0f)
+		{
+			Die ();
 		}
 	}
 
@@ -57,11 +87,6 @@ public class Health : MonoBehaviour
 			m_CanBeHitThisFrame = false;
 
 			m_CurrentHealth -= damage;
-
-			if(m_CurrentHealth <= 0.0f)
-			{
-				Die ();
-			}
 
 			Knockback(knockback);
 		}

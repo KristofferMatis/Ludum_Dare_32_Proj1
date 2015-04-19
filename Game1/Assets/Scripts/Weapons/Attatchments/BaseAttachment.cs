@@ -30,6 +30,8 @@ public class BaseAttachment : MonoBehaviour
 		m_Collider = GetComponent<BoxCollider> ();
 
 		SetTotalStatsAfterCrafting ();
+
+		ToggleCollider (false);
 	}
 
 	WeaponStats GetStats()
