@@ -11,6 +11,9 @@ public class DayNightCycle : MonoBehaviour
 	public const float NIGHT_LENGTH = 80f;
 	float m_CycleTimer = 0f;
 
+	WeaponsSpawningManager m_WeaponSpawner;
+
+
 	//Spawner
 	HordeSpawner m_Spawner;
 
@@ -27,7 +30,10 @@ public class DayNightCycle : MonoBehaviour
 
 		//Since update is called immediatly
 		m_IsDay = !m_IsDay;
+
+		//Find objects
 		m_Spawner = GameObject.FindObjectOfType<HordeSpawner> ().GetComponent<HordeSpawner>();
+		m_WeaponSpawner = GameObject.FindObjectOfType<WeaponsSpawningManager> ().GetComponent<WeaponsSpawningManager> ();
 	}
 
 	// Update is called once per frame
@@ -41,15 +47,17 @@ public class DayNightCycle : MonoBehaviour
 		if (m_CycleTimer < 0f)
 		{
 			m_IsDay = !m_IsDay;
+			m_Spawner.SetDay(m_IsDay);
 			if (m_IsDay)
 			{
 				m_CycleTimer = DAY_LENGTH;
+				m_WeaponSpawner.SpawnNewItems();
 			}
 			else
 			{
 				m_CycleTimer = NIGHT_LENGTH;
+				m_WeaponSpawner.StopSmoke();
 			}
-			m_Spawner.SetDay(m_IsDay);
 		}
 	}
 }
