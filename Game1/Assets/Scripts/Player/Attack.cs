@@ -13,7 +13,7 @@ public class Attack : MonoBehaviour
 
 	bool m_WeaponDrawn;
 
-	public float m_LerpSpeed = 1.0f;
+	public float m_LerpSpeed = 15.0f;
 	public float m_RotationSpeed = 5.0f;
 
 	void Start()
