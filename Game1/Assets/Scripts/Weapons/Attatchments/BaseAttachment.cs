@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class BaseAttachment : MonoBehaviour 
 {
+	public string m_AttachmentName;
+
 	[SerializeField]
 	public WeaponStats m_Stats;
 

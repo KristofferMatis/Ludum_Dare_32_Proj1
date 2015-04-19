@@ -41,6 +41,10 @@ public class Attack : MonoBehaviour
 				{
 
 				}
+				else
+				{
+
+				}
 			}
 			else
 			{

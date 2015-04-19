@@ -16,7 +16,7 @@ public class Flaming : MiscEffects
 
 		MeshFilter meshFilter = GetComponentInChildren<MeshFilter> ();
 
-		m_FlameParticles = (GameObject)Instantiate (Resources.Load<GameObject> ("Prefabs/Weapons/Flaming"), meshFilter.transform.position, meshFilter.transform.rotation);
+		m_FlameParticles = (GameObject)Instantiate (Resources.Load<GameObject> ("Prefabs/Weapons/Effects/Flaming" + GetComponent<BaseAttachment>().m_AttachmentName), meshFilter.transform.position, meshFilter.transform.rotation);
 
 		m_FlameParticles.transform.parent = meshFilter.transform;
 
