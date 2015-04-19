@@ -31,13 +31,13 @@ public class PlayerMovement : MonoBehaviour
     {
 		if(m_KnockbackTimer <= 0.0f)
 		{
-	        float forwardDir = InputManager.Instance.PlayerMoveForwardBack();
-	        float rightDir = InputManager.Instance.PlayerMoveRightLeft();
+            Vector2 input = new Vector2(InputManager.Instance.PlayerMoveRightLeft(), InputManager.Instance.PlayerMoveForwardBack());
+            input.Normalize();
 
 			Vector3 t = mainCam.transform.forward;
 			Vector3 t1 = mainCam.transform.right;
-			Vector3 dirForward = new Vector3(t.x * forwardDir, 0.0f, t.z * forwardDir);
-			Vector3 dirRight = new Vector3(t1.x * rightDir, 0.0f, t1.z * rightDir);
+            Vector3 dirForward = (!CraftingMenu.Instance.IsActive) ? new Vector3(t.x * input.y, 0.0f, t.z * input.y) : Vector3.zero;
+            Vector3 dirRight = (!CraftingMenu.Instance.IsActive) ? new Vector3(t1.x * input.x, 0.0f, t1.z * input.x) : Vector3.zero;
 
 			float previousVerticalSpeed = m_CurrentSpeed.y;
 

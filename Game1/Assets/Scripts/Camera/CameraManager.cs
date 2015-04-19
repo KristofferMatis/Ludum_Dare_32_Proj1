@@ -3,13 +3,25 @@ using System.Collections;
 
 public class CameraManager : Singleton<CameraManager>
 {
-    public CameraBase CameraMovement;
+    public CameraBase i_CameraMovement;
     
     CameraBase m_CurrentCameraAction;
-    // Use this for initialization
-    void Start()
+    public CameraBase CurrentCameraAction
     {
-		m_CurrentCameraAction = CameraMovement;
+        get { return m_CurrentCameraAction; }
+        set 
+        { 
+            m_CurrentCameraAction.Deactivate();
+            m_CurrentCameraAction = value;
+            m_CurrentCameraAction.Activate();
+        }
+    }
+
+
+    // Use this for initialization
+    void Awake()
+    {
+		m_CurrentCameraAction = i_CameraMovement;
     }
 
     // Update is called once per frame
@@ -17,6 +29,7 @@ public class CameraManager : Singleton<CameraManager>
     {
 		m_CurrentCameraAction.CameraHandleFixedUpdate ();
     }
+
 	void Update()
 	{
 		m_CurrentCameraAction.CameraHandleUpdate ();

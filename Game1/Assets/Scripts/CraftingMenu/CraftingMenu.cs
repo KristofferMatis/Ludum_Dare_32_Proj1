@@ -91,7 +91,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
             MeshCollider meshCollider = m_BaseWeaponSlot.getItem().gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshCollider.GetComponentInChildren<MeshFilter>().mesh;
 
-            m_BaseWeaponSlot.getItem().gameObject.layer = LayerMask.NameToLayer(m_ClickHandler.RaycastLayers[0]);
+            Transform[] objects = m_BaseWeaponSlot.getItem().gameObject.GetComponentsInChildren<Transform>();
+            for (int c = 0; c < objects.Length; c++)
+            {
+                objects[c].gameObject.layer = LayerMask.NameToLayer(m_ClickHandler.RaycastLayers[0]);
+            }
         }
         UpdateAttachmentSlots();
 	}
@@ -99,28 +103,16 @@ public class CraftingMenu : Singleton<CraftingMenu>
 	// Update is called once per frame
 	void Update () 
     {
+        transform.forward = m_MainCamera.transform.position - transform.position;
         m_ClickHandler.Update();
         m_HoverInfo.Update();   
-
-        //TODO: REMOVE THIS IT IS FOR TESTING ONLY
-		if (Input.GetKeyDown (KeyCode.Alpha0)) 
-		{
-			EnterMenu();
-		}
-		else if(Input.GetKeyDown (KeyCode.Alpha1))
-		{
-			ExitMenu();
-		}
 	}
 
-    void EnterMenu()
+    public void EnterMenu()
     {
 		m_IsActive = true;
 
         i_AttackPlayer.DrawWeapon(false);
-
-        transform.forward = m_MainCamera.transform.position - transform.position;
-
 
         for (int i = 0; i < Inventory.Instance.getIventory().Length; i++)
         {
@@ -141,7 +133,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
             MeshCollider meshCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = meshCollider.GetComponentInChildren<MeshFilter>().mesh;
 
-            m_InventorySlots[i].getItem().gameObject.layer = LayerMask.NameToLayer(m_ClickHandler.RaycastLayers[0]);
+            Transform[] objects = m_InventorySlots[i].getItem().gameObject.GetComponentsInChildren<Transform>();
+            for (int c = 0; c < objects.Length; c++)
+            {
+                objects[c].gameObject.layer = LayerMask.NameToLayer(m_ClickHandler.RaycastLayers[0]);
+            }
         }
         //Cursor.lockState = CursorLockMode.Confined;
         //Cursor.visible = true;
@@ -155,7 +151,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
         //TODO: create the menus item list
     }
 
-    void ExitMenu()
+    public void ExitMenu()
     {
 		m_IsActive = false;
 
