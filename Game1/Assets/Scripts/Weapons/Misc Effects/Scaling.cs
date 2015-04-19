@@ -11,26 +11,10 @@ public class Scaling : MiscEffects
 
 	protected override void DoEffectVirtual (Health otherHealth)
 	{
-		otherHealth.transform.localScale = transform.localScale;	
-	}
-
-	void Start()
-	{
-		m_Time.x = Random.Range (0.0f, Mathf.PI);
-		m_Time.y = Random.Range (0.0f, Mathf.PI);
-		m_Time.z = Random.Range (0.0f, Mathf.PI);
-	}
-
-	void Update()
-	{
-		Vector3 newScale = Vector3.zero;
-		newScale.x = m_MinScale + (m_MaxScale - m_MinScale) / 2.0f * (1.0f + Mathf.Cos (m_Time.x));
-		newScale.y = m_MinScale + (m_MaxScale - m_MinScale) / 2.0f * (1.0f + Mathf.Sin (m_Time.y));
-		newScale.z = m_MinScale + (m_MaxScale - m_MinScale) / 2.0f * (1.0f + Mathf.Cos (m_Time.z));
-		transform.localScale = newScale;
-
-		m_Time.x += Time.deltaTime * m_RescalingSpeed;
-		m_Time.y += Time.deltaTime * m_RescalingSpeed;
-		m_Time.z += Time.deltaTime * m_RescalingSpeed;
+		Vector3 newScale = Random.insideUnitSphere * Random.Range (m_MinScale, m_MaxScale);
+		newScale.x = Mathf.Abs (newScale.x);
+		newScale.y = Mathf.Abs (newScale.y);
+		newScale.z = Mathf.Abs (newScale.z);
+		otherHealth.transform.localScale = newScale;	
 	}
 }
