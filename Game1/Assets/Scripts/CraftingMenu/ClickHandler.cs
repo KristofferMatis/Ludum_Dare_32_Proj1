@@ -88,18 +88,24 @@ public class ClickHandler
             {//hit something
                 if (itemSlots.Length > 0)
                 {
-                    if (itemSlots[0] != m_ItemBeingDragged.MountedTo && itemSlots[0].CanAcceptItem(m_ItemBeingDragged) && m_ItemBeingDragged.MountedTo.CanAcceptItem(itemSlots[0].getItem()))
+                    if (itemSlots[0] != m_ItemBeingDragged.MountedTo && itemSlots[0].CanAcceptItem(m_ItemBeingDragged))
                     {//the item being dragged is valid to place in the slot
 
-                        if(itemSlots[0].getItem() != null)
-                        {
-                            SwapItems(itemSlots[0], m_ItemBeingDragged.MountedTo);
-							return;
+						if(itemSlots[0].getItem() != null)
+                        {//the spot were placing it on already has something
+							if(m_ItemBeingDragged.MountedTo.CanAcceptItem(itemSlots[0].getItem()))
+							{//both items can be swapped
+	                            SwapItems(itemSlots[0], m_ItemBeingDragged.MountedTo);
+								return;
+							}
                         }
                         else
                         {
-                            m_ItemBeingDragged.OnDisMount();
-                            itemSlots[0].OnMount(m_ItemBeingDragged);                            
+							if(!(m_ItemBeingDragged.MountedTo.GetType() == typeof(BaseWeaponSlot)) || CraftingMenu.Instance.getTotalInUseAtachmentSlots() == 0)
+							{
+	                            m_ItemBeingDragged.OnDisMount();
+	                            itemSlots[0].OnMount(m_ItemBeingDragged);
+							}
                         }
                     }
                 }
@@ -111,20 +117,42 @@ public class ClickHandler
 
     void SwapItems(ItemSlot slot1, ItemSlot slot2)
     {
+        bool isSwappingBaseWeapon = false;
         if(slot1.GetType() == typeof(BaseWeaponSlot))
-        {
+        {//swapping out the base weapon
             if(!checkBaseWeaponMounts(slot2.getItem()))
             {
                 return;
             }
+            isSwappingBaseWeapon = true;
         }
         else if (slot2.GetType() == typeof(BaseWeaponSlot))
-        {
+		{//swapping out the base weapon
             if (!checkBaseWeaponMounts(slot1.getItem()))
             {
                 return;
             }
+            Item TempItem = slot2.OnDisMount();
+            slot2.OnMount(slot1.OnDisMount());
+            slot1.OnMount(TempItem);
+
+            slot1.getItem().DraggedToPos = slot1.getItem().MountedTo.i_MountPoint.position;
+            slot2.getItem().DraggedToPos = slot2.getItem().MountedTo.i_MountPoint.position;
+
+            m_ItemBeingDragged = null;
+            CraftingMenu.Instance.ReAttachAllAttachments();
+            return;
         }
+		else if(slot1.GetType() == typeof(AttachmentSlot) && slot2.GetType() == typeof(AttachmentSlot))
+		{//swapping two items that are already on the weapon
+            CraftingMenu.Instance.SwapItems(slot1, slot2);
+            slot1.getItem().DraggedToPos = slot1.getItem().MountedTo.i_MountPoint.position;
+            slot2.getItem().DraggedToPos = slot2.getItem().MountedTo.i_MountPoint.position;
+
+            m_ItemBeingDragged = null;
+            return;
+		}
+
 
         Item tempItem = slot1.OnDisMount();
         slot1.OnMount(slot2.OnDisMount());
@@ -135,8 +163,10 @@ public class ClickHandler
 
         m_ItemBeingDragged = null;
 
-		//Debug.Log(slot1 + "    " + slot1.getItem() + "    " + slot1.getItem().MountedTo);
-		//Debug.Log(slot2 + "    " + slot2.getItem() + "    " + slot2.getItem().MountedTo);
+		if(isSwappingBaseWeapon)
+		{//since base weapon was swapped we need to make sure the correct attachment slots are open / being used
+            CraftingMenu.Instance.ReAttachAllAttachments();
+        }
     }
 
     bool checkBaseWeaponMounts(Item notInUse)

@@ -18,7 +18,7 @@ public class BaseWeaponSlot : ItemSlot
 
     public override bool CanAcceptItem(Item item)
     {
-        if (item.BaseWeapon != null && base.CanAcceptItem(item))
+		if (item != null && item.BaseWeapon != null && base.CanAcceptItem(item))
             return true;
         else
             return false;

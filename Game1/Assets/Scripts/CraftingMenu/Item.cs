@@ -43,6 +43,8 @@ public class Item : MonoBehaviour
         set { m_DragedToPos = value; }
     }
 
+    public int AttachedIndex { get; set; }
+
 	// Use this for initialization
 	public void start (BaseAttachment Original) 
     {

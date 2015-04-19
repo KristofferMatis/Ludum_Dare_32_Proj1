@@ -35,7 +35,7 @@ public class AttachmentSlot : ItemSlot
 	
     public override bool CanAcceptItem(Item item)
     {
-        if (item.Attachment != null && base.CanAcceptItem(item) && m_IsEnabled)
+		if (item != null && item.Attachment != null && base.CanAcceptItem(item) && m_IsEnabled)
             return true;
         else
             return false;
@@ -50,8 +50,6 @@ public class AttachmentSlot : ItemSlot
 
     public override Item OnDisMount()
     {
-        IsEnabled = false;
-
         return base.OnDisMount();        
     }
 

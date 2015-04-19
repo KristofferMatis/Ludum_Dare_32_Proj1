@@ -46,4 +46,14 @@ public class ItemSlot : MonoBehaviour
         }
         return null;
     }
+
+    public static void SwapItemsNoReAdding(ItemSlot slot1, ItemSlot slot2)
+    {
+        Item tempItem = slot1.getItem();
+        slot1.m_Item = slot2.getItem();
+        slot2.m_Item = tempItem;
+
+        slot1.getItem().OnMount(slot1);
+        slot2.getItem().OnMount(slot2);
+    }
 }

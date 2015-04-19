@@ -25,8 +25,9 @@ public class CraftingMenu : Singleton<CraftingMenu>
         get { return m_HoverInfo; }
     }
 
-    //TODO: get a reference to it
-    Inventory m_Inventory;
+    public Attack i_AttackPlayer;
+
+    public Transform i_WeaponMount;
 
     //=========================================================================
 
@@ -40,6 +41,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
 	// Use this for initialization
 	void Start () 
     {
+        i_AttackPlayer.m_MenuPivotPoint = i_WeaponMount;
+
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
@@ -113,6 +116,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
     {
 		m_IsActive = true;
 
+        i_AttackPlayer.DrawWeapon(false);
+
         //Cursor.lockState = CursorLockMode.Confined;
         //Cursor.visible = true;
 
@@ -129,6 +134,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
     {
 		m_IsActive = false;
 
+        i_AttackPlayer.DrawWeapon(true);
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
@@ -142,15 +148,65 @@ public class CraftingMenu : Singleton<CraftingMenu>
     {
         if(itemSlot.GetType() == typeof(BaseWeaponSlot))
         {
-            UpdateAttachmentSlots();
+            UpdateAttachmentSlots();            
+            i_AttackPlayer.EquipWeapon(GameObject.Instantiate(item.BaseWeapon.gameObject).GetComponent<BaseBaseWeapon>());
         }
+		else if(item.Attachment != null && itemSlot.GetType() == typeof(AttachmentSlot))
+		{
+            item.AttachedIndex = i_AttackPlayer.m_WeaponEquipped.AddAttachment((GameObject)GameObject.Instantiate(item.Attachment.gameObject));
+		}
     }
 
     public void OnDisMountItem(Item item, ItemSlot itemSlot)
     {
         if (itemSlot.GetType() == typeof(BaseWeaponSlot))
         {
+            i_AttackPlayer.EquipWeapon(null);
             UpdateAttachmentSlots();
+        }
+		else if(item.Attachment != null && itemSlot.GetType() == typeof(AttachmentSlot))
+		{
+            i_AttackPlayer.m_WeaponEquipped.RemoveAttachment(item.AttachedIndex);
+		}
+    }
+
+    public void SwapItems(ItemSlot slot1, ItemSlot slot2)
+    {
+        ItemSlot.SwapItemsNoReAdding(slot1, slot2);
+        SwapItems(slot1.getItem(), slot2.getItem());
+    }
+
+    void SwapItems(Item item1, Item item2)
+    {
+        i_AttackPlayer.m_WeaponEquipped.SwapAttachment(item1.AttachedIndex, item2.AttachedIndex);
+
+        int tempIndex = item1.AttachedIndex;
+        item1.AttachedIndex = item2.AttachedIndex;
+        item2.AttachedIndex = tempIndex;
+    }
+
+    public void ReAttachAllAttachments()
+    {
+        //MIGHT NEED TO RECALCULATE THE ENABLED SLOTS HERE
+        for (int i = 0; i < m_AttachmentSlots.Length; i++)
+        {
+            if(m_AttachmentSlots[i].getItem() != null)
+            {
+                if(m_AttachmentSlots[i].IsEnabled)
+                {
+                    m_AttachmentSlots[i].OnMount(m_AttachmentSlots[i].OnDisMount());
+                }
+                else
+                {
+                    for (int c = 0; c < m_AttachmentSlots.Length; c++)
+                    {
+                        if (m_AttachmentSlots[c].getItem() == null && m_AttachmentSlots[i].IsEnabled)
+                        {
+                            m_AttachmentSlots[c].OnMount(m_AttachmentSlots[i].OnDisMount());
+                        }
+                    }
+                }
+            }
         }
     }
 
