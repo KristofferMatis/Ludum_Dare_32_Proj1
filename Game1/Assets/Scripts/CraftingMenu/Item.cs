@@ -28,6 +28,12 @@ public class Item : MonoBehaviour
     }
     const float ITEM_LERP_SPEED = 10.0f;
 
+    WeaponDrop m_WeaponDrop = null;
+    public WeaponDrop Drop
+    {
+        get { return m_WeaponDrop; }
+    }
+
     //============================================
     bool m_IsBeingDragged = false;
     public bool IsBeingDragged
@@ -46,10 +52,11 @@ public class Item : MonoBehaviour
     public int AttachedIndex { get; set; }
 
 	// Use this for initialization
-	public void start (BaseAttachment Original) 
+	public void start (WeaponDrop drop) 
     {
-        m_Attachment = Original;
-        m_BaseWeapon = Original as BaseBaseWeapon;
+        m_WeaponDrop = drop;
+        m_Attachment = drop.GamePrefab.GetComponentInChildren<BaseAttachment>(); ;
+        m_BaseWeapon = m_Attachment as BaseBaseWeapon;
 	}
 	
 	// Update is called once per frame

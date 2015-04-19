@@ -4,17 +4,12 @@ using System.Collections;
 public class Inventory : Singleton<Inventory> 
 {
     public Vector3 i_OriginalItemHidingSpot = new Vector3(-5000.0f, -5000.0f, -5000.0f);
-    public GameObject i_AttachmentPrefab;
-    public GameObject i_BaseWeaponPrefab;
-    BaseAttachment[] m_Inventory = new BaseAttachment[7];
+
+    WeaponDrop[] m_Inventory = new WeaponDrop[7];
 
 	// Use this for initialization
 	void Awake () 
     {
-	    for(int i = 0; i < m_Inventory.Length; i ++)
-        {
-            m_Inventory[i] = ((GameObject)GameObject.Instantiate(((Random.Range(0, 2) > 0) ? i_AttachmentPrefab : i_BaseWeaponPrefab), i_OriginalItemHidingSpot, Quaternion.identity)).GetComponentInChildren<BaseAttachment>();
-        }
 	}
 	
 	// Update is called once per frame
@@ -23,28 +18,28 @@ public class Inventory : Singleton<Inventory>
 	
 	}
 
-    public BaseAttachment[] getIventory()
+    public WeaponDrop[] getIventory()
     {
         //TODO: Implement This
         return m_Inventory;
     }
 
-    public bool setAttachment(BaseAttachment attachment)
+    public bool setAttachment(WeaponDrop drop)
     {
         for(int i = 0; i < m_Inventory.Length; i++)
         {
             if(m_Inventory[i] == null)
             {
-                m_Inventory[i] = attachment;
+                m_Inventory[i] = drop;
                 return true;
             }
         }
         return false;
     }
 
-    public void setAttachment(BaseAttachment attachment, int index)
+    public void setAttachment(WeaponDrop drop, int index)
     {
         if(index >= 0 && index < m_Inventory.Length)
-            m_Inventory[index] = attachment;
+            m_Inventory[index] = drop;
     }
 }
