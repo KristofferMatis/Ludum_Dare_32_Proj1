@@ -8,10 +8,13 @@ public class Attack : MonoBehaviour
 
 	public BaseBaseWeapon m_WeaponEquipped;
 
+	public WeaponDrop m_InitialWeapon;
+
 	float m_StartUpTimer;
 	float m_RecoveryTimer;
 
 	bool m_WeaponDrawn;
+	bool m_IsAttacking;
 
 	public float m_LerpSpeed = 15.0f;
 	public float m_RotationSpeed = 5.0f;
@@ -33,6 +36,11 @@ public class Attack : MonoBehaviour
 			if (m_WeaponDrawn)
 			{
 				m_WeaponEquipped.transform.parent = m_HandPivotPoint;
+
+				if(m_IsAttacking)
+				{
+
+				}
 			}
 			else
 			{
@@ -71,5 +79,10 @@ public class Attack : MonoBehaviour
 	public void DrawWeapon(bool isDrawn)
 	{
 		m_WeaponDrawn = isDrawn;
+	}
+
+	public void DoAttack()
+	{
+
 	}
 }

@@ -73,15 +73,15 @@ public class CraftingMenu : Singleton<CraftingMenu>
         m_AttachmentSlots = gameObject.GetComponentsInChildren<AttachmentSlot>();
         m_BaseWeaponSlot = gameObject.GetComponentInChildren<BaseWeaponSlot>();
 
-        if (i_AttackPlayer.m_WeaponEquipped != null)
+		if (i_AttackPlayer.m_InitialWeapon != null)
         {
             Item tempItem = GameObject.Instantiate(i_ItemPrefab).AddComponent<Item>();
-            tempItem.start(i_AttackPlayer.m_WeaponEquipped);
+			tempItem.start(i_AttackPlayer.m_InitialWeapon);
 
             m_BaseWeaponSlot.OnMount(tempItem);
 
             //TODO: replace ArtClone With the Menu art version of the asset
-            GameObject artClone = (GameObject)(GameObject.Instantiate(i_AttackPlayer.m_WeaponEquipped.gameObject,
+			GameObject artClone = (GameObject)(GameObject.Instantiate(i_AttackPlayer.m_InitialWeapon.MenuPrefab,
                                                                       m_BaseWeaponSlot.getItem().transform.position,
                                                                       m_BaseWeaponSlot.getItem().transform.rotation));
 
@@ -162,7 +162,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
 
         for(int i = 0; i < m_InventorySlots.Length; i++)
         {
-			Inventory.Instance.setAttachment((m_InventorySlots[i].getItem() != null)? m_InventorySlots[i].getItem().Attachment : null, i);
+			Inventory.Instance.setAttachment((m_InventorySlots[i].getItem() != null)? m_InventorySlots[i].getItem().Drop : null, i);
 			if(m_InventorySlots[i].getItem() != null)
 				Destroy(m_InventorySlots[i].OnDisMount().gameObject);
         }

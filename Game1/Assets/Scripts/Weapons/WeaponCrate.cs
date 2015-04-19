@@ -81,7 +81,7 @@ public class WeaponCrate : MonoBehaviour
 	void SpawnWeapon(Vector3 position)
 	{
         
-        GameObject newWeapon = (GameObject) Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
+        Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
         /*
         float miscEffectTest = 0.0f;
         int index = 0;
