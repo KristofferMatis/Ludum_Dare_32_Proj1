@@ -183,6 +183,8 @@ public class BaseAttachment : MonoBehaviour
 	{
 		m_TotalStats = GetStats ();
 
+		m_MiscEffects.Clear ();
+
 		foreach(MiscEffects effect in GetComponentsInChildren<MiscEffects>())
 		{
 			m_MiscEffects.Add (effect);
