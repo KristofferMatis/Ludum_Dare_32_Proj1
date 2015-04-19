@@ -3,12 +3,11 @@
  	Properties 
  	{
     	_Color ("Main Color", Color) = (1,1,1,1)
-     	_SpecColor("Spec Color", Color) = (1,1,1,1)
-     	_Shininess("Shininess", Range(0, 1)) = 0.5
+     	_Smoothness("Shininess", Range(0, 1)) = 0.5
+     	_Metallic("Metallic", Range(0,1)) = 0
      	_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
      	_NormalStrength("Norm Strength", Range(0,3)) = 1
      	_MainTex ("Base (RGB) Trans (A)", 2D) = "white" {}
-     	_BumpMap ("Bumpmap", 2D) = "bump" {}
      	_ShakeDisplacement ("Displacement", Range (0, 1.0)) = 1.0
     	_ShakeTime ("Shake Time", Range (0, 1.0)) = 1.0
     	_ShakeWindspeed ("Shake Windspeed", Range (0, 1.0)) = 1.0
@@ -22,12 +21,13 @@
      	Cull Off
      
  		CGPROGRAM
- 		#pragma surface surf BlinnPhong alphatest:_Cutoff vertex:vert
+ 		#pragma surface surf Standard alphatest:_Cutoff
 
  		sampler2D _MainTex;
  		sampler2D _BumpMap;
  		fixed4 _Color;
- 		half _Shininess;
+ 		half _Smoothness;
+ 		half _Metallic;
  		half _NormalStrength;
  		float _ShakeDisplacement;
 		float _ShakeTime;
@@ -94,15 +94,13 @@ void vert (inout appdata_full v) {
    
 }
 	
- 		void surf (Input IN, inout SurfaceOutput o) 
+ 		void surf (Input IN, inout SurfaceOutputStandard o) 
  		{
  		    fixed4 tex = tex2D(_MainTex, IN.uv_MainTex);
 			 o.Albedo = tex.rgb * _Color.rgb;
 			 o.Alpha = tex.a;
-			 o.Gloss = tex.a;
-			 o.Specular = _Shininess;
-			 half3 norm = UnpackNormal (tex2D (_BumpMap, IN.uv_BumpMap));
-			 o.Normal = norm * _NormalStrength;
+			 o.Metallic = _Metallic;
+			 o.Smoothness = _Smoothness;
  		}
  		ENDCG
  	}
