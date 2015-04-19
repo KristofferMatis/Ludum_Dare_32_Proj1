@@ -2,7 +2,7 @@
 	Properties
 	{
 		_Color ("Color", Color) = (1,1,1,1)
-		_Shininess("Shininess", float) = 0.3
+		_Shininess("Shininess", float) = 2.0
 	}
 	SubShader
 	{
@@ -56,7 +56,6 @@
 				float shade = max(0.0, dot(dir.xyz, normal));
 				
 				float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - output.worldPos.xyz);
-				shade += mul(max(0.0, dot(dir.xyz + viewDir, normal)), _Shininess);
 				
 				return float4(_Color.rgb * shade * _LightColor0.xyz, 1.0);
 			}
@@ -114,7 +113,6 @@
 				float shade = max(0.0, dot(dir.xyz, normal));
 				
 				float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - output.worldPos.xyz);
-				shade += mul(max(0.0, dot(dir.xyz + viewDir, normal)), _Shininess);
 				
 				return float4(_Color.rgb * shade * _LightColor0.xyz, 1.0);
 			}
