@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum MiscEffectType
+{
+	e_Flaming,
+	e_Scaling,
+	e_Drunk,
+	e_Afraid
+}
+
 public class MiscEffects : MonoBehaviour 
 {
 	public void DoEffect(Health otherHealth)

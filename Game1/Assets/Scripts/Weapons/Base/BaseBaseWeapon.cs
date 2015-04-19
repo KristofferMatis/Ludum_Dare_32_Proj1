@@ -5,12 +5,6 @@ public class BaseBaseWeapon : BaseAttachment
 {
     public Transform i_MountPoint;
     const float MOUNTING_LERP_SPEED = 0.5f;
-
-	// Use this for initialization
-	void Start () 
-	{
-		base.Start ();
-	}
 	
 	// Update is called once per frame
 	void Update () 

@@ -6,8 +6,11 @@ public class Scaling : MiscEffects
 	public float m_MinScale = 0.5f;
 	public float m_MaxScale = 3.0f;
 
-	public float m_RescalingSpeed = 0.5f;
-	Vector3 m_Time;
+	void Start()
+	{
+		m_MinScale = Constants.SCALING_EFFECT_MIN_SCALE;
+		m_MaxScale = Constants.SCALING_EFFECT_MAX_SCALE;
+	}
 
 	protected override void DoEffectVirtual (Health otherHealth)
 	{
