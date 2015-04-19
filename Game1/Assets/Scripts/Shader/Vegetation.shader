@@ -22,7 +22,7 @@
      	Cull Off
      
  		CGPROGRAM
- 		#pragma surface surf BlinnPhong alphatest:_Cutoff //vertex:vert
+ 		#pragma surface surf BlinnPhong alphatest:_Cutoff vertex:vert
 
  		sampler2D _MainTex;
  		sampler2D _BumpMap;
