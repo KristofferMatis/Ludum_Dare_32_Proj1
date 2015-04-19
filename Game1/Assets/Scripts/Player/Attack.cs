@@ -21,15 +21,30 @@ public class Attack : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		
+		if(InputManager.Instance.PlayerAttack1()) // NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+		{
+
+		}
 	}
 
 	public void EquipWeapon(BaseBaseWeapon weapon)
 	{		
-		weapon.SetTotalStatsAfterCrafting ();
-		m_WeaponEquipped = weapon;
+		if(weapon != null)
+		{
+			weapon.SetTotalStatsAfterCrafting ();
+			m_WeaponEquipped = weapon;
 
-		DrawWeapon ();
+			DrawWeapon ();
+		}
+		else
+		{
+			if(m_WeaponEquipped != null)
+			{
+				Destroy(m_WeaponEquipped);
+
+				m_WeaponEquipped = null;
+			}
+		}
 	}
 
 	void DrawWeapon()
@@ -48,6 +63,5 @@ public class Attack : MonoBehaviour
 		m_WeaponEquipped.transform.localPosition = Vector3.zero;
 		m_WeaponEquipped.transform.localRotation = Quaternion.identity;
 		m_WeaponEquipped.transform.localScale = Vector3.one;
-		m_WeaponEquipped.ToggleCollider (m_WeaponDrawn);
 	}
 }

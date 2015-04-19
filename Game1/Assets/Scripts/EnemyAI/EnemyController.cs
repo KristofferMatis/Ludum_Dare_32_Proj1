@@ -189,6 +189,6 @@ public class EnemyController : MonoBehaviour
 
 		SetState (EnemyState.Knockback);
 
-		m_KnockbackTimer = 1.0f; // BAD MAGIC NUMBERS, SORRY FOR THAT... SIGNED: Quentin
+		m_KnockbackTimer = Constants.KNOCKBACK_TIME;
 	}
 }

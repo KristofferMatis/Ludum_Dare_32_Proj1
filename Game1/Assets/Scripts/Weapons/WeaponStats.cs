@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class WeaponStats 
 {
 	public int m_Damage;
-	public int m_Knockback;
+	public float m_Knockback;
 	public int m_PlayerSpeed;
 	public float m_StartUpTime;
 	public float m_RecoveryTime;

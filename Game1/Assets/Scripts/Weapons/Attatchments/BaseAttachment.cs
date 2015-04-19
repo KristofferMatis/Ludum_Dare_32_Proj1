@@ -62,7 +62,34 @@ public class BaseAttachment : MonoBehaviour
 		}
 	}
 
-	public GameObject RemoveAttachment(int mountPointIndex)
+	public int AddAttachment(GameObject newAttachment)
+	{
+		int indexAttached = -1;
+		bool attached = false;
+
+		foreach(Transform mountPoint in m_Stats.m_MountPoints)
+		{
+			if(!attached)
+			{
+				if(mountPoint.childCount == 0)
+				{
+					newAttachment.transform.parent = mountPoint;
+					newAttachment.transform.localPosition = Vector3.zero;
+					newAttachment.transform.rotation = Quaternion.identity;
+					
+					newAttachment.GetComponent<BaseAttachment>().SetParentAttachment(this);
+
+					attached = true;
+				}
+
+				indexAttached++;
+			}
+		}
+
+		return indexAttached;
+	}
+
+	public void RemoveAttachment(int mountPointIndex)
 	{
 		if(mountPointIndex < m_Stats.m_MountPoints.Count && m_Stats.m_MountPoints [mountPointIndex].childCount > 0)
 		{
@@ -70,11 +97,7 @@ public class BaseAttachment : MonoBehaviour
 			attachment.transform.parent = null;
 			attachment.GetComponent<BaseAttachment>().SetParentAttachment(null);
 
-			return attachment;
-		}
-		else
-		{
-			return null;
+			Destroy (attachment);
 		}
 	}
 
@@ -130,7 +153,7 @@ public class BaseAttachment : MonoBehaviour
 			if(health.GetComponentInChildren<BaseAttachment>() != this)
 			{
 				Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
-				knockbackSpeed.y = 1.0f;
+				knockbackSpeed.y = Constants.KNOCKBACK_VERTICAL_SPEED;
 				knockbackSpeed *= m_TotalStats.m_Knockback;
 
 				health.Damage(m_TotalStats.m_Damage, knockbackSpeed);

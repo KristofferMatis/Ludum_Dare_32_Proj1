@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
 			Vector3 dirForward = new Vector3(t.x * forwardDir, 0.0f, t.z * forwardDir);
 			Vector3 dirRight = new Vector3(t1.x * rightDir, 0.0f, t1.z * rightDir);
 
+			float previousVerticalSpeed = m_CurrentSpeed.y;
+
 			m_CurrentSpeed = dirForward + dirRight;
 			if (m_CurrentSpeed != Vector3.zero)
 	        {
@@ -45,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
 	        }
 
 			m_CurrentSpeed *= MoveSpeed * Time.deltaTime;
+
+			m_CurrentSpeed.y = previousVerticalSpeed;
 		}
 		else
 		{
@@ -63,6 +67,6 @@ public class PlayerMovement : MonoBehaviour
 	{
 		m_CurrentSpeed = knockbackSpeed;
 		
-		m_KnockbackTimer = 1.0f; // BAD MAGIC NUMBERS, SORRY FOR THAT... SIGNED: Quentin
+		m_KnockbackTimer = Constants.KNOCKBACK_TIME;
 	}
 }
