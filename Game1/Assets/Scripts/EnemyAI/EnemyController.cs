@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyController : MonoBehaviour
 {
 	//Distances
-	const float CHASE_DISTANCE = 40.0f;
+	const float CHASE_DISTANCE = 50.0f;
 	const float LEASH_DISTANCE = 30.0f;
 	const float WANDER_DISTANCE = 10.0f;
 	const float KNOWN_DISTANCE = 12.0f;
@@ -17,8 +17,8 @@ public class EnemyController : MonoBehaviour
 	const float SEARCH_SPEED = 6.0f;
 	const float CHASE_SPEED = 10.0f;
 	const float WANDER_ACCELERATION = 0.5f;
-	const float SEARCH_ACCELERATION = 4.0f;
-	const float CHASE_ACCELERATION = 8.0f;
+	const float SEARCH_ACCELERATION = 5.0f;
+	const float CHASE_ACCELERATION = 10.0f;
 
 	//Knockback
 	Vector3 m_KnockBackSpeed;
