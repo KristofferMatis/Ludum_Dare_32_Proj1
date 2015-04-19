@@ -68,6 +68,8 @@ public class WeaponCrate : MonoBehaviour
 
 		foreach(Rigidbody rigidbody in m_Planks)
 		{
+            //TODO:Spawn a new Weapon Piece
+
 			rigidbody.isKinematic = false;
 
 			rigidbody.AddExplosionForce(m_ExplosionForce, m_Barrel.position, m_ExplosionRadius);
@@ -78,46 +80,48 @@ public class WeaponCrate : MonoBehaviour
 
 	void SpawnWeapon(Vector3 position)
 	{
-		GameObject newWeapon = (GameObject) Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
+        
+        GameObject newWeapon = (GameObject) Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
+        /*
+        float miscEffectTest = 0.0f;
+        int index = 0;
 
-		float miscEffectTest = 0.0f;
-		int index = 0;
+        do 
+        {
+            miscEffectTest = Random.value;
 
-		do 
-		{
-			miscEffectTest = Random.value;
+            if (index < m_MiscEffects.Count && miscEffectTest <= m_ChanceOfSpawningMiscEffect)
+            {
+                switch(m_MiscEffects[index])
+                {
+                    case MiscEffectType.e_Flaming:
+                    {
+                        newWeapon.AddComponent<Flaming> ();
+                        break;
+                    }
 
-			if (index < m_MiscEffects.Count && miscEffectTest <= m_ChanceOfSpawningMiscEffect)
-			{
-				switch(m_MiscEffects[index])
-				{
-					case MiscEffectType.e_Flaming:
-					{
-						newWeapon.AddComponent<Flaming> ();
-						break;
-					}
+                    case MiscEffectType.e_Scaling:
+                    {
+                        newWeapon.AddComponent<Scaling> ();
+                        break;
+                    }
 
-					case MiscEffectType.e_Scaling:
-					{
-						newWeapon.AddComponent<Scaling> ();
-						break;
-					}
+                    case MiscEffectType.e_Drunk:
+                    {
+                        newWeapon.AddComponent<Drunk> ();
+                        break;
+                    }
 
-					case MiscEffectType.e_Drunk:
-					{
-						newWeapon.AddComponent<Drunk> ();
-						break;
-					}
-
-					case MiscEffectType.e_Afraid:
-					{
-						newWeapon.AddComponent<Afraid> ();
-						break;
-					}
-				}
-				index++;
-			}
-		}
-		while(miscEffectTest <= m_ChanceOfSpawningMiscEffect && index < m_MiscEffects.Count);
-	}
+                    case MiscEffectType.e_Afraid:
+                    {
+                        newWeapon.AddComponent<Afraid> ();
+                        break;
+                    }
+                }
+                index++;
+            }
+        }
+        while(miscEffectTest <= m_ChanceOfSpawningMiscEffect && index < m_MiscEffects.Count);
+        */
+    }
 }

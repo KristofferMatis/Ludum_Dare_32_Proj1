@@ -5,6 +5,9 @@ public enum MiscEffectType
 {
 	e_Flaming,
 	e_Scaling,
+    Count,
+
+    //NOT implemented
 	e_Drunk,
 	e_Afraid
 }
