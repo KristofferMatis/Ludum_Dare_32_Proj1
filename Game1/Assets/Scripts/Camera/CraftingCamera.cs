@@ -30,12 +30,7 @@ public class CraftingCamera : CameraBase
         //TODO: REMOVE THIS IT IS FOR TESTING ONLY
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-			if(!CraftingMenu.Instance.IsActive)
-			{
-	            CraftingMenu.Instance.EnterMenu();
-	            CameraManager.Instance.CurrentCameraAction = this;
-	            m_Camera.cullingMask ^= m_MenuLayers.value;
-			}
+			SetIsOn(true);
         }
     }
 

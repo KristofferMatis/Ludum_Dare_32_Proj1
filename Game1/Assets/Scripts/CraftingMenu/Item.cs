@@ -55,7 +55,7 @@ public class Item : MonoBehaviour
 	public void start (WeaponDrop drop) 
     {
         m_WeaponDrop = drop;
-        m_Attachment = drop.GamePrefab.GetComponentInChildren<BaseAttachment>(); ;
+        m_Attachment = drop.GamePrefab.GetComponentInChildren<BaseAttachment>(); 
         m_BaseWeapon = m_Attachment as BaseBaseWeapon;
 	}
 	

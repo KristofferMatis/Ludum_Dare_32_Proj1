@@ -19,10 +19,9 @@ public class CraftingMenu : Singleton<CraftingMenu>
         get { return m_ClickHandler; }
     }
 
-    HoverInfo m_HoverInfo = new HoverInfo();
     public HoverInfo hoverInfo
     {
-        get { return m_HoverInfo; }
+        get { return clickHandler.hoverInfo; }
     }
 
     public Attack i_AttackPlayer;
@@ -53,7 +52,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
 		m_ClickHandler.Start ();
         m_ClickHandler.m_CraftingCamera = m_CraftingCamera;
         
-        m_HoverInfo.Start ();
+        
 		
 		//since attachment slots and base weapon slots inherit from item slot we need to sort them
         m_InventorySlots = gameObject.GetComponentsInChildren<ItemSlot>();
@@ -105,8 +104,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
 	void Update () 
     {
         transform.forward = m_MainCamera.transform.position - transform.position;
-        m_ClickHandler.Update();
-        m_HoverInfo.Update();   
+        m_ClickHandler.Update();  
 	}
 
     public void EnterMenu()
@@ -256,5 +254,10 @@ public class CraftingMenu : Singleton<CraftingMenu>
                 counter++;
         }
         return counter;
+    }
+
+    void OnGUI()
+    {
+        m_ClickHandler.onGUI();
     }
 }

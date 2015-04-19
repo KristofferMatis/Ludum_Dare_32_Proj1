@@ -23,11 +23,20 @@ public class ClickHandler
 
     public CraftingCamera m_CraftingCamera;
 
+    HoverInfo m_HoverInfo = new HoverInfo();
+    public HoverInfo hoverInfo
+    {
+        get { return m_HoverInfo; }
+    }
+
 	// Use this for initialization
     public void Start() 
 	{
         m_MainCamera = Camera.main;
-		
+
+        m_HoverInfo.Start();
+        m_HoverInfo.clickHandler = this;
+
         m_RaycastMask.value = LayerMask.GetMask(m_RaycastLayers);
         m_DragAndDropRaycastMask = LayerMask.GetMask(m_DragAndDropRaycastLayers);
 	}
@@ -50,6 +59,10 @@ public class ClickHandler
         {//mouse Released
             OnClickUp();
         }
+        else
+        {
+            m_HoverInfo.Update(); 
+        }       
 	}
 
     void OnClickDown()
@@ -199,14 +212,12 @@ public class ClickHandler
     /// 
     /// uses out to return relevant menu scripts
     /// 
-    /// //TODO: add buttons (exit)
-    /// 
     /// </summary>
     /// <param name="hitInfo"></param>
     /// <param name="items"></param>
     /// <param name="itemSlots"></param>
     /// <returns></returns>
-    bool Raycast(out RaycastHit[] hitInfo, out Item[] items, out ItemSlot[] itemSlots)
+    public bool Raycast(out RaycastHit[] hitInfo, out Item[] items, out ItemSlot[] itemSlots)
     {
         items = new Item[0];
 		itemSlots = new ItemSlot[0];
@@ -235,5 +246,10 @@ public class ClickHandler
             return true;
         }
         return false;
+    }
+
+    public void onGUI()
+    {
+        m_HoverInfo.onGUI();
     }
 }

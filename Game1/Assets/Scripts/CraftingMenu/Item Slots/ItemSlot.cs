@@ -4,7 +4,7 @@ using System.Collections;
 public class ItemSlot : MonoBehaviour 
 {
     public Transform i_MountPoint;
-    Item m_Item;
+    protected Item m_Item;
 
 	// Use this for initialization
     protected virtual void Start() 
