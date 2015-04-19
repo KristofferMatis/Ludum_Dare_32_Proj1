@@ -12,6 +12,11 @@ public class InputManager : Singleton<InputManager>
         public float AxisValue;
     }
 
+    public bool i_MouseIsEnabled = true;
+    const string MOUSE_X = "Mouse X";
+    const string MOUSE_Y = "Mouse Y";
+
+
     [System.Serializable]
     public class ButtonControls
     {
@@ -50,7 +55,8 @@ public class InputManager : Singleton<InputManager>
             LookRightLeft,
             LookUpDown,
             Jump,
-            Attack1
+            Attack1,
+            Sprint
         }
         #endregion
 
@@ -382,6 +388,11 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerLookRightLeft()
     {
+        if(i_MouseIsEnabled)
+        {
+            return Input.GetAxis(MOUSE_X);
+        }
+
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
@@ -404,6 +415,11 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerLookUpDown()
     {
+        if(i_MouseIsEnabled)
+        {
+            return Input.GetAxis(MOUSE_Y);
+        }
+
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
@@ -473,6 +489,49 @@ public class InputManager : Singleton<InputManager>
         {
             //checks to see if the player action is not Attack1
             if (Buttons[i].ActionName != ButtonControls.PlayerAction.Attack1)
+            {
+                continue;
+            }
+
+            //creating containers for the button and key presses(for multi press)
+            bool[] MultiButtonCheck = new bool[Buttons[i].ButtonMap.Length];
+            bool[] MultiKeyCheck = new bool[Buttons[i].KeyMap.Length];
+
+            //goes through the buttons sets the value to the the containers we created
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                MultiButtonCheck[j] = Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).IsPressed;
+            }
+
+            //goes through the keys sets the value to the the containers we created
+            for (int k = 0; k < Buttons[i].KeyMap.Length; k++)
+            {
+                MultiKeyCheck[k] = Input.GetKey(Buttons[i].KeyMap[k]);
+            }
+
+            //checks if the button container contains all trues if so it returns true
+            if (!MultiButtonCheck.Contains(false))
+            {
+                return true;
+            }
+
+            //checks if the key container contains all trues if so it returns true
+            if (!MultiKeyCheck.Contains(false))
+            {
+                return true;
+            }
+        }
+
+        //if it gets here that means nothing was pressed
+        return false;
+    }
+
+    public bool PlayerSprint()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Attack1
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.Sprint)
             {
                 continue;
             }

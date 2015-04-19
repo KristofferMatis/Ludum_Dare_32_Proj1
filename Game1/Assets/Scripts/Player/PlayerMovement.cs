@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float MoveSpeed = 5.0f;
+    public float MoveSpeed = 8.0f;
+    public float RunSpeed = 10.0f;
 
 	GameObject mainCam;
     CharacterController m_PlayerController;
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 				transform.rotation = Quaternion.LookRotation(m_CurrentSpeed, Vector3.up);
 	        }
 
-			m_CurrentSpeed *= MoveSpeed * Time.deltaTime;
+			m_CurrentSpeed *= ((!InputManager.Instance.PlayerSprint()) ? MoveSpeed: RunSpeed) * Time.deltaTime;
 
 			m_CurrentSpeed.y = previousVerticalSpeed;
 		}
