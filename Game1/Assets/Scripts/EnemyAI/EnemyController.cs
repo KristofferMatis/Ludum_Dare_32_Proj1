@@ -24,7 +24,6 @@ public class EnemyController : MonoBehaviour
 	Vector3 m_KnockBackSpeed;
 	float m_Gravity = -10.0f;
 	float m_KnockbackTimer;
-	const float KNOCKBACK_TIMER = 1f;
 
 	//Searching
 	Vector3 m_SearchPos;

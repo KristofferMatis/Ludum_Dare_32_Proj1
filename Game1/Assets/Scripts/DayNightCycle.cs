@@ -5,16 +5,32 @@ public class DayNightCycle : MonoBehaviour
 {
 	public bool m_IsDay = true;
 
-	const float DAY_LENGTH = 10f;
-	const float NIGHT_LENGTH = 10f;
-	float m_CycleTimer = DAY_LENGTH;
+	const float DAY_LENGTH = 120f;
+	const float NIGHT_LENGTH = 60f;
+	float m_CycleTimer = 0f;
 
+	void Start ()
+	{
+		if (m_IsDay)
+		{
+			transform.rotation = new Quaternion (-(NIGHT_LENGTH / DAY_LENGTH) / 2f, 0f, 0f, 1f);
+		}
+		else
+		{
+			transform.rotation = new Quaternion (-(NIGHT_LENGTH / DAY_LENGTH) * 2f, 0f, 0f, 1f);
+		}
 
+		//Since update is called immediatly
+		m_IsDay = !m_IsDay;
+	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-		transform.Rotate(new Vector3 (Time.deltaTime, 0f, 0f));
+		//Rotate direction light
+		transform.Rotate(new Vector3 (Time.deltaTime * 360f / (DAY_LENGTH + NIGHT_LENGTH), 0f, 0f));
+
+		//Cycle day and night
 		m_CycleTimer -= Time.deltaTime;
 		if (m_CycleTimer < 0f)
 		{

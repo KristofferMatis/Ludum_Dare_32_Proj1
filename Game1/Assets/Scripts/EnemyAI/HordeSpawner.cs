@@ -15,12 +15,12 @@ public class HordeSpawner : MonoBehaviour
 	Transform m_PlayerTransform;
 
 	//How far to spawn hordes and enemies
-	const float SPAWN_DISTANCE = 10f;
+	const float SPAWN_DISTANCE_FROM_HORDE = 15f;
 	const float MIN_FIRST_SPAWN_DISTANCE = 40f;
-	const float MAX_FIRST_SPAWN_DISTANCE = 60f;
+	const float MAX_FIRST_SPAWN_DISTANCE = 80f;
 
 	//Spawning
-	const float INITIAL_SPAWN_TIME = 5f;
+	const float INITIAL_SPAWN_TIME = 20f;
 	float m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 	float m_TimeSinceLastSpawn = INITIAL_SPAWN_TIME;
 	public int BasicSpawnCount = 5;
@@ -128,7 +128,7 @@ public class HordeSpawner : MonoBehaviour
 	{
 		if (horde != null && horde.m_Enemies.Count > 0)
 		{
-			return horde.GetHordePosition () + new Vector3(Random.Range(-SPAWN_DISTANCE, SPAWN_DISTANCE), 0f, Random.Range(-SPAWN_DISTANCE, SPAWN_DISTANCE));
+			return horde.GetHordePosition () + new Vector3(Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE), 0f, Random.Range(-SPAWN_DISTANCE_FROM_HORDE, SPAWN_DISTANCE_FROM_HORDE));
 		}
 		else
 		{
