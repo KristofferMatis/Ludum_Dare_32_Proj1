@@ -6,11 +6,30 @@ public class EnemyController : MonoBehaviour
 	//Distances
 	const float CHASE_DISTANCE = 35.0f;
 	const float LEASH_DISTANCE = 30.0f;
+	const float WANDER_DISTANCE = 10.0f;
+	const float KNOWN_DISTANCE = 10.0f;
+
+	//Chasing
+	const float SIGHT_ANGLE = 0f;
 
 	//Speed of the enemy
 	const float WANDER_SPEED = 2.0f;
 	const float SEARCH_SPEED = 3.5f;
 	const float CHASE_SPEED = 5.0f;
+	const float WANDER_ACCELERATION = 0.25f;
+	const float SEARCH_ACCELERATION = 1.0f;
+	const float CHASE_ACCELERATION = 2.0f;
+
+	//Knockback
+	Vector3 m_KnockBackSpeed;
+	float m_Gravity = -10.0f;
+	float m_KnockbackTimer;
+	const float KNOCKBACK_TIMER = 1f;
+
+	//Searching
+	Vector3 m_SearchPos;
+	const float SEARCH_TIMER = 10f;
+	float m_SearchTimer = -1f;
 
 	//The nav mesh agent
 	NavMeshAgent m_Agent;
@@ -24,9 +43,8 @@ public class EnemyController : MonoBehaviour
 	//The horde of this enemy (null means it will wander on it's own)
 	HordeController m_Horde;
 
-	Vector3 m_KnockBackSpeed;
-	float m_Gravity = -10.0f;
-	float m_KnockbackTimer;
+	//Wnader position
+	Vector3 m_LastWanderPos;
 
 	//Current enemy state
 	public enum EnemyState
@@ -69,36 +87,43 @@ public class EnemyController : MonoBehaviour
 	//Updates where this enemy will move towards
 	void UpdateMovement ()
 	{
-		Vector3 playerPos = m_PlayerTransform.position;
-		m_State = CheckChaseDistance (playerPos);
+		m_State = CheckState ();
+
 		switch (m_State)
 		{
-			
+		
+		//Searching
 		case EnemyState.Search:
 		{
-			if (m_Horde != null)
+			//Set timer
+			m_SearchTimer -= Time.deltaTime;
+			if (m_SearchTimer < 0f)
 			{
-				MoveTowards(playerPos + transform.position - m_LeashPosition);
-			}
-			else
-			{
-				MoveTowards(playerPos);
+				SetState(EnemyState.Wander);
 			}
 			break;
 		}
+
+		//Chasing
 		case EnemyState.Chase:
 		{
-			MoveTowards(playerPos);
+			MoveTowards(m_PlayerTransform.position);
 			break;
 		}	
+
+		//Wandering
 		case EnemyState.Wander:
 		{	
-			if (Vector3.Distance(transform.position, m_LeashPosition) > LEASH_DISTANCE)
+			//Check if we need a new position to wander to
+			if (Vector3.Distance (transform.position, m_LastWanderPos) <= m_Agent.stoppingDistance ||
+			    Vector3.Distance(transform.position, m_LeashPosition) > LEASH_DISTANCE)
 			{
 				GetNewWanderPosition ();
 			}
 			break;
 		}	
+
+		//Flying
 		case EnemyState.Knockback:
 		{
 			transform.position += m_KnockBackSpeed * Time.deltaTime;
@@ -114,6 +139,8 @@ public class EnemyController : MonoBehaviour
 
 			break;
 		}
+
+		//Error or dead
 		default:
 		{
 			break;
@@ -122,14 +149,48 @@ public class EnemyController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Checks if this enemy should enter chasing state.
+	/// Checks if this enemy should enter a state.
 	/// </summary>
-	/// <returns>The chase distance.</returns>
-	public EnemyState CheckChaseDistance (Vector3 pos)
+	EnemyState CheckState ()
 	{
-		if (m_State != EnemyState.Chase && Vector3.Distance(transform.position, pos) < CHASE_DISTANCE)
+		//Precalculated values
+		Vector3 playerPos = m_PlayerTransform.position;
+		Vector3 dir = (transform.position - playerPos).normalized;
+		float distance = Vector3.Distance(transform.position, playerPos);
+
+		//If the enemy should enter the chase state
+		if (distance < KNOWN_DISTANCE ||
+		    (distance < CHASE_DISTANCE &&
+		 Vector3.Dot (transform.forward, dir) > SIGHT_ANGLE &&
+		    Physics.Raycast(transform.position, dir, CHASE_DISTANCE)))
 		{
-			SetState (EnemyState.Chase);
+			//Set known player position
+			if (m_Horde != null)
+			{
+				m_Horde.BroadcstPlayerPosition(playerPos);
+			}
+			else
+			{
+				SetSearchPosition (playerPos);
+			}
+
+			//Chase
+			if (m_State != EnemyState.Chase)
+			{
+				SetState (EnemyState.Chase);
+			}
+		}
+		//If the enemy should exit chase and enter search
+		else if (m_State == EnemyState.Chase)
+		{
+			SetState (EnemyState.Search);
+		}
+		else if (m_State == EnemyState.Search)
+		{
+			if (Vector3.Distance(transform.position, m_SearchPos) <= m_Agent.stoppingDistance)
+			{
+				SetState (EnemyState.Wander);
+			}
 		}
 		return m_State;
 	}
@@ -147,32 +208,77 @@ public class EnemyController : MonoBehaviour
 	/// </summary>
 	public void SetState (EnemyState state)
 	{
+		//Set the state
+		m_State = state;
+
+		//Wander ariund aimlessly
 		if (state == EnemyState.Wander)
 		{
+			//Set speeds
 			m_Agent.speed = WANDER_SPEED;
+			m_Agent.acceleration = WANDER_ACCELERATION;
+
+			//Set timer
+			m_SearchTimer = -1f;
+
+			//Set own leash position
 			if (m_Horde == null)
 			{
 				SetLeashPosition (transform.position);
 			}
 			GetNewWanderPosition ();
 		}
+
+		//Searching for the player
 		else if (state == EnemyState.Search)
 		{
+			//Set speeds
 			m_Agent.speed = SEARCH_SPEED;
+			m_Agent.acceleration = SEARCH_ACCELERATION;
+
+			//Set timer
+			m_SearchTimer = SEARCH_TIMER;
+
+			//Set own search position
+			if (m_Horde == null)
+			{
+				SetSearchPosition (m_PlayerTransform.position);
+			}
+			//Search movement for hordes
+			else
+			{
+				MoveTowards(m_SearchPos + transform.position - m_LeashPosition);
+			}
 		}
+
+		//Chasing the player
 		else
 		{
+			//Set speeds
 			m_Agent.speed = CHASE_SPEED;
+			m_Agent.acceleration = CHASE_ACCELERATION;
+
+			//Set timer
+			m_SearchTimer = -1f;
+
+			//Tell horde player found
+			if (m_Horde != null)
+			{
+				m_Horde.OnPlayerFound(m_PlayerTransform.position);
+			}
 		}
-		m_State = state;
 	}
 
 	//Gets a new wander to position
 	void GetNewWanderPosition ()
 	{
-		MoveTowards	(m_LeashPosition + (LEASH_DISTANCE + 1f) *
-		            (new Vector3(Random.Range(0f, 1f), 0.0f, Random.Range(0f, 1f)) +
-		 			(m_LeashPosition - transform.position).normalized).normalized);
+		//Wander position
+		m_LastWanderPos = m_LeashPosition + WANDER_DISTANCE *
+			(new Vector3(Random.Range(0f, 1f), 0f, Random.Range(0f, 1f)) +
+			 (m_LeashPosition - transform.position).normalized).normalized;
+
+		//Move to there
+		MoveTowards	(m_LastWanderPos);
 	}
 
 	/// <summary>
@@ -183,6 +289,25 @@ public class EnemyController : MonoBehaviour
 		m_Horde = horde;
 	}
 
+	/// <summary>
+	/// Sets the search position
+	/// </summary>
+	public void SetSearchPosition (Vector3 pos)
+	{
+		if (m_SearchPos != pos)
+		{
+			m_SearchPos = pos;
+			m_SearchTimer = SEARCH_TIMER;
+			if (m_State == EnemyState.Search)
+			{
+				MoveTowards(m_SearchPos);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Knockback this enemy
+	/// </summary>
 	public void Knockback(Vector3 knockbackSpeed)
 	{
 		m_KnockBackSpeed = knockbackSpeed;

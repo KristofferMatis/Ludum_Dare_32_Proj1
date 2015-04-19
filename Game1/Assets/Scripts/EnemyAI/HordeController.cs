@@ -6,15 +6,44 @@ public class HordeController : MonoBehaviour
 	//The enemies for this horde
 	public List<EnemyController> m_Enemies;
 
-	//Tell enemies we exist
+	//Starting state of horde, wander lets them choose their own starting state
+	public EnemyController.EnemyState m_HordeState = EnemyController.EnemyState.Wander;
+
+	//Where the enemies think the player is
+	Vector3 m_SearchPosition;
+	Transform m_PlayerTransform;
+
+
+	//When this horde is spawned
+	public void OnCreateHorde ()
+	{
+		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
+		m_SearchPosition = m_PlayerTransform.position;
+		if (m_Enemies == null)
+		{
+			m_Enemies = new List<EnemyController>();
+		}
+		else
+		{
+			for (int i = 0; i < m_Enemies.Count; i++)
+			{
+				m_Enemies[i].SetHorde (this);
+				m_Enemies[i].SetLeashPosition (GetHordePosition ());
+				m_Enemies[i].SetSearchPosition(m_SearchPosition);
+			}
+			
+			//If non wander is selected
+			if (m_HordeState != EnemyController.EnemyState.Wander)
+			{
+				SetEnemiesState(m_HordeState);
+			}
+		}
+	}
+
+	//Tell existing enemies we exist
 	void Start ()
 	{
-		Vector3 hordePos = GetHordePosition ();
-		for (int i = 0; i < m_Enemies.Count; i++)
-		{
-			m_Enemies[i].SetHorde (this);
-			m_Enemies[i].SetLeashPosition (hordePos);
-		}
+		OnCreateHorde ();
 	}
 	
 	//Update each enemies awareness of their horde
@@ -31,8 +60,10 @@ public class HordeController : MonoBehaviour
 		}
 	}
 
-	//Gets the average position of this horde of enemies
-	Vector3 GetHordePosition ()
+	/// <summary>
+	/// //Gets the average position of this horde of enemies
+	/// </summary>
+	public Vector3 GetHordePosition ()
 	{
 		Vector3 hordePos = Vector3.zero;
 		for (int i = 0; i < m_Enemies.Count; i++)
@@ -51,11 +82,13 @@ public class HordeController : MonoBehaviour
 		for (int i = 0; i < numberOfEnemies; i++)
 		{
 			GameObject tempEnemy = GameObject.Instantiate(enemy);
+			tempEnemy.transform.position = HordeSpawner.m_Instance.GetSpawnPosition(this);
 			EnemyController controller = tempEnemy.GetComponent<EnemyController>();
 			if (controller != null)
 			{
-				controller.OnSpawn (state);
+				controller.OnSpawn (m_HordeState);
 				controller.SetHorde (this);
+				controller.SetSearchPosition(m_SearchPosition);
 				m_Enemies.Add(controller);
 			}
 			else
@@ -71,9 +104,63 @@ public class HordeController : MonoBehaviour
 	/// </summary>
 	public void SetEnemiesState (EnemyController.EnemyState state)
 	{
+		//Set horde state
+		if (m_HordeState == state)
+		{
+			return;
+		}
+		m_HordeState = state;
+
+		//Set enemies states
 		for (int i = 0; i < m_Enemies.Count; i++)
 		{
-			m_Enemies[i].SetState(state);
+			if (m_Enemies[i].m_State != state)
+			{
+				m_Enemies[i].SetState(state);
+			}
+		}
+	}
+
+	/// <summary>
+	/// If enemies were wandering, they are now searching
+	/// </summary>
+	public void OnPlayerFound (Vector3 pos)
+	{
+		//Set horde state
+		if (m_HordeState != EnemyController.EnemyState.Wander)
+		{
+			return;
+		}
+		m_HordeState = EnemyController.EnemyState.Search;
+		
+		//Set enemies states
+		for (int i = 0; i < m_Enemies.Count; i++)
+		{
+			if (m_Enemies[i].m_State == EnemyController.EnemyState.Wander)
+			{
+				m_Enemies[i].SetState(EnemyController.EnemyState.Search);
+			}
+		}
+
+		//Tell enemies where the player is
+		BroadcstPlayerPosition (pos);
+	}
+
+	/// <summary>
+	/// If enemies were wandering, they are now searching
+	/// </summary>
+	public void BroadcstPlayerPosition (Vector3 pos)
+	{
+		//If we alkready have the position
+		if (m_SearchPosition == pos)
+		{
+			return;
+		}
+
+		//Set enemies states
+		for (int i = 0; i < m_Enemies.Count; i++)
+		{
+			m_Enemies[i].SetSearchPosition(pos);
 		}
 	}
 
@@ -91,5 +178,35 @@ public class HordeController : MonoBehaviour
 			enemy.SetHorde (this);
 			m_Enemies.Add(enemy);
 		}
+	}
+
+	/// <summary>
+	/// Removes an enemy fron the list.
+	/// </summary>
+	public void RemoveEnemy (EnemyController enemy)
+	{
+		if (m_Enemies != null && enemy != null)
+		{
+			enemy.SetHorde (null);
+			m_Enemies.Remove(enemy);
+			if (m_Enemies.Count == 0)
+			{
+				Destroy(gameObject);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Clears the horde and removes itself. Letting the enemies run free
+	/// </summary>
+	public void ClearHorde ()
+	{
+		//Set the enemies free
+		for (int i = 0; i < m_Enemies.Count; i++)
+		{
+			m_Enemies[i].SetHorde (null);
+		}
+		m_Enemies.Clear ();
+		Destroy(gameObject);
 	}
 }
