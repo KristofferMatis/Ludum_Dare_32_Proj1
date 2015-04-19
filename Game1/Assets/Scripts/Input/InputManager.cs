@@ -56,7 +56,8 @@ public class InputManager : Singleton<InputManager>
             LookUpDown,
             Jump,
             Attack1,
-            Sprint
+            Sprint,
+            Interact
         }
         #endregion
 
@@ -532,6 +533,49 @@ public class InputManager : Singleton<InputManager>
         {
             //checks to see if the player action is not Attack1
             if (Buttons[i].ActionName != ButtonControls.PlayerAction.Sprint)
+            {
+                continue;
+            }
+
+            //creating containers for the button and key presses(for multi press)
+            bool[] MultiButtonCheck = new bool[Buttons[i].ButtonMap.Length];
+            bool[] MultiKeyCheck = new bool[Buttons[i].KeyMap.Length];
+
+            //goes through the buttons sets the value to the the containers we created
+            for (int j = 0; j < Buttons[i].ButtonMap.Length; j++)
+            {
+                MultiButtonCheck[j] = Buttons[i].HandleButtons(Buttons[i].ButtonMap[j]).IsPressed;
+            }
+
+            //goes through the keys sets the value to the the containers we created
+            for (int k = 0; k < Buttons[i].KeyMap.Length; k++)
+            {
+                MultiKeyCheck[k] = Input.GetKey(Buttons[i].KeyMap[k]);
+            }
+
+            //checks if the button container contains all trues if so it returns true
+            if (!MultiButtonCheck.Contains(false))
+            {
+                return true;
+            }
+
+            //checks if the key container contains all trues if so it returns true
+            if (!MultiKeyCheck.Contains(false))
+            {
+                return true;
+            }
+        }
+
+        //if it gets here that means nothing was pressed
+        return false;
+    }
+
+    public bool PlayerInteract()
+    {
+        for (int i = 0; i < Buttons.Length; i++)
+        {
+            //checks to see if the player action is not Attack1
+            if (Buttons[i].ActionName != ButtonControls.PlayerAction.Interact)
             {
                 continue;
             }

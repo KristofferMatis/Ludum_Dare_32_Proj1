@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class WeaponDrop : MonoBehaviour 
 {
+    public Vector3 i_OriginalItemHidingSpot = new Vector3(-5000.0f, -5000.0f, -5000.0f);
+
     public GameObject i_MenuPrefab;
     GameObject m_MenuPrefab;
     public GameObject MenuPrefab
@@ -12,7 +14,7 @@ public class WeaponDrop : MonoBehaviour
         {
             if (m_MenuPrefab == null)
             {
-                m_MenuPrefab = addEffects((GameObject)Instantiate(i_MenuPrefab)); 
+                m_MenuPrefab = addEffects((GameObject)Instantiate(i_MenuPrefab, i_OriginalItemHidingSpot, Quaternion.identity)); 
             }
             return m_MenuPrefab;
         }
@@ -26,7 +28,7 @@ public class WeaponDrop : MonoBehaviour
         {
             if (m_GamePrefab == null)
             {
-                m_GamePrefab = addEffects((GameObject)Instantiate(i_GamePrefab));
+                m_GamePrefab = addEffects((GameObject)Instantiate(i_GamePrefab, i_OriginalItemHidingSpot, Quaternion.identity));
             }
             return m_GamePrefab;
         }
@@ -49,11 +51,29 @@ public class WeaponDrop : MonoBehaviour
         }
 	}
 	
-	// Update is called once per frame
-	void Update () 
+    void OnTriggerStay(Collider other)
     {
-	    //TODO: check for player and add self to inventory
-	}
+        if(other.CompareTag("Player"))
+        {//the player found us
+            if(InputManager.Instance.PlayerInteract())
+            {
+                if(Inventory.Instance.setAttachment(this))
+                {
+                    //TODO: handle entering inventory properly
+                    
+					for (int i = 0; i < transform.childCount; i++)
+                    {
+						Destroy(transform.GetChild(i).gameObject);
+                    }
+                    transform.position = i_OriginalItemHidingSpot;
+                }
+                else
+                {
+                    //handle inventory full
+                }
+            }
+        }
+    }
 
     void addEffect()
     {

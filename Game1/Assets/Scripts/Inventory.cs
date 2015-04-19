@@ -3,24 +3,10 @@ using System.Collections;
 
 public class Inventory : Singleton<Inventory> 
 {
-    public Vector3 i_OriginalItemHidingSpot = new Vector3(-5000.0f, -5000.0f, -5000.0f);
-
     WeaponDrop[] m_Inventory = new WeaponDrop[7];
-
-	// Use this for initialization
-	void Awake () 
-    {
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-	
-	}
 
     public WeaponDrop[] getIventory()
     {
-        //TODO: Implement This
         return m_Inventory;
     }
 

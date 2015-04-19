@@ -80,12 +80,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
 
             m_BaseWeaponSlot.OnMount(tempItem);
 
-            //TODO: replace ArtClone With the Menu art version of the asset
 			GameObject artClone = (GameObject)(GameObject.Instantiate(i_AttackPlayer.m_InitialWeapon.MenuPrefab,
                                                                       m_BaseWeaponSlot.getItem().transform.position,
                                                                       m_BaseWeaponSlot.getItem().transform.rotation));
 
-            m_BaseWeaponSlot.getItem().transform.localScale = artClone.transform.localScale;
+            //m_BaseWeaponSlot.getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_BaseWeaponSlot.getItem().transform;
 
             MeshCollider meshCollider = m_BaseWeaponSlot.getItem().gameObject.AddComponent<MeshCollider>();
@@ -122,12 +121,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
             m_InventorySlots[i].OnMount(GameObject.Instantiate(i_ItemPrefab).AddComponent<Item>());
             m_InventorySlots[i].getItem().start(Inventory.Instance.getIventory()[i]);
 
-            //TODO: replace ArtClone With the Menu art version of the asset
             GameObject artClone = (GameObject)(GameObject.Instantiate(Inventory.Instance.getIventory()[i].MenuPrefab,
                                                                       m_InventorySlots[i].getItem().transform.position,
                                                                       m_InventorySlots[i].getItem().transform.rotation));
 
-            m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
+            //m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_InventorySlots[i].getItem().transform;
 
             MeshCollider meshCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<MeshCollider>();
@@ -141,14 +139,6 @@ public class CraftingMenu : Singleton<CraftingMenu>
         }
         //Cursor.lockState = CursorLockMode.Confined;
         //Cursor.visible = true;
-
-        //TODO: make menu Visable
-
-        //TODO: get slot data from weapon
-        //TODO: get item list from inventory
-
-        //TODO: create the menus slot list
-        //TODO: create the menus item list
     }
 
     public void ExitMenu()
@@ -167,11 +157,6 @@ public class CraftingMenu : Singleton<CraftingMenu>
 			if(m_InventorySlots[i].getItem() != null)
 				Destroy(m_InventorySlots[i].OnDisMount().gameObject);
         }
-
-        //TODO: make menu InVisable
-
-        //TODO: set weapon slot data
-        //TODO: set  inventory item list
     }
 
     public void OnMountItem(Item item, ItemSlot itemSlot)
@@ -180,6 +165,11 @@ public class CraftingMenu : Singleton<CraftingMenu>
         {
             UpdateAttachmentSlots();            
             i_AttackPlayer.EquipWeapon(GameObject.Instantiate(item.BaseWeapon.gameObject).GetComponent<BaseBaseWeapon>());
+
+            if(!m_IsActive)
+            {
+                i_AttackPlayer.DrawWeapon(true);
+            }
         }
 		else if(item.Attachment != null && itemSlot.GetType() == typeof(AttachmentSlot))
 		{
