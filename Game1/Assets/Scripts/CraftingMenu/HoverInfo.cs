@@ -8,12 +8,12 @@ public class HoverInfo
     Rect m_PositionBG;
     Rect m_PositionText;
     Item m_ItemThisFrame = null;
-    float m_OffsetX = 0.1f;
+    float m_OffsetX = 0.05f;
 	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
 
 
-    string[] m_Stats = new string[6];
-    string[] m_StatsBaseString = new string[] { "Damage : ", "Knockback : ", "AttackType : ", "StartUpTime : ", "RecoveryTime : ", "MountPoints : " };
+    string[] m_Stats = new string[8];
+    string[] m_StatsBaseString = new string[] { "Item Type : ", "Misc Effects : ", "Damage : ", "Knockback : ", "AttackType : ", "StartUpTime : ", "RecoveryTime : ", "MountPoints : " };
 
     public ClickHandler clickHandler { get; set; }
 
@@ -22,6 +22,8 @@ public class HoverInfo
 
     enum Stats
     { 
+        ItemType,
+        MiscEffects,
         Damage,
         Knockback,
         AttackType,
@@ -33,8 +35,8 @@ public class HoverInfo
     public void Start() 
     {
         m_TextBG = Resources.Load<Texture>(TEXT_BG_PATH);
-        m_PositionBG = new Rect(0.0f, 0.0f, 150.0f, 160.0f);
-        m_PositionText = new Rect(0.0f, 0.0f, 150.0f, 0.0f);
+        m_PositionBG = new Rect(0.0f, 0.0f, 190.0f, 195.0f);
+        m_PositionText = new Rect(0.0f, 0.0f, 190.0f, 0.0f);
         m_OffsetX *= Screen.width;
 	}
 	
@@ -64,6 +66,8 @@ public class HoverInfo
     void setStringData(Item item)
     {
         setStringData(item.Attachment.m_Stats);
+        m_Stats[(int)Stats.ItemType]        += item.ItemType;
+        m_Stats[(int)Stats.MiscEffects]     += item.MiscEffects;
     }
 
     void setStringData(WeaponStats stats)
@@ -73,6 +77,7 @@ public class HoverInfo
             m_Stats[i] = m_StatsBaseString[i];
         }
 
+        
         m_Stats[(int)Stats.Damage]          += stats.m_Damage.ToString();
         m_Stats[(int)Stats.Knockback]       += stats.m_Knockback.ToString();
         m_Stats[(int)Stats.AttackType]      += stats.m_AttackType.ToString();
@@ -88,14 +93,15 @@ public class HoverInfo
 
         m_PositionBG.position = Input.mousePosition;
 
-		m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX , Screen.height - m_PositionBG.y);
+		m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width , Screen.height - m_PositionBG.y);
 
         GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
 		m_PositionText.position = m_PositionBG.position + m_TextOffset;
 
         if(!m_ItemThisFrame.BaseWeapon == null)
         {
-            m_PositionText.height = m_PositionBG.height / 6.0f;
+			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 3.0f;
+			//m_PositionText
             for (int i = 0; i < m_Stats.Length - 1; i++)
             {
                 GUI.Label(m_PositionText, m_Stats[i]);
@@ -104,7 +110,7 @@ public class HoverInfo
         }
         else
         {
-            m_PositionText.height = m_PositionBG.height / 7.0f;
+			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
             for (int i = 0; i < m_Stats.Length; i++)
             {
                 GUI.Label(m_PositionText, m_Stats[i]);

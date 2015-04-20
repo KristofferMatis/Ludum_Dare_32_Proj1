@@ -78,7 +78,7 @@ public class ClickHandler
                 m_ItemBeingDragged = items[0];
                 m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.transform.position;
             }
-            else
+			else if(m_ItemBeingDragged == null)
             {
                 for(int i = 0; i < hitInfo.Length; i++)
                 {
@@ -139,6 +139,7 @@ public class ClickHandler
                 }
             }
             m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
+			m_ItemBeingDragged.IsBeingDragged = false;
             m_ItemBeingDragged = null;
         }
 	}

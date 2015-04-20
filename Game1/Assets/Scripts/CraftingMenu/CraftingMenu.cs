@@ -85,7 +85,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
                                                                       m_BaseWeaponSlot.getItem().transform.position,
                                                                       m_BaseWeaponSlot.getItem().transform.rotation));
 
-            //m_BaseWeaponSlot.getItem().transform.localScale = artClone.transform.localScale;
+            m_BaseWeaponSlot.getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_BaseWeaponSlot.getItem().transform;
 
             MeshCollider meshCollider = m_BaseWeaponSlot.getItem().gameObject.AddComponent<MeshCollider>();
@@ -125,7 +125,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
                                                                       m_InventorySlots[i].getItem().transform.position,
                                                                       m_InventorySlots[i].getItem().transform.rotation));
 
-            //m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
+            m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_InventorySlots[i].getItem().transform;
 
             MeshCollider meshCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<MeshCollider>();

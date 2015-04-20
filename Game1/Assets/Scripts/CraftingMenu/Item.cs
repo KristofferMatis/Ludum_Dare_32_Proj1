@@ -15,6 +15,20 @@ public class Item : MonoBehaviour
         get { return m_Attachment; }
     }
 
+    const string ATTACHMENT = "Attachment";
+    const string BASE_WEAPON = "Weapon";
+    public string ItemType
+    {
+        get { return (BaseWeapon == null) ? ATTACHMENT : BASE_WEAPON; }
+    }
+
+
+    string m_MiscEffects = "n/a";
+    public string MiscEffects
+    {
+        get { return m_MiscEffects; }
+    }
+
     BaseBaseWeapon m_BaseWeapon;
     public BaseBaseWeapon BaseWeapon
     {
@@ -57,6 +71,17 @@ public class Item : MonoBehaviour
         m_WeaponDrop = drop;
         m_Attachment = drop.GamePrefab.GetComponentInChildren<BaseAttachment>(); 
         m_BaseWeapon = m_Attachment as BaseBaseWeapon;
+
+        MiscEffects[] effects = drop.GamePrefab.GetComponentsInChildren<MiscEffects>();
+
+        if(effects.Length > 0)
+        {
+            m_MiscEffects = "";
+            for(int i = 0; i < effects.Length; i++)
+            {
+                m_MiscEffects += effects[i].EffectType;
+            }
+        }
 	}
 	
 	// Update is called once per frame
