@@ -16,8 +16,6 @@ public class BoatSign : MonoBehaviour
 	{
 		m_Words = GetComponentsInChildren<Renderer> ();
 
-		//m_BoatManager = GameObject.FindGameObjectWithTag (Constants.BOAT_TAG).GetComponent<BoatManager> ();
-
 		m_BoatManager = BoatManager.Instance;
 	}
 	
