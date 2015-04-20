@@ -104,6 +104,9 @@ public class Health : MonoBehaviour
 		else
 		{
 			// TODO: have player die
+
+			//for now i'll just send us straight to the splash screen
+			Application.LoadLevel ("SplashScene");
 		}
 	}
 

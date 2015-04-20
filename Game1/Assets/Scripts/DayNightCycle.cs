@@ -9,6 +9,7 @@ public class DayNightCycle : MonoBehaviour
 	//Length of day and night
 	public const float DAY_LENGTH = 120f;
 	public const float NIGHT_LENGTH = 80f;
+	public float m_TimeMultiplier = 1f;
 	float m_CycleTimer = 0f;
 
 	WeaponsSpawningManager m_WeaponSpawner;
@@ -40,29 +41,44 @@ public class DayNightCycle : MonoBehaviour
 	void Update ()
 	{
 		//Rotate direction light
-		transform.Rotate(new Vector3 (Time.deltaTime * 360f / (DAY_LENGTH + NIGHT_LENGTH), 0f, 0f));
+		transform.Rotate(new Vector3 (Time.deltaTime * m_TimeMultiplier * 360f / (DAY_LENGTH + NIGHT_LENGTH), 0f, 0f));
 
 		//Cycle day and night
-		m_CycleTimer -= Time.deltaTime;
+		m_CycleTimer -= Time.deltaTime * m_TimeMultiplier;
 		if (m_CycleTimer < 0f)
 		{
+			//Set day
 			m_IsDay = !m_IsDay;
-
-			//Tell all spawners the day
-			for (int i = 0; i < m_Spawners.Length; i++)
-			{
-				m_Spawners[i].SetDay(m_IsDay);
-			}
 
 			if (m_IsDay)
 			{
 				m_CycleTimer = DAY_LENGTH;
-				m_WeaponSpawner.SpawnNewItems();
 			}
 			else
 			{
 				m_CycleTimer = NIGHT_LENGTH;
-				m_WeaponSpawner.StopSmoke();
+			}
+
+			//Weapon spawns
+			if (m_WeaponSpawner != null)
+			{
+				if (m_IsDay)
+				{
+					m_WeaponSpawner.SpawnNewItems();
+				}
+				else
+				{
+					m_CycleTimer = NIGHT_LENGTH;
+				}
+			}
+			//Enemy spawners
+			if (m_Spawners.Length > 0)
+			{
+				//Tell all spawners the day
+				for (int i = 0; i < m_Spawners.Length; i++)
+				{
+					m_Spawners[i].SetDay(m_IsDay);
+				}
 			}
 		}
 	}
