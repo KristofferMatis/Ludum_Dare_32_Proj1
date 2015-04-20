@@ -25,15 +25,6 @@ public class CraftingCamera : CameraBase
         m_OtherCameraScript = CameraManager.Instance.CurrentCameraAction;
 	}
 
-    void Update()
-    {
-        //TODO: REMOVE THIS IT IS FOR TESTING ONLY
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-			SetIsOn(true);
-        }
-    }
-
     public void SetIsOn(bool isOn)
     {
         if (isOn)
