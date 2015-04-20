@@ -5,8 +5,13 @@ public class Health : MonoBehaviour
 {
 	bool m_CanBeHitThisFrame = true;
 
-	public int m_MaxHealth;
+    const string TEXTURES_FILE_PATH = "Textures/Hearts";
+    Texture[] m_Textures;
+	public int m_MaxHealth = 8;
 	float m_CurrentHealth;
+    Vector2 m_TextureStartPos = Vector2.zero;
+    Vector2 m_TextureSpacing = new Vector2(15.0f, 0.0f);
+	Rect m_TextureGUIRect;
 
 	EnemyController m_Controller;
 	PlayerMovement m_Movement;
@@ -34,6 +39,11 @@ public class Health : MonoBehaviour
 		{
 			m_Movement = GetComponent<PlayerMovement>();
 		}
+
+		m_TextureGUIRect = new Rect(0.0f, 0.0f, 0.05f * Screen.width, 0.05f * Screen.width);
+
+		if(m_Movement != null)
+			m_Textures = Resources.LoadAll<Texture>(TEXTURES_FILE_PATH);
 
 		m_CurrentHealth = m_MaxHealth;
 
@@ -141,4 +151,19 @@ public class Health : MonoBehaviour
 			m_FlameParticles.Play ();
 		}
 	}
+
+    void OnGUI()
+    {
+        if (m_Movement == null)
+            return;
+        if (CraftingMenu.Instance.IsActive)
+            return;
+
+        GUI.color = Color.white;
+        for(int i = 0; i < (int)m_CurrentHealth && i < m_Textures.Length; i++)
+        {
+            m_TextureGUIRect.position = m_TextureStartPos + (m_TextureSpacing * (float)(i + 1)) + new Vector2 (m_TextureGUIRect.width * i, 0.0f);
+            GUI.DrawTexture(m_TextureGUIRect, m_Textures[i]);
+        }
+    }
 }
