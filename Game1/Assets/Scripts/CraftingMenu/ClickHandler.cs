@@ -149,7 +149,7 @@ public class ClickHandler
         bool isSwappingBaseWeapon = false;
         if(slot1.GetType() == typeof(BaseWeaponSlot))
         {//swapping out the base weapon
-            if(!checkBaseWeaponMounts(slot2.getItem()))
+            if(!checkBaseWeaponMounts(slot2.getItem()) || slot2.getItem().BaseWeapon == null)
             {
                 return;
             }
@@ -157,7 +157,7 @@ public class ClickHandler
         }
         else if (slot2.GetType() == typeof(BaseWeaponSlot))
 		{//swapping out the base weapon
-            if (!checkBaseWeaponMounts(slot1.getItem()))
+            if (!checkBaseWeaponMounts(slot1.getItem()) || slot1.getItem().BaseWeapon == null)
             {
                 return;
             }

@@ -6,6 +6,12 @@ public class ItemSlot : MonoBehaviour
     public Transform i_MountPoint;
     protected Item m_Item;
 
+    const string ANY_ITEM = "Any Item";
+    public string ItemsAccpted
+    {
+        get { return ANY_ITEM; }
+    }
+
 	// Use this for initialization
     protected virtual void Start() 
     {

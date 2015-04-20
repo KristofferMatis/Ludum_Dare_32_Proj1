@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseBaseWeapon : BaseAttachment
+public class Attachments : BaseAttachment
 {
+
 
 }

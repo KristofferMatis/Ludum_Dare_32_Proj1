@@ -12,8 +12,8 @@ public class HoverInfo
 	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
 
 
-    string[] m_Stats = new string[8];
-    string[] m_StatsBaseString = new string[] { "Item Type : ", "Misc Effects : ", "Damage : ", "Knockback : ", "AttackType : ", "StartUpTime : ", "RecoveryTime : ", "MountPoints : " };
+    string[] m_Stats = new string[9];
+	string[] m_StatsBaseString = new string[] { "Item : ", "Item Type : ", "Misc Effects : ", "Damage : ", "Knockback : ", "StartUpTime : ", "RecoveryTime : ", "AttackType : ", "MountPoints : " };
 
     public ClickHandler clickHandler { get; set; }
 
@@ -22,13 +22,14 @@ public class HoverInfo
 
     enum Stats
     { 
+        ItemName,
         ItemType,
         MiscEffects,
         Damage,
-        Knockback,
-        AttackType,
+        Knockback,        
         StartUpTime,
         RecoveryTime,
+		AttackType,
         MountPoints
     };
 	// Use this for initialization
@@ -66,6 +67,7 @@ public class HoverInfo
     void setStringData(Item item)
     {
         setStringData(item.Attachment.m_Stats);
+        m_Stats[(int)Stats.ItemName]        += item.ItemName;
         m_Stats[(int)Stats.ItemType]        += item.ItemType;
         m_Stats[(int)Stats.MiscEffects]     += item.MiscEffects;
     }
@@ -98,11 +100,11 @@ public class HoverInfo
         GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
 		m_PositionText.position = m_PositionBG.position + m_TextOffset;
 
-        if(!m_ItemThisFrame.BaseWeapon == null)
+        if(m_ItemThisFrame.BaseWeapon != null)
         {
 			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 3.0f;
 			//m_PositionText
-            for (int i = 0; i < m_Stats.Length - 1; i++)
+			for (int i = 0; i < m_Stats.Length; i++)
             {
                 GUI.Label(m_PositionText, m_Stats[i]);
                 m_PositionText.y += m_PositionText.height;
@@ -111,7 +113,7 @@ public class HoverInfo
         else
         {
 			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
-            for (int i = 0; i < m_Stats.Length; i++)
+            for (int i = 0; i < m_Stats.Length - 2; i++)
             {
                 GUI.Label(m_PositionText, m_Stats[i]);
                 m_PositionText.y += m_PositionText.height;

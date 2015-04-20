@@ -9,10 +9,10 @@ public class Item : MonoBehaviour
                                             (m_BaseWeapon != null) ? m_BaseWeapon.m_Stats : null; }
     }
 
-    BaseAttachment m_Attachment;
+    Attachments m_Attachment;
     public BaseAttachment Attachment
     {
-        get { return m_Attachment; }
+		get { return ((m_BaseWeapon == null)?(BaseAttachment)m_Attachment:(BaseAttachment)m_BaseWeapon); }
     }
 
     const string ATTACHMENT = "Attachment";
@@ -22,6 +22,10 @@ public class Item : MonoBehaviour
         get { return (BaseWeapon == null) ? ATTACHMENT : BASE_WEAPON; }
     }
 
+    public string ItemName
+    {
+        get { return Attachment.m_AttachmentName; }
+    }
 
     string m_MiscEffects = "n/a";
     public string MiscEffects
@@ -69,8 +73,9 @@ public class Item : MonoBehaviour
 	public void start (WeaponDrop drop) 
     {
         m_WeaponDrop = drop;
-        m_Attachment = drop.GamePrefab.GetComponentInChildren<BaseAttachment>(); 
-        m_BaseWeapon = m_Attachment as BaseBaseWeapon;
+        m_Attachment = drop.GamePrefab.GetComponentInChildren<Attachments>();
+		
+		m_BaseWeapon = drop.GamePrefab.GetComponentInChildren<BaseBaseWeapon>();
 
         MiscEffects[] effects = drop.GamePrefab.GetComponentsInChildren<MiscEffects>();
 
@@ -80,6 +85,10 @@ public class Item : MonoBehaviour
             for(int i = 0; i < effects.Length; i++)
             {
                 m_MiscEffects += effects[i].EffectType;
+                if(i + 1 < effects.Length)
+                {
+                    m_MiscEffects += ", ";
+                }
             }
         }
 	}

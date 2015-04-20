@@ -27,7 +27,7 @@ public class BaseAttachment : MonoBehaviour
 		}
 	}
 
-	protected void Start()
+	protected virtual void Start()
 	{
 		m_Collider = GetComponent<BoxCollider> ();
 
@@ -53,7 +53,6 @@ public class BaseAttachment : MonoBehaviour
 				stats.m_RecoveryTime += attachmentStats.m_RecoveryTime;
 			}
 		}
-
 		return stats;
 	}
 

@@ -186,7 +186,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
         }
 		else if(item.Attachment != null && itemSlot.GetType() == typeof(AttachmentSlot))
 		{
-            i_AttackPlayer.m_WeaponEquipped.RemoveAttachment(item.AttachedIndex);
+			if(i_AttackPlayer.m_WeaponEquipped != null)
+            	i_AttackPlayer.m_WeaponEquipped.RemoveAttachment(item.AttachedIndex);
 		}
     }
 
