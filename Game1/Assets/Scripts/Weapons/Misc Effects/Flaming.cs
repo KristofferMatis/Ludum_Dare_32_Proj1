@@ -23,6 +23,8 @@ public class Flaming : MiscEffects
 		m_FlameParticles.transform.localPosition = Vector3.zero;
 		m_FlameParticles.transform.localRotation = Quaternion.identity;
 		m_FlameParticles.transform.localScale = Vector3.one;
+
+		m_FlameParticles.gameObject.layer = gameObject.layer;
 	}
 
 	protected override void DoEffectVirtual (Health otherHealth)
