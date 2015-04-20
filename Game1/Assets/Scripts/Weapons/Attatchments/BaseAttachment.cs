@@ -49,8 +49,7 @@ public class BaseAttachment : MonoBehaviour
 				stats.m_Damage += attachmentStats.m_Damage;
 				stats.m_Knockback += attachmentStats.m_Knockback;
 				stats.m_AttackType += attachmentStats.m_AttackType;
-				stats.m_StartUpTime += attachmentStats.m_StartUpTime;
-				stats.m_RecoveryTime += attachmentStats.m_RecoveryTime;
+				stats.m_Weight += attachmentStats.m_Weight;
 			}
 		}
 		return stats;

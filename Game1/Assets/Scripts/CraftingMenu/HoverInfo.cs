@@ -13,8 +13,8 @@ public class HoverInfo
 	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
 
 
-    string[] m_Stats = new string[9];
-	string[] m_StatsBaseString = new string[] { "ITEM : ", "TYPE : ", "MISC EFFECTS : ", "DAMAGE : ", "KNOCKBACK : ", "WIND UP : ", "RECOVERY : ", "MOVE SET : ", "ATTACHMENT SLOTS : " };
+    string[] m_Stats = new string[8];
+	string[] m_StatsBaseString = new string[] { "ITEM : ", "TYPE : ", "MISC EFFECTS : ", "DAMAGE : ", "KNOCKBACK : ", "WEIGHT : ", "MOVE SET : ", "ATTACHMENT SLOTS : " };
 
     public ClickHandler clickHandler { get; set; }
 
@@ -33,9 +33,8 @@ public class HoverInfo
         ItemType,
         MiscEffects,
         Damage,
-        Knockback,        
-        StartUpTime,
-        RecoveryTime,
+        Knockback,     
+        Weight,
 		AttackType,
         MountPoints
     };
@@ -118,8 +117,7 @@ public class HoverInfo
         m_Stats[(int)Stats.Damage]          += stats.m_Damage.ToString();
         m_Stats[(int)Stats.Knockback]       += stats.m_Knockback.ToString();
         m_Stats[(int)Stats.AttackType]      += stats.m_AttackType.ToString();
-        m_Stats[(int)Stats.StartUpTime]     += stats.m_StartUpTime.ToString();
-        m_Stats[(int)Stats.RecoveryTime]    += stats.m_RecoveryTime.ToString();
+        m_Stats[(int)Stats.Weight]     		+= stats.m_Weight.ToString();
         m_Stats[(int)Stats.MountPoints]     += stats.m_MountPoints.Count.ToString();
     }
 
