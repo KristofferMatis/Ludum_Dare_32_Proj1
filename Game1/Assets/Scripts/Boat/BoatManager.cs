@@ -59,4 +59,17 @@ public class BoatManager : MonoBehaviour
 
 		m_Boat.BuildUp (objectToAddToBoat);
 	}
+
+	[ContextMenu("ObtainNextItem")]
+	void ObtainNext()
+	{
+		foreach(string type in m_ObjectTypesNecessary.Keys)
+		{
+			if(m_ObjectTypesNecessary[type])
+			{
+				m_ObjectTypesNecessary[type] = false;
+				break;
+			}
+		}
+	}
 }
