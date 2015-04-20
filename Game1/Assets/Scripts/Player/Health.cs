@@ -106,11 +106,11 @@ public class Health : MonoBehaviour
 
 	void Die()
 	{
-		if(m_Controller)
+		if(m_Controller != null)
 		{
 			m_Controller.SetState(EnemyController.EnemyState.Dead);
 		}
-		else
+		else if (m_Movement != null)
 		{
 			// TODO: have player die
 
@@ -153,13 +153,19 @@ public class Health : MonoBehaviour
 
     void OnGUI()
     {
+		if(Event.current.type != EventType.Repaint)
+		{
+			return;
+		}
         if (m_Movement == null)
             return;
         if (CraftingMenu.Instance.IsActive)
             return;
 
+		int numberOfHearts = (int)Mathf.Lerp (0, m_Textures.Length, m_CurrentHealth / m_MaxHealth) + 1;
+
         GUI.color = Color.white;
-        for(int i = 0; i < (int)m_CurrentHealth && i < m_Textures.Length; i++)
+        for(int i = 0; i < numberOfHearts && i < m_Textures.Length; i++)
         {
             m_TextureGUIRect.position = m_TextureStartPos + (m_TextureSpacing * (float)(i + 1)) + new Vector2 (m_TextureGUIRect.width * i, 0.0f);
             GUI.DrawTexture(m_TextureGUIRect, m_Textures[i]);

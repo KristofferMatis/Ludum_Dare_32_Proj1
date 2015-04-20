@@ -3,9 +3,9 @@ using System.Collections;
 
 public class WaterTide : MonoBehaviour
 {
-	const float HEIGHT_CHANGE = 1.5f;
+	const float HEIGHT_CHANGE = 16.75f;
 	Vector3 m_InitialPosition;
-	float m_Timer = 1f;
+	float m_Timer = 0.0f;
 
 	void Start ()
 	{
@@ -14,8 +14,8 @@ public class WaterTide : MonoBehaviour
 
 	void Update ()
 	{
-		m_Timer += Time.deltaTime * 12f / (DayNightCycle.DAY_LENGTH + DayNightCycle.NIGHT_LENGTH);
-		transform.position = m_InitialPosition - Vector3.up * HEIGHT_CHANGE * Mathf.Sin (m_Timer);
+		m_Timer += Time.deltaTime;
+		transform.position = m_InitialPosition - Vector3.up * HEIGHT_CHANGE * (0.5f - 0.5f * Mathf.Cos (m_Timer / (DayNightCycle.DAY_LENGTH + DayNightCycle.NIGHT_LENGTH) * 2.0f * Mathf.PI));
 	}
 
 	void OnTriggerEnter (Collider collider)
