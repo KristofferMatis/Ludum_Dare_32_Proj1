@@ -34,7 +34,13 @@ public class ItemRemove : ItemSlot
         if (i_IsBoatDrop)
         {
 			BoatManager.Instance.BuildUpBoat(item.Attachment.m_AttachmentName, item.Drop.GamePrefab);
+
+			CraftingMenu.Instance.PlayBoatUpdated();
         }
+		else
+		{
+			CraftingMenu.Instance.PlayItemDeleted();
+		}
 
         Destroy(item.gameObject);
     }

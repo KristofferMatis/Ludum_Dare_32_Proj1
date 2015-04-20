@@ -44,6 +44,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
 	public AudioClip m_ItemDropClip;
 	public AudioClip m_EnterMenuClip;
 	public AudioClip m_ExitMenuClip;
+	public AudioClip m_BoatUpdatedClip;
+	public AudioClip m_ItemDropImpossibleClip;
 
 	AudioSource m_AudioSource;
 
@@ -301,5 +303,15 @@ public class CraftingMenu : Singleton<CraftingMenu>
 	public void PlayItemDeleted()
 	{
 		m_AudioSource.PlayOneShot (m_WeaponDestroyClip);
+	}
+
+	public void PlayBoatUpdated()
+	{
+		m_AudioSource.PlayOneShot (m_BoatUpdatedClip);
+	}
+
+	public void PlayDropImpossible()
+	{
+		m_AudioSource.PlayOneShot (m_ItemDropImpossibleClip);
 	}
 }
