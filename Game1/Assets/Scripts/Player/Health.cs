@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
 
 	public float m_UnderwaterDamageRate;
 
-	ParticleSystem m_FlameParticles;
+	GameObject m_FlameParticles;
 
 	public ParticleSystem m_UnderwaterParticles;
 
@@ -29,6 +29,10 @@ public class Health : MonoBehaviour
 
 	float m_WaterToMouthMaxDistance = 3.82f;
 	float m_BaseStartLifetime;
+
+	AudioSource m_AudioSource;
+
+	public AudioClip m_FireClip;
 
 	// Use this for initialization
 	void Start () 
@@ -50,6 +54,8 @@ public class Health : MonoBehaviour
 		m_BaseStartLifetime = m_UnderwaterParticles.startLifetime;
 
 		m_Water = GameObject.FindGameObjectWithTag (Constants.WATER_TAG);
+
+		m_AudioSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -63,9 +69,9 @@ public class Health : MonoBehaviour
 
 			m_OngoingEffectTimer -= Time.deltaTime;
 
-			if(m_OngoingEffectTimer <= 0.0f)
+			if(m_OngoingEffectTimer <= 0.0f && m_FlameParticles != null)
 			{
-				m_FlameParticles.loop = false;
+				Destroy (m_FlameParticles);
 			}
 		}
 
@@ -106,6 +112,12 @@ public class Health : MonoBehaviour
 
 	void Die()
 	{
+		if(m_FlameParticles != null)
+		{
+			Destroy (m_FlameParticles);
+			m_FlameParticles = null;
+		}
+
 		if(m_Controller != null)
 		{
 			m_Controller.SetState(EnemyController.EnemyState.Dead);
@@ -142,12 +154,9 @@ public class Health : MonoBehaviour
 			flameObject.transform.parent = transform;
 			flameObject.transform.localScale = Vector3.one;
 
-			m_FlameParticles = flameObject.GetComponent<ParticleSystem> ();
-		}
-		else
-		{
-			m_FlameParticles.loop = true;
-			m_FlameParticles.Play ();
+			m_FlameParticles = flameObject;
+
+			m_AudioSource.PlayOneShot(m_FireClip);
 		}
 	}
 
