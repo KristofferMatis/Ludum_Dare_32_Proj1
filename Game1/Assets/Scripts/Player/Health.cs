@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
 
 	public ParticleSystem m_UnderwaterParticles;
 
-	public GameObject m_Water;
+	GameObject m_Water;
 
 	float m_WaterToMouthMaxDistance = 3.82f;
 	float m_BaseStartLifetime;
@@ -38,6 +38,8 @@ public class Health : MonoBehaviour
 		m_CurrentHealth = m_MaxHealth;
 
 		m_BaseStartLifetime = m_UnderwaterParticles.startLifetime;
+
+		m_Water = GameObject.FindGameObjectWithTag (Constants.WATER_TAG);
 	}
 	
 	// Update is called once per frame
