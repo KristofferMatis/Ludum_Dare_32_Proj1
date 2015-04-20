@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class WeaponDrop : MonoBehaviour 
 {
+	public AudioClip m_ItemPickUpSound;
+
     public Vector3 i_OriginalItemHidingSpot = new Vector3(-5000.0f, -5000.0f, -5000.0f);
 
     public GameObject i_MenuPrefab;
@@ -82,6 +84,11 @@ public class WeaponDrop : MonoBehaviour
 						Destroy(transform.GetChild(i).gameObject);
                     }
                     transform.position = i_OriginalItemHidingSpot;
+
+					if(other.GetComponent<AudioSource>())
+					{
+						other.GetComponent<AudioSource>().PlayOneShot (m_ItemPickUpSound);
+					}
                 }
                 else
                 {
