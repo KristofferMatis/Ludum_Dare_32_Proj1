@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ItemRemove : ItemSlot 
 {
+	BoatManager m_BoatManager;
+
     public bool i_IsBoatDrop = false;
     public override Item getItem()
     {
@@ -11,7 +13,11 @@ public class ItemRemove : ItemSlot
 
     public override bool CanAcceptItem(Item item)//TODO: once hover info is working make text say what is needed
     {
-        //TODO: put logic on whether or not the item is of the requested type here
+        if(i_IsBoatDrop)
+		{
+			return m_BoatManager.IsObjectTypeNecessary(item.Attachment.m_AttachmentName);
+		}
+
         return true;
     }
 
@@ -27,7 +33,7 @@ public class ItemRemove : ItemSlot
         // item.Attachment.gameObject <<clone this for art
         if (i_IsBoatDrop)
         {
-            //TODO: Handle Boat Building Here
+			m_BoatManager.BuildUpBoat(item.Attachment.m_AttachmentName, item.Drop.GamePrefab);
         }
 
         Destroy(item.gameObject);
@@ -35,6 +41,6 @@ public class ItemRemove : ItemSlot
 
     protected override void Start()
     {
-        return;
+		m_BoatManager = GameObject.FindGameObjectWithTag (Constants.BOAT_TAG).GetComponent<BoatManager> ();
     }
 }
