@@ -20,7 +20,7 @@ public class WeaponsSpawningManager : MonoBehaviour
 
 	float m_PlaneSpawnTimer;
 
-	public AudioClip m_PlaneCrashSound;
+	public List<AudioClip> m_PlaneCrashSounds;
 	public AudioClip m_WeaponDropSound;
 
 	public AudioSource m_PlaneAudioSource;
@@ -95,8 +95,11 @@ public class WeaponsSpawningManager : MonoBehaviour
 		m_DayNightCycle = dayNightCycle;
 
 		m_NextPlanePoint = m_PlaneSmokeSpawnPoints [Random.Range (0, m_PlaneSmokeSpawnPoints.Count)];
-		m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSound);
 
-		m_PlaneSpawnTimer = m_PlaneCrashSound.length;
+		int randomIndex = Random.Range (0, m_PlaneCrashSounds.Count);
+
+		m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSounds[randomIndex]);
+
+		m_PlaneSpawnTimer = m_PlaneCrashSounds[randomIndex].length;
 	}
 }
