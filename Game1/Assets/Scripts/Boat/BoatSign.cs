@@ -24,12 +24,16 @@ public class BoatSign : MonoBehaviour
 	{
 		if(!m_FirstUpdate)
 		{
-			m_FirstUpdate = true;			
+			m_FirstUpdate = true;	
+
+			int i = 0;
 			
-			for(int i = 0; i < m_BoatManager.ObjectsStillNecessary.Count; i++)
+			foreach(string type in m_BoatManager.ObjectsNecessary.Keys)
 			{
-				m_Words[i].material.SetTexture ("_MainTex", Resources.Load<Texture>("Textures/Words/" + m_BoatManager.ObjectsStillNecessary[i]));
-				m_Words[i].material.SetTexture ("_ScratchTex", Resources.Load<Texture>("Textures/Words/" + m_BoatManager.ObjectsStillNecessary[i] + "-Scratch"));
+				m_Words[i].material.SetTexture ("_MainTex", Resources.Load<Texture>("Textures/Words/" + type));
+				m_Words[i].material.SetTexture ("_ScratchTex", Resources.Load<Texture>("Textures/Words/" + type + "-Scratch"));
+
+				i++;
 			}
 		}
 

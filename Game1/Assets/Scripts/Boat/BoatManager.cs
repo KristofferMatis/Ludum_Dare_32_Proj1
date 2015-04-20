@@ -17,17 +17,17 @@ public class BoatManager : MonoBehaviour
 		}
 	}
 
-	public List<string> ObjectsStillNecessary
+	public string ObjectsStillNecessary
 	{
 		get
 		{
-			List<string> result = new List<string>();
+			string result = "";
 
 			foreach(string type in m_ObjectTypesNecessary.Keys)
 			{
 				if(m_ObjectTypesNecessary[type])
 				{
-					result.Add (type);
+					result += ", " + type;
 				}
 			}
 
