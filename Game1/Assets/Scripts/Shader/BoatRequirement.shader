@@ -11,9 +11,9 @@
 	
 	SubShader 
 	{
-		Tags { "RenderType"="Transparent" }
+		Tags { "RenderType"="Opaque" }
 		
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
 		
 		Pass
 		{
@@ -55,6 +55,12 @@
 				fixed4 scratchColor = tex2D (_ScratchTex, input.uv_MainTex);
 				
 				fixed4 resultColor = mainColor * _Color * mainColor.a * (1.0 - _ScratchAmount * scratchColor.a) + scratchColor * _ScratchColor * _ScratchAmount * scratchColor.a;
+				
+				if(resultColor.a == 0.0)
+				{
+					discard;
+				}
+				
 				return resultColor;
 			}
 			ENDCG
