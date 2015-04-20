@@ -15,6 +15,20 @@ public class WeaponsSpawningManager : MonoBehaviour
 	bool m_SmokeIsDisappearing;
 	float m_DisappearingSpeed = 0.1f;
 
+	float m_SpawnTime = 120.0f;
+	float m_SpawnTimer;
+
+	float m_PlaneSpawnTimer;
+
+	public AudioClip m_PlaneCrashSound;
+	public AudioClip m_WeaponDropSound;
+
+	public AudioSource m_PlaneAudioSource;
+
+	Transform m_NextPlanePoint;
+
+	DayNightCycle m_DayNightCycle;
+
 	void Start()
 	{
 		m_DropOffPrefab = Resources.Load<GameObject> ("Prefabs/Weapons/DropOffCrate");
@@ -32,32 +46,57 @@ public class WeaponsSpawningManager : MonoBehaviour
 			newSize = Mathf.Lerp (newSize, 0.0f, m_DisappearingSpeed * Time.deltaTime);
 			m_PlaneSmoke.startSize = newSize;
 		}
-	}
 
-	[ContextMenu("StopSmoke")]
+		m_SpawnTimer -= Time.deltaTime;
+
+		if(m_SpawnTimer <= 0.0f)
+		{
+			m_SpawnTimer = m_SpawnTime;
+
+			SpawnNewItems();
+		}
+
+		if(m_PlaneSpawnTimer > 0.0f)
+		{
+			m_PlaneSpawnTimer -= Time.deltaTime;
+
+			if(m_PlaneSpawnTimer <= 0.0f)
+			{			
+				m_PlaneSmoke.transform.parent = m_NextPlanePoint;
+				m_PlaneSmoke.transform.localPosition = Vector3.zero;
+				m_PlaneSmoke.Play ();
+				
+				m_PlaneSmoke.startSize = 1.0f;
+				
+				m_SmokeIsDisappearing = false;
+
+				m_DayNightCycle.SpawnEnemies();
+			}
+		}
+	}
+	
 	public void StopSmoke()
 	{
 		m_SmokeIsDisappearing = true;
 	}
 
-	[ContextMenu("New items")]
-	public void SpawnNewItems()
+	void SpawnNewItems()
 	{
-		foreach(Transform dropoffPoint in m_DropOffSpawnPoints)
-		{
-			Vector3 leashZone = Random.insideUnitSphere * m_LeashDistance;
-			Instantiate (m_DropOffPrefab, dropoffPoint.position + leashZone, dropoffPoint.rotation);
-		}
+		Transform dropoffPoint = m_DropOffSpawnPoints [Random.Range (0, m_DropOffSpawnPoints.Count)];
 
-		Transform planePoint = m_PlaneSmokeSpawnPoints [Random.Range (0, m_PlaneSmokeSpawnPoints.Count)];
-		m_PlaneSmoke.transform.parent = planePoint;
-		m_PlaneSmoke.transform.localPosition = Vector3.zero;
-		m_PlaneSmoke.Play ();
+		Vector3 leashZone = Random.insideUnitSphere * m_LeashDistance;
+		Instantiate (m_DropOffPrefab, dropoffPoint.position + leashZone, dropoffPoint.rotation);
 
-		m_PlaneSmoke.startSize = 1.0f;
+		m_PlaneAudioSource.PlayOneShot (m_WeaponDropSound);
+	}
 
-		m_SmokeIsDisappearing = false;
+	public void SpawnPlane(DayNightCycle dayNightCycle)
+	{		
+		m_DayNightCycle = dayNightCycle;
 
-		// TODO: shaky cam !!! + plane crash sound or something
+		m_NextPlanePoint = m_PlaneSmokeSpawnPoints [Random.Range (0, m_PlaneSmokeSpawnPoints.Count)];
+		m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSound);
+
+		m_PlaneSpawnTimer = m_PlaneCrashSound.length;
 	}
 }

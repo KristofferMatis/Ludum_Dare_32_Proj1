@@ -39,9 +39,19 @@ public class CraftingMenu : Singleton<CraftingMenu>
 
     Camera m_MainCamera;
 
+	public AudioClip m_ItemGrabClip;
+	public AudioClip m_WeaponDestroyClip;
+	public AudioClip m_ItemDropClip;
+	public AudioClip m_EnterMenuClip;
+	public AudioClip m_ExitMenuClip;
+
+	AudioSource m_AudioSource;
+
 	// Use this for initialization
 	void Start () 
     {
+		m_AudioSource = GetComponent<AudioSource> ();
+
         i_AttackPlayer.m_MenuPivotPoint = i_WeaponMount;
 
         m_MainCamera = Camera.main;
@@ -115,6 +125,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
 
         i_AttackPlayer.DrawWeapon(false);
 
+		m_AudioSource.PlayOneShot (m_EnterMenuClip);
+
         for (int i = 0; i < Inventory.Instance.getIventory().Length; i++)
         {
 			if(Inventory.Instance.getIventory()[i] == null)
@@ -148,6 +160,8 @@ public class CraftingMenu : Singleton<CraftingMenu>
     public void ExitMenu()
     {
 		m_IsActive = false;
+
+		m_AudioSource.PlayOneShot (m_ExitMenuClip);
 
 		if( i_AttackPlayer.m_WeaponEquipped != null)
 			i_AttackPlayer.m_WeaponEquipped.SetTotalStatsAfterCrafting ();
@@ -273,4 +287,19 @@ public class CraftingMenu : Singleton<CraftingMenu>
         yield return new WaitForEndOfFrame();
         m_ClickHandler.setm_ItemThisFrameToNull();
     }
+
+	public void PlayItemGrabbed()
+	{
+		m_AudioSource.PlayOneShot (m_ItemGrabClip);
+	}
+
+	public void PlayItemDropped()
+	{
+		m_AudioSource.PlayOneShot (m_ItemDropClip);
+	}
+
+	public void PlayItemDeleted()
+	{
+		m_AudioSource.PlayOneShot (m_WeaponDestroyClip);
+	}
 }

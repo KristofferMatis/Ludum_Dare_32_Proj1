@@ -7,8 +7,8 @@ public class DayNightCycle : MonoBehaviour
 	public bool m_IsDay = true;
 
 	//Length of day and night
-	public const float DAY_LENGTH = 120f;
-	public const float NIGHT_LENGTH = 80f;
+	public const float DAY_LENGTH = 240f;
+	public const float NIGHT_LENGTH = 60f;
 	public float m_TimeMultiplier = 1f;
 	float m_CycleTimer = 0f;
 
@@ -64,21 +64,27 @@ public class DayNightCycle : MonoBehaviour
 			{
 				if (m_IsDay)
 				{
-					m_WeaponSpawner.SpawnNewItems();
+					m_WeaponSpawner.SpawnPlane(this);
 				}
 				else
 				{
 					m_CycleTimer = NIGHT_LENGTH;
+
+					m_WeaponSpawner.StopSmoke();
 				}
 			}
-			//Enemy spawners
-			if (m_Spawners.Length > 0)
+		}
+	}
+
+	public void SpawnEnemies()
+	{
+		//Enemy spawners
+		if (m_Spawners.Length > 0)
+		{
+			//Tell all spawners the day
+			for (int i = 0; i < m_Spawners.Length; i++)
 			{
-				//Tell all spawners the day
-				for (int i = 0; i < m_Spawners.Length; i++)
-				{
-					m_Spawners[i].SetDay(m_IsDay);
-				}
+				m_Spawners[i].SetDay(m_IsDay);
 			}
 		}
 	}
