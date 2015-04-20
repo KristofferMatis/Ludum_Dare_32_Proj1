@@ -234,7 +234,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
     void UpdateAttachmentSlots()
     {
         int counter = 0;
-        for (int i = 0; i < m_AttachmentSlots.Length; i++)
+        for (int i = m_AttachmentSlots.Length -1; i >= 0; i--)
         {
             if (m_BaseWeaponSlot.getItem() != null && counter < m_BaseWeaponSlot.getItem().WeaponStats.m_MountPoints.Count)
             {

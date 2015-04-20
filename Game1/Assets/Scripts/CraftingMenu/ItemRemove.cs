@@ -15,7 +15,7 @@ public class ItemRemove : ItemSlot
     {
         if(i_IsBoatDrop)
 		{
-			return m_BoatManager.IsObjectTypeNecessary(item.Attachment.m_AttachmentName);
+			return BoatManager.Instance.IsObjectTypeNecessary(item.Attachment.m_AttachmentName);
 		}
 
         return true;
@@ -33,7 +33,7 @@ public class ItemRemove : ItemSlot
         // item.Attachment.gameObject <<clone this for art
         if (i_IsBoatDrop)
         {
-			m_BoatManager.BuildUpBoat(item.Attachment.m_AttachmentName, item.Drop.GamePrefab);
+			BoatManager.Instance.BuildUpBoat(item.Attachment.m_AttachmentName, item.Drop.GamePrefab);
         }
 
         Destroy(item.gameObject);
