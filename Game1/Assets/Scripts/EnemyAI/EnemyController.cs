@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
 	const float LEASH_DISTANCE = 30.0f;
 	const float WANDER_DISTANCE = 10.0f;
 	const float KNOWN_DISTANCE = 12.0f;
+	const float ATTACK_DISTANCE = 3.0f;
 
 	//Chasing
 	const float SIGHT_ANGLE = 0f;
@@ -16,9 +17,11 @@ public class EnemyController : MonoBehaviour
 	const float WANDER_SPEED = 2.0f;
 	const float SEARCH_SPEED = 6.0f;
 	const float CHASE_SPEED = 10.0f;
+	const float ATTACK_SPEED = 10.0f;
 	const float WANDER_ACCELERATION = 0.5f;
 	const float SEARCH_ACCELERATION = 5.0f;
 	const float CHASE_ACCELERATION = 10.0f;
+	const float ATTACK_ACCELERATION = 10.0f;
 
 	//Knockback
 	Vector3 m_KnockBackSpeed;
@@ -42,6 +45,12 @@ public class EnemyController : MonoBehaviour
 	//The horde of this enemy (null means it will wander on it's own)
 	HordeController m_Horde;
 
+	//Attack
+	Attack m_Attack;
+
+	//Be afraid
+	public bool m_Fearful = false;
+
 
 	//Current enemy state
 	public enum EnemyState
@@ -50,7 +59,9 @@ public class EnemyController : MonoBehaviour
 		Search,
 		Chase,
 		Dead,
-		Knockback
+		Knockback,
+		Attack,
+		Run
 	};
 	public EnemyState m_State = EnemyState.Wander;
 
@@ -65,6 +76,8 @@ public class EnemyController : MonoBehaviour
 	{
 		m_Agent = (NavMeshAgent)GetComponent<NavMeshAgent> ();
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
+		m_Attack = GetComponent<Attack>();
+		GetComponent<Health> ().m_Water = GameObject.FindObjectOfType<WaterTide>().gameObject;
 		SetState (state);
 	}
 
@@ -120,11 +133,19 @@ public class EnemyController : MonoBehaviour
 			break;
 		}	
 
+		//Searching
+		case EnemyState.Attack:
+		{
+			if (!m_Attack.IsAttacking())
+			{
+				m_Attack.DoAttack();
+			}
+			break;
+		}
+
 		//Flying
 		case EnemyState.Knockback:
 		{
-			transform.position += m_KnockBackSpeed * Time.deltaTime;
-
 			m_KnockBackSpeed.y += m_Gravity * Time.deltaTime;
 
 			m_KnockbackTimer -= Time.deltaTime;
@@ -134,6 +155,13 @@ public class EnemyController : MonoBehaviour
 				SetState(EnemyState.Wander);
 			}
 
+			break;
+		}
+
+		//Chasing
+		case EnemyState.Run:
+		{
+			MoveTowards(transform.position + (transform.position - m_PlayerTransform.position).normalized * KNOWN_DISTANCE);
 			break;
 		}
 
@@ -171,10 +199,21 @@ public class EnemyController : MonoBehaviour
 				SetSearchPosition (playerPos);
 			}
 
-			//Chase
-			if (m_State != EnemyState.Chase)
+			//If already attacking their is no effect
+			if (!m_Attack.IsAttacking())
 			{
-				SetState (EnemyState.Chase);
+				if (distance < ATTACK_DISTANCE)
+				{
+					if (m_State != EnemyState.Attack)
+					{
+						SetState (EnemyState.Attack);
+					}
+				}
+				//Chase
+				else if (m_State != EnemyState.Chase)
+				{
+					SetState (EnemyState.Chase);
+				}
 			}
 		}
 		//If the enemy should exit chase and enter search
@@ -205,12 +244,17 @@ public class EnemyController : MonoBehaviour
 	/// </summary>
 	public void SetState (EnemyState state)
 	{
+		//For chickens
+		if (m_Fearful && (state == EnemyState.Search || state == EnemyState.Chase))
+		{
+			state = EnemyState.Run;
+		}
+
 		//Set the state
 		m_State = state;
 
 		//Wander ariund aimlessly
-		if (state == EnemyState.Wander)
-		{
+		if (state == EnemyState.Wander) {
 			//Set speeds
 			m_Agent.speed = WANDER_SPEED;
 			m_Agent.acceleration = WANDER_ACCELERATION;
@@ -219,16 +263,14 @@ public class EnemyController : MonoBehaviour
 			m_SearchTimer = -1f;
 
 			//Set own leash position
-			if (m_Horde == null)
-			{
+			if (m_Horde == null) {
 				SetLeashPosition (transform.position);
 			}
 			GetNewWanderPosition ();
 		}
 
 		//Searching for the player
-		else if (state == EnemyState.Search)
-		{
+		else if (state == EnemyState.Search) {
 			//Set speeds
 			m_Agent.speed = SEARCH_SPEED;
 			m_Agent.acceleration = SEARCH_ACCELERATION;
@@ -237,20 +279,17 @@ public class EnemyController : MonoBehaviour
 			m_SearchTimer = SEARCH_TIMER;
 
 			//Set own search position
-			if (m_Horde == null)
-			{
+			if (m_Horde == null) {
 				SetSearchPosition (m_PlayerTransform.position);
 			}
 			//Search movement for hordes
-			else
-			{
-				MoveTowards(m_SearchPos + transform.position - m_LeashPosition);
+			else {
+				MoveTowards (m_SearchPos + transform.position - m_LeashPosition);
 			}
 		}
 
 		//Chasing the player
-		else
-		{
+		else if (state == EnemyState.Chase) {
 			//Set speeds
 			m_Agent.speed = CHASE_SPEED;
 			m_Agent.acceleration = CHASE_ACCELERATION;
@@ -259,10 +298,34 @@ public class EnemyController : MonoBehaviour
 			m_SearchTimer = -1f;
 
 			//Tell horde player found
+			if (m_Horde != null) {
+				m_Horde.OnPlayerFound (m_PlayerTransform.position);
+			}
+		}
+		//Running from player
+		else if (state == EnemyState.Run) {
+			//Set speeds
+			m_Agent.speed = CHASE_SPEED;
+			m_Agent.acceleration = CHASE_ACCELERATION;
+			
+			//Set timer
+			m_SearchTimer = -1f;
+			
+			//Tell horde player found
 			if (m_Horde != null)
 			{
-				m_Horde.OnPlayerFound(m_PlayerTransform.position);
+				m_Horde.OnPlayerFound (m_PlayerTransform.position);
 			}
+		}
+		//Dead
+		else
+		{
+			if (m_Horde != null)
+			{
+				m_Horde.RemoveEnemy(this);
+			}
+			m_Agent.Stop();
+			Destroy(this);
 		}
 	}
 

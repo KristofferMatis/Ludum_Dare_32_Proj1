@@ -18,11 +18,11 @@ public class HordeController : MonoBehaviour
 
 
 	//When this horde is spawned
-	public void OnCreateHorde ()
+	public void OnCreateHorde (HordeSpawner spawner)
 	{
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
 		m_SearchPosition = m_PlayerTransform.position;
-		m_Spawner = GameObject.FindObjectOfType<HordeSpawner> ().GetComponent<HordeSpawner>();
+		m_Spawner = spawner;
 		if (m_Enemies == null)
 		{
 			m_Enemies = new List<EnemyController>();
@@ -47,7 +47,7 @@ public class HordeController : MonoBehaviour
 	//Tell existing enemies we exist
 	void Start ()
 	{
-		OnCreateHorde ();
+		OnCreateHorde (GameObject.FindObjectOfType<HordeSpawner> ().GetComponent<HordeSpawner>());
 	}
 	
 	//Update each enemies awareness of their horde

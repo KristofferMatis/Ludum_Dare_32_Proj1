@@ -13,22 +13,22 @@ public class HordeSpawner : MonoBehaviour
 
 	//How far to spawn hordes and enemies
 	const float SPAWN_DISTANCE_FROM_HORDE = 25f;
-	const float MIN_FIRST_SPAWN_DISTANCE = 75f;
-	const float MAX_FIRST_SPAWN_DISTANCE = 100f;
+	const float MIN_FIRST_SPAWN_DISTANCE = 80f;
+	const float MAX_FIRST_SPAWN_DISTANCE = 120f;
 
 	//Spawning
 	const float INITIAL_SPAWN_TIME = 30f;
 	const float MIN_SPAWN_TIME = 15f;
 	float m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 	float m_TimeSinceLastSpawn = INITIAL_SPAWN_TIME;
-	int BasicSpawnCount = 6;
-	const int DIFFICULTY_ADJUSTMENT = 2;
+	public int BasicSpawnCount = 5;
+	public int DifficultyAdjustment = 2;
 
 	//Enemy prefabs
 	public List<GameObject> SpawnableEnemies;
 
 	//Horde Game Object
-	public GameObject m_HordeGameObject;
+	GameObject m_HordeGameObject;
 
 
 	//Iinitialization
@@ -38,6 +38,7 @@ public class HordeSpawner : MonoBehaviour
 		HordeController[] hordes = GameObject.FindObjectsOfType<HordeController> ();
 		m_Hordes.AddRange (hordes);
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
+		m_HordeGameObject = (GameObject)Resources.Load<GameObject> ("Prefabs/Enemies/BaseHorde"); 
 	}
 	
 	//Update is called once per frame
@@ -51,7 +52,7 @@ public class HordeSpawner : MonoBehaviour
 				//Acclerate spawns as day goes on
 				if (m_MaxTimeBetweenSpawns > MIN_SPAWN_TIME)
 				{
-					m_MaxTimeBetweenSpawns -= DIFFICULTY_ADJUSTMENT;
+					m_MaxTimeBetweenSpawns -= DifficultyAdjustment;
 				}
 				m_TimeSinceLastSpawn = m_MaxTimeBetweenSpawns;
 
@@ -74,8 +75,8 @@ public class HordeSpawner : MonoBehaviour
 	public void SetDay (bool isDay)
 	{
 		IsDay = isDay;
-		BasicSpawnCount += DIFFICULTY_ADJUSTMENT;
-		SpecialSpawnCount += DIFFICULTY_ADJUSTMENT;
+		BasicSpawnCount += DifficultyAdjustment;
+		SpecialSpawnCount += DifficultyAdjustment;
 
 		if (SpawnableEnemies.Count > 0)
 		{
@@ -103,7 +104,7 @@ public class HordeSpawner : MonoBehaviour
 	public void SpawnHorde (int enemyCount, GameObject enemy, EnemyController.EnemyState state)
 	{
 		HordeController newHorde = GameObject.Instantiate(m_HordeGameObject).GetComponent<HordeController>();
-		newHorde.OnCreateHorde ();
+		newHorde.OnCreateHorde (this);
 		newHorde.Spawn (enemyCount, enemy, state);
 		m_Hordes.Add (newHorde);
 	}

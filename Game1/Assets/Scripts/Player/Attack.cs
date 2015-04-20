@@ -108,4 +108,9 @@ public class Attack : MonoBehaviour
 	{
 		m_DrunkTimer = drunkTime;
 	}
+
+	public bool IsAttacking()
+	{
+		return m_IsAttacking;
+	}
 }
