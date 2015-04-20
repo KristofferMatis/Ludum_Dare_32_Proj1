@@ -20,6 +20,6 @@ public class WaterTide : MonoBehaviour
 
 	void OnTriggerEnter (Collider collider)
 	{
-		//Check if they are too below us and kill them
+		//Check if they are too below us and kill them <- Done in Health ;-)
 	}
 }
