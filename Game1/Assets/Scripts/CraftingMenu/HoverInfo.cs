@@ -128,7 +128,8 @@ public class HoverInfo
         else if(m_SlotThisFrame != null)
         {
             AttachmentSlot slot = m_SlotThisFrame as AttachmentSlot;
-            if (slot == null)
+            ItemRemove slot2 = m_SlotThisFrame as ItemRemove;
+            if (slot == null && slot2 == null)
             {
                 m_PositionBG.position = Input.mousePosition;
 
@@ -145,8 +146,8 @@ public class HoverInfo
                     m_PositionText.y += m_PositionText.height;
                 }
             }
-            else
-            {
+            else if(slot != null)
+            {//attachment
                 m_PositionBG.position = Input.mousePosition;
 
                 m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
@@ -159,6 +160,41 @@ public class HoverInfo
                 for (int i = 0; i < slot.Instructions.Length; i++)
                 {
                     GUI.Label(m_PositionText, slot.Instructions[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
+            }
+            else
+            {//item remove
+                m_PositionBG.position = Input.mousePosition;
+
+                m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
+
+                GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
+                m_PositionText.position = m_PositionBG.position + m_TextOffset;
+
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+
+                for (int i = 0; i < slot2.Instructions.Length; i++)
+                {
+                    GUI.Label(m_PositionText, slot2.Instructions[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
+
+                if (!slot2.i_IsBoatDrop)
+                    return;
+
+                for (int i = 0; i < BoatManager.Instance.ObjectsStillNecessary.Count;)
+                {
+                    string currentLine = "";
+                    do
+                    {
+                        currentLine += BoatManager.Instance.ObjectsStillNecessary[i++];
+                        if (i < BoatManager.Instance.ObjectsStillNecessary.Count)
+                        {
+                            currentLine += ", ";
+                        }
+                    } while ((currentLine.ToCharArray().Length < 20 && i < BoatManager.Instance.ObjectsStillNecessary.Count));
+                    GUI.Label(m_PositionText, currentLine);
                     m_PositionText.y += m_PositionText.height;
                 }
             }
