@@ -88,6 +88,9 @@ public class WeaponDrop : MonoBehaviour
             case MiscEffectType.e_Scaling:
                 m_Effects.Add(MiscEffectType.e_Scaling);
                 break;
+			case MiscEffectType.e_Drunk:
+				m_Effects.Add(MiscEffectType.e_Drunk);
+				break;
             default:
                 break;
         };

@@ -1,17 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Drunk : MonoBehaviour 
+public class Drunk : MiscEffects 
 {
-	// Use this for initialization
-	void Start () 
+	protected override void DoEffectVirtual (Health otherHealth)
 	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
+		otherHealth.GetComponent<Attack> ().SetDrunkEffect (Constants.DRUNK_EFFECT_DURATION);
 	}
 }

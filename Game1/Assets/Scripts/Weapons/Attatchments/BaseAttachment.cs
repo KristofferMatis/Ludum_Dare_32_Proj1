@@ -17,6 +17,8 @@ public class BaseAttachment : MonoBehaviour
 
 	List<MiscEffects> m_MiscEffects = new List<MiscEffects>();
 
+	bool m_IsDrunk;
+
 	public WeaponStats TotalStats
 	{
 		get
@@ -175,7 +177,7 @@ public class BaseAttachment : MonoBehaviour
 		}
 		else
 		{
-			if(health.GetComponentInChildren<BaseAttachment>() != this)
+			if(health.GetComponentInChildren<BaseAttachment>() != this && (m_IsDrunk || health.CompareTag(tag)))
 			{
 				Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
 				knockbackSpeed.y = Constants.KNOCKBACK_VERTICAL_SPEED;
@@ -201,5 +203,10 @@ public class BaseAttachment : MonoBehaviour
 		{
 			m_MiscEffects.Add (effect);
 		}
+	}
+
+	public void SetDrunk(bool isDrunk)
+	{
+		m_IsDrunk = isDrunk;
 	}
 }

@@ -19,6 +19,8 @@ public class Attack : MonoBehaviour
 	public float m_LerpSpeed = 15.0f;
 	public float m_RotationSpeed = 5.0f;
 
+	float m_DrunkTimer;
+
 	void Start()
 	{
 		if(m_WeaponEquipped)
@@ -45,6 +47,15 @@ public class Attack : MonoBehaviour
 				{
 					m_WeaponEquipped.ToggleCollider(false);
 				}
+
+				if(m_DrunkTimer > 0.0f)
+				{
+					m_WeaponEquipped.SetDrunk (true);
+				}
+				else
+				{					
+					m_WeaponEquipped.SetDrunk (false);
+				}
 			}
 			else
 			{
@@ -60,6 +71,8 @@ public class Attack : MonoBehaviour
 				m_WeaponEquipped.transform.RotateAround(m_WeaponEquipped.transform.position, Vector3.up, m_RotationSpeed * Time.deltaTime);
 			}
 		}
+		
+		m_DrunkTimer -= Time.deltaTime;
 	}
 
 	public void EquipWeapon(BaseBaseWeapon weapon)
@@ -68,6 +81,7 @@ public class Attack : MonoBehaviour
 		{
 			weapon.SetTotalStatsAfterCrafting ();
 			m_WeaponEquipped = weapon;
+			m_WeaponEquipped.gameObject.tag = tag;
 		}
 		else
 		{
@@ -88,5 +102,10 @@ public class Attack : MonoBehaviour
 	public void DoAttack()
 	{
 		m_StartUpTimer = m_WeaponEquipped.TotalStats.m_StartUpTime;
+	}
+
+	public void SetDrunkEffect(float drunkTime)
+	{
+		m_DrunkTimer = drunkTime;
 	}
 }
