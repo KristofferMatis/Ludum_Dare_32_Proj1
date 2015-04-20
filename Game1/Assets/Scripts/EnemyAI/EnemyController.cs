@@ -77,7 +77,6 @@ public class EnemyController : MonoBehaviour
 		m_Agent = (NavMeshAgent)GetComponent<NavMeshAgent> ();
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
 		m_Attack = GetComponent<Attack>();
-		GetComponent<Health> ().m_Water = GameObject.FindObjectOfType<WaterTide>().gameObject;
 		SetState (state);
 	}
 
