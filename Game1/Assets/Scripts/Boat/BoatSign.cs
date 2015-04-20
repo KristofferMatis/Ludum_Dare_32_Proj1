@@ -16,7 +16,9 @@ public class BoatSign : MonoBehaviour
 	{
 		m_Words = GetComponentsInChildren<Renderer> ();
 
-		m_BoatManager = GameObject.FindGameObjectWithTag (Constants.BOAT_TAG).GetComponent<BoatManager> ();
+		//m_BoatManager = GameObject.FindGameObjectWithTag (Constants.BOAT_TAG).GetComponent<BoatManager> ();
+
+		m_BoatManager = BoatManager.Instance;
 	}
 	
 	// Update is called once per frame

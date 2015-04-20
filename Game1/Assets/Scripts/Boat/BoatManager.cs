@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoatManager : MonoBehaviour 
+public class BoatManager : Singleton<BoatManager>
 {
 	Boat m_Boat;
 
@@ -17,17 +17,17 @@ public class BoatManager : MonoBehaviour
 		}
 	}
 
-	public string ObjectsStillNecessary
+	public List<string> ObjectsStillNecessary
 	{
 		get
 		{
-			string result = "";
+			List<string> result = new List<string>();
 
 			foreach(string type in m_ObjectTypesNecessary.Keys)
 			{
 				if(m_ObjectTypesNecessary[type])
 				{
-					result += ", " + type;
+					result.Add (type);
 				}
 			}
 
