@@ -256,8 +256,16 @@ public class CraftingMenu : Singleton<CraftingMenu>
         return counter;
     }
 
+    const string SET_M_ITEM_THIS_FRAME_TO_NULL_COUROUTINE = "setm_ItemThisFrameToNull";
     void OnGUI()
     {
         m_ClickHandler.onGUI();
+        StartCoroutine(SET_M_ITEM_THIS_FRAME_TO_NULL_COUROUTINE);
+    }
+
+    IEnumerator setm_ItemThisFrameToNull()
+    {
+        yield return new WaitForEndOfFrame();
+        m_ClickHandler.setm_ItemThisFrameToNull();
     }
 }

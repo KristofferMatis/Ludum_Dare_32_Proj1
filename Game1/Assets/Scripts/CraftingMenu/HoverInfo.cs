@@ -9,11 +9,16 @@ public class HoverInfo
     Rect m_PositionText;
     Item m_ItemThisFrame = null;
     float m_OffsetX = 0.1f;
+	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
+
 
     string[] m_Stats = new string[6];
     string[] m_StatsBaseString = new string[] { "Damage : ", "Knockback : ", "AttackType : ", "StartUpTime : ", "RecoveryTime : ", "MountPoints : " };
 
     public ClickHandler clickHandler { get; set; }
+
+    int update = 0;
+    int gui = 0;
 
     enum Stats
     { 
@@ -28,8 +33,9 @@ public class HoverInfo
     public void Start() 
     {
         m_TextBG = Resources.Load<Texture>(TEXT_BG_PATH);
-        m_PositionBG = new Rect(0.0f, 0.0f, 150.0f, 105.0f);
+        m_PositionBG = new Rect(0.0f, 0.0f, 150.0f, 160.0f);
         m_PositionText = new Rect(0.0f, 0.0f, 150.0f, 0.0f);
+        m_OffsetX *= Screen.width;
 	}
 	
 	// Update is called once per frame
@@ -51,7 +57,6 @@ public class HoverInfo
             // get new strings
             setStringData(items[0]);            
 
-            //TODO: update rect
             m_ItemThisFrame = items[0];
         } 
 	}
@@ -78,13 +83,17 @@ public class HoverInfo
 
     public void onGUI()
     {
-        if (!m_ItemThisFrame != null)
+        if (m_ItemThisFrame == null)
             return;
 
-        GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
-        m_PositionText.position = m_PositionBG.position;
+        m_PositionBG.position = Input.mousePosition;
 
-        if(!m_ItemThisFrame.BaseWeapon != null)
+		m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX , Screen.height - m_PositionBG.y);
+
+        GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
+		m_PositionText.position = m_PositionBG.position + m_TextOffset;
+
+        if(!m_ItemThisFrame.BaseWeapon == null)
         {
             m_PositionText.height = m_PositionBG.height / 6.0f;
             for (int i = 0; i < m_Stats.Length - 1; i++)
@@ -102,9 +111,13 @@ public class HoverInfo
                 m_PositionText.y += m_PositionText.height;
             }
         }
+    }
 
+    public void setm_ItemThisFrameToNull()
+    {
         m_ItemThisFrame = null;
     }
+
 
     /// </summary>
     /// <param name="hitInfo"></param>

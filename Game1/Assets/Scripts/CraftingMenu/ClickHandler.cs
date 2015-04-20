@@ -129,7 +129,7 @@ public class ClickHandler
                         }
                         else
                         {
-							if(!(m_ItemBeingDragged.MountedTo.GetType() == typeof(BaseWeaponSlot)) || CraftingMenu.Instance.getTotalInUseAtachmentSlots() == 0)
+							if(!(m_ItemBeingDragged.MountedTo.GetType() == typeof(BaseWeaponSlot)) || (CraftingMenu.Instance.getTotalInUseAtachmentSlots() == 0 && itemSlots[0].GetType() != typeof(AttachmentSlot)))
 							{
 	                            m_ItemBeingDragged.OnDisMount();
 	                            itemSlots[0].OnMount(m_ItemBeingDragged);
@@ -252,4 +252,11 @@ public class ClickHandler
     {
         m_HoverInfo.onGUI();
     }
+
+    public void setm_ItemThisFrameToNull()
+    {
+        m_HoverInfo.setm_ItemThisFrameToNull();
+    }
 }
+
+    
