@@ -8,6 +8,7 @@ public class HoverInfo
     Rect m_PositionBG;
     Rect m_PositionText;
     Item m_ItemThisFrame = null;
+    ItemSlot m_SlotThisFrame = null;
     float m_OffsetX = 0.05f;
 	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
 
@@ -54,13 +55,18 @@ public class HoverInfo
 
         if(Raycast(out hitInfo, out items, out itemSlots))
         {
-            if (items.Length <= 0)
-                return;
+            if (items.Length > 0)
+            {
 
-            // get new strings
-            setStringData(items[0]);            
+                // get new strings
+                setStringData(items[0]);
 
-            m_ItemThisFrame = items[0];
+                m_ItemThisFrame = items[0];
+            }
+            else if(itemSlots.Length > 0)
+            {
+                m_SlotThisFrame = itemSlots[0];
+            }
         } 
 	}
 
@@ -90,33 +96,71 @@ public class HoverInfo
 
     public void onGUI()
     {
-        if (m_ItemThisFrame == null)
-            return;
-
-        m_PositionBG.position = Input.mousePosition;
-
-		m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width , Screen.height - m_PositionBG.y);
-
-        GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
-		m_PositionText.position = m_PositionBG.position + m_TextOffset;
-
-        if(m_ItemThisFrame.BaseWeapon != null)
+        if (m_ItemThisFrame != null)
         {
-			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 3.0f;
-			//m_PositionText
-			for (int i = 0; i < m_Stats.Length; i++)
+            m_PositionBG.position = Input.mousePosition;
+
+            m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
+
+            GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
+            m_PositionText.position = m_PositionBG.position + m_TextOffset;
+
+            if (m_ItemThisFrame.BaseWeapon != null)
             {
-                GUI.Label(m_PositionText, m_Stats[i]);
-                m_PositionText.y += m_PositionText.height;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 3.0f;
+                //m_PositionText
+                for (int i = 0; i < m_Stats.Length; i++)
+                {
+                    GUI.Label(m_PositionText, m_Stats[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
+            }
+            else
+            {
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+                for (int i = 0; i < m_Stats.Length - 2; i++)
+                {
+                    GUI.Label(m_PositionText, m_Stats[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
             }
         }
-        else
+        else if(m_SlotThisFrame != null)
         {
-			m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
-            for (int i = 0; i < m_Stats.Length - 2; i++)
+            AttachmentSlot slot = m_SlotThisFrame as AttachmentSlot;
+            if (slot == null)
             {
-                GUI.Label(m_PositionText, m_Stats[i]);
-                m_PositionText.y += m_PositionText.height;
+                m_PositionBG.position = Input.mousePosition;
+
+                m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
+
+                GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
+                m_PositionText.position = m_PositionBG.position + m_TextOffset;
+
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+
+                for (int i = 0; i < m_SlotThisFrame.Instructions.Length; i++)
+                {
+                    GUI.Label(m_PositionText, m_SlotThisFrame.Instructions[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
+            }
+            else
+            {
+                m_PositionBG.position = Input.mousePosition;
+
+                m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
+
+                GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
+                m_PositionText.position = m_PositionBG.position + m_TextOffset;
+
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+
+                for (int i = 0; i < slot.Instructions.Length; i++)
+                {
+                    GUI.Label(m_PositionText, slot.Instructions[i]);
+                    m_PositionText.y += m_PositionText.height;
+                }
             }
         }
     }
@@ -124,6 +168,7 @@ public class HoverInfo
     public void setm_ItemThisFrameToNull()
     {
         m_ItemThisFrame = null;
+        m_SlotThisFrame = null;
     }
 
 

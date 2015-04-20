@@ -41,6 +41,14 @@ public class ItemRemove : ItemSlot
 
     protected override void Start()
     {
+        if (i_IsBoatDrop)
+        {
+            INSTRUCTIONS = new string[] { "This is The Boat", "Slot, Drag Items Here", "To Build The Boat", "WARNING: They Will Be", "DELETED" };
+        }
+        else
+        {
+            INSTRUCTIONS = new string[] { "This is The Trash", "Drag Items Here To", "Delete Them" };
+        }
 		m_BoatManager = GameObject.FindGameObjectWithTag (Constants.BOAT_TAG).GetComponent<BoatManager> ();
     }
 }

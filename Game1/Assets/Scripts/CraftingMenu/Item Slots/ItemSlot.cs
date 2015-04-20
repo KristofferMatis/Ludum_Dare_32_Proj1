@@ -6,11 +6,11 @@ public class ItemSlot : MonoBehaviour
     public Transform i_MountPoint;
     protected Item m_Item;
 
-    const string ANY_ITEM = "Any Item";
-    public string ItemsAccpted
+    protected string[] INSTRUCTIONS = new string[] { "This is an Inventory", "Slot, Any Item Can", "Be Placed Here" };
+    public string[] Instructions
     {
-        get { return ANY_ITEM; }
-    }
+		get { return INSTRUCTIONS; }
+	}
 
 	// Use this for initialization
     protected virtual void Start() 
