@@ -133,7 +133,6 @@ public class ClickHandler
                         {
 							if(!(m_ItemBeingDragged.MountedTo.GetType() == typeof(BaseWeaponSlot)) || (CraftingMenu.Instance.getTotalInUseAtachmentSlots() == 0 && itemSlots[0].GetType() != typeof(AttachmentSlot)))
 							{
-								CraftingMenu.Instance.PlayItemDropped();
 	                            m_ItemBeingDragged.OnDisMount();
 	                            itemSlots[0].OnMount(m_ItemBeingDragged);
 							}
@@ -154,7 +153,6 @@ public class ClickHandler
         {//swapping out the base weapon
             if(!checkBaseWeaponMounts(slot2.getItem()) || slot2.getItem().BaseWeapon == null)
             {
-				CraftingMenu.Instance.PlayItemDropped();
                 m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
                 m_ItemBeingDragged = null;
                 return;
@@ -180,8 +178,6 @@ public class ClickHandler
 
             m_ItemBeingDragged = null;
             CraftingMenu.Instance.ReAttachAllAttachments();
-			
-			CraftingMenu.Instance.PlayItemDropped();
             return;
         }
 		else if(slot1.GetType() == typeof(AttachmentSlot) && slot2.GetType() == typeof(AttachmentSlot))

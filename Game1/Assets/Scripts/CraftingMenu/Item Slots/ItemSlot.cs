@@ -22,6 +22,7 @@ public class ItemSlot : MonoBehaviour
     //will be used by children classes that can only take attachments or base weapons
     public virtual bool CanAcceptItem(Item item)
     {
+		CraftingMenu.Instance.PlayItemDropped ();
         return true;
     }
 

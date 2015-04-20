@@ -13,12 +13,19 @@ public class ItemRemove : ItemSlot
 
     public override bool CanAcceptItem(Item item)//TODO: once hover info is working make text say what is needed
     {
+		bool result = true;
+
         if(i_IsBoatDrop)
 		{
-			return BoatManager.Instance.IsObjectTypeNecessary(item.Attachment.m_AttachmentName);
+			result = BoatManager.Instance.IsObjectTypeNecessary(item.Attachment.m_AttachmentName);
 		}
 
-        return true;
+		if(!result)
+		{
+			CraftingMenu.Instance.PlayDropImpossible();
+		}
+
+        return result;
     }
 
     public override Item OnDisMount()

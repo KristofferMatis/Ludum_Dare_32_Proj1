@@ -23,8 +23,14 @@ public class BaseWeaponSlot : ItemSlot
     public override bool CanAcceptItem(Item item)
     {
 		if (item != null && item.BaseWeapon != null && base.CanAcceptItem(item))
+		{
+			CraftingMenu.Instance.PlayItemDropped();
             return true;
+		}
         else
+		{
+			CraftingMenu.Instance.PlayDropImpossible();
             return false;
+		}
     }
 }

@@ -63,9 +63,15 @@ public class AttachmentSlot : ItemSlot
     public override bool CanAcceptItem(Item item)
     {
 		if (item != null && item.Attachment != null && base.CanAcceptItem(item) && m_IsEnabled)
+		{
+			CraftingMenu.Instance.PlayItemDropped();
             return true;
+		}
         else
+		{
+			CraftingMenu.Instance.PlayDropImpossible();
             return false;
+		}
     }
 
     public override void OnMount(Item item)
