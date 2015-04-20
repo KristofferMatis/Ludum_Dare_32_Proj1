@@ -6,22 +6,22 @@ public class HordeSpawner : MonoBehaviour
 	//The hordes of enemies
 	List<HordeController> m_Hordes;
 	bool IsDay = true;
-	int SpecialSpawnCount = 0;
 
 	//The player
 	Transform m_PlayerTransform;
 
 	//How far to spawn hordes and enemies
-	const float SPAWN_DISTANCE_FROM_HORDE = 25f;
-	const float MIN_FIRST_SPAWN_DISTANCE = 80f;
-	const float MAX_FIRST_SPAWN_DISTANCE = 120f;
+	const float SPAWN_DISTANCE_FROM_HORDE = 35f;
+	const float MIN_FIRST_SPAWN_DISTANCE = 100f;
+	const float MAX_FIRST_SPAWN_DISTANCE = 135f;
 
 	//Spawning
 	const float INITIAL_SPAWN_TIME = 30f;
 	const float MIN_SPAWN_TIME = 15f;
 	float m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
 	float m_TimeSinceLastSpawn = INITIAL_SPAWN_TIME;
-	public int BasicSpawnCount = 5;
+	public int BasicSpawnCount = 4;
+	public int SpecialSpawnCount = 0;
 	public int DifficultyAdjustment = 2;
 
 	//Enemy prefabs

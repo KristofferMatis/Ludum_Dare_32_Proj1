@@ -7,8 +7,8 @@ public class EnemyController : MonoBehaviour
 	const float CHASE_DISTANCE = 50.0f;
 	const float LEASH_DISTANCE = 30.0f;
 	const float WANDER_DISTANCE = 10.0f;
-	const float KNOWN_DISTANCE = 12.0f;
-	const float ATTACK_DISTANCE = 3.0f;
+	const float KNOWN_DISTANCE = 20.0f;
+	const float ATTACK_DISTANCE = 4.0f;
 
 	//Chasing
 	const float SIGHT_ANGLE = 0f;
@@ -17,11 +17,11 @@ public class EnemyController : MonoBehaviour
 	const float WANDER_SPEED = 2.0f;
 	const float SEARCH_SPEED = 6.0f;
 	const float CHASE_SPEED = 10.0f;
-	const float ATTACK_SPEED = 10.0f;
+	const float ATTACK_SPEED = 8.0f;
 	const float WANDER_ACCELERATION = 0.5f;
 	const float SEARCH_ACCELERATION = 5.0f;
 	const float CHASE_ACCELERATION = 10.0f;
-	const float ATTACK_ACCELERATION = 10.0f;
+	const float ATTACK_ACCELERATION = 5.0f;
 
 	//Knockback
 	Vector3 m_KnockBackSpeed;
@@ -141,6 +141,7 @@ public class EnemyController : MonoBehaviour
 			{
 				m_Attack.DoAttack();
 			}
+			MoveTowards(m_PlayerTransform.position);
 			break;
 		}
 
@@ -162,7 +163,7 @@ public class EnemyController : MonoBehaviour
 		//Chasing
 		case EnemyState.Run:
 		{
-			MoveTowards(transform.position + (transform.position - m_PlayerTransform.position).normalized * KNOWN_DISTANCE);
+			MoveTowards(transform.position + (transform.position - m_PlayerTransform.position).normalized * CHASE_DISTANCE);
 			break;
 		}
 
@@ -200,8 +201,13 @@ public class EnemyController : MonoBehaviour
 				SetSearchPosition (playerPos);
 			}
 
+			if (m_Fearful && m_State != EnemyState.Run)
+			{
+				SetState (EnemyState.Run);
+			}
+
 			//If already attacking their is no effect
-			if (!m_Attack.IsAttacking())
+			else if (!m_Fearful  && !m_Attack.IsAttacking())
 			{
 				if (distance < ATTACK_DISTANCE)
 				{
@@ -217,17 +223,17 @@ public class EnemyController : MonoBehaviour
 				}
 			}
 		}
-		//If the enemy should exit chase and enter search
-		else if (m_State == EnemyState.Chase)
-		{
-			SetState (EnemyState.Search);
-		}
-		else if (m_State == EnemyState.Search)
+		else if (m_State == EnemyState.Search || m_State == EnemyState.Run)
 		{
 			if (Vector3.Distance(transform.position, m_SearchPos) <= m_Agent.stoppingDistance)
 			{
 				SetState (EnemyState.Wander);
 			}
+		}
+		//If the enemy should exit chase and enter search
+		else if (m_State == EnemyState.Chase)
+		{
+			SetState (EnemyState.Search);
 		}
 		return m_State;
 	}
@@ -284,7 +290,8 @@ public class EnemyController : MonoBehaviour
 				SetSearchPosition (m_PlayerTransform.position);
 			}
 			//Search movement for hordes
-			else {
+			else
+			{
 				MoveTowards (m_SearchPos + transform.position - m_LeashPosition);
 			}
 		}
@@ -299,9 +306,26 @@ public class EnemyController : MonoBehaviour
 			m_SearchTimer = -1f;
 
 			//Tell horde player found
-			if (m_Horde != null) {
+			if (m_Horde != null)
+			{
 				m_Horde.OnPlayerFound (m_PlayerTransform.position);
 			}
+		}
+		//Chasing the player
+		else if (state == EnemyState.Attack) {
+			//Set speeds
+			m_Agent.speed = ATTACK_SPEED;
+			m_Agent.acceleration = ATTACK_ACCELERATION;
+			
+			//Set timer
+			m_SearchTimer = -1f;
+			
+			//Tell horde player found
+			if (m_Horde != null)
+			{
+				m_Horde.OnPlayerFound (m_PlayerTransform.position);
+			}
+			MoveTowards(m_PlayerTransform.position);
 		}
 		//Running from player
 		else if (state == EnemyState.Run) {

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScreenChange : MonoBehaviour
 {
-	public string m_NextLevelOnPress = "JasonTestScene";
+	public string m_NextLevelOnPress = "MainScene";
 	public KeyCode m_KeyToGo = KeyCode.Space;
 	
 	// Update is called once per frame
