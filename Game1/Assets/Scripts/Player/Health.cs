@@ -132,7 +132,10 @@ public class Health : MonoBehaviour
 			Application.LoadLevel ("SplashScene");
 		}
 
-		m_AudioSource.PlayOneShot (m_DeathClips[Random.Range (0, m_DeathClips.Length)]);
+		if(m_DeathClips.Length > 0)
+		{
+			m_AudioSource.PlayOneShot (m_DeathClips[Random.Range (0, m_DeathClips.Length)]);
+		}
 	}
 
 	void Knockback(Vector3 knockback)
@@ -146,7 +149,10 @@ public class Health : MonoBehaviour
 			m_Movement.Knockback(knockback);
 		}
 
-		m_AudioSource.PlayOneShot (m_HurtClips[Random.Range (0, m_HurtClips.Length)]);
+		if(m_HurtClips.Length > 0)
+		{
+			m_AudioSource.PlayOneShot (m_HurtClips[Random.Range (0, m_HurtClips.Length)]);
+		}
 	}
 		
 	public void SetOnFire(float time, float damageRate, GameObject flameParticles)
@@ -162,7 +168,10 @@ public class Health : MonoBehaviour
 
 			m_FlameParticles = flameObject;
 
-			m_AudioSource.PlayOneShot(m_FireClips[Random.Range (0, m_FireClips.Length)]);
+			if(m_FireClips.Length > 0)
+			{
+				m_AudioSource.PlayOneShot(m_FireClips[Random.Range (0, m_FireClips.Length)]);
+			}
 		}
 	}
 

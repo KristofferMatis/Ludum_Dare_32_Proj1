@@ -135,7 +135,10 @@ public class Attack : MonoBehaviour
                 }
             }
 
-			m_AudioSource.PlayOneShot (m_AttackClips[Random.Range (0, m_AttackClips.Length)]);
+			if(m_AttackClips.Length > 0)
+			{
+				m_AudioSource.PlayOneShot (m_AttackClips[Random.Range (0, m_AttackClips.Length)]);
+			}
 
 			m_IsAttacking = true;
 		}
