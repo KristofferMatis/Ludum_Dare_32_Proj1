@@ -107,6 +107,7 @@ public class Attack : MonoBehaviour
 		if(m_WeaponEquipped != null)
 		{
 			m_StartUpTimer = m_WeaponEquipped.TotalStats.m_StartUpTime;
+			m_IsAttacking = true;
 		}
 	}
 

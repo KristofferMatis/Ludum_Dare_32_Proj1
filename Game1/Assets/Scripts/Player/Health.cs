@@ -33,6 +33,8 @@ public class Health : MonoBehaviour
 	AudioSource m_AudioSource;
 
 	public AudioClip m_FireClip;
+	public AudioClip m_DeathClip;
+	public AudioClip m_HurtClip;
 
 	// Use this for initialization
 	void Start () 
@@ -129,6 +131,8 @@ public class Health : MonoBehaviour
 			//for now i'll just send us straight to the splash screen
 			Application.LoadLevel ("SplashScene");
 		}
+
+		m_AudioSource.PlayOneShot (m_DeathClip);
 	}
 
 	void Knockback(Vector3 knockback)
@@ -141,6 +145,8 @@ public class Health : MonoBehaviour
 		{
 			m_Movement.Knockback(knockback);
 		}
+
+		m_AudioSource.PlayOneShot (m_HurtClip);
 	}
 		
 	public void SetOnFire(float time, float damageRate, GameObject flameParticles)
