@@ -49,5 +49,6 @@ public class ItemRemove : ItemSlot
         {
             INSTRUCTIONS = new string[] { "This is The Trash", "Drag Items Here To", "Delete Them" };
         }
+
     }
 }

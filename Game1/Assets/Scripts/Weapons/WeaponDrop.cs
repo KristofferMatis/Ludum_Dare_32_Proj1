@@ -39,6 +39,8 @@ public class WeaponDrop : MonoBehaviour
     public float i_SpecialEffectsChance = 0.1f;
     List<MiscEffectType> m_Effects = new List<MiscEffectType>();
 
+	ParticleSystem m_Particles;
+	bool m_FirstUpdate;
 
 	// Use this for initialization
 	void Start () 
@@ -52,6 +54,33 @@ public class WeaponDrop : MonoBehaviour
 
 		GameObject newWeapon = (GameObject)Instantiate (GamePrefab, transform.position, Quaternion.identity);
 		newWeapon.transform.parent = transform;
+
+		GameObject newParticles = (GameObject)Instantiate (Resources.Load<GameObject>("Prefabs/Weapons/Weapons/Drops/ItemDropLight"), transform.position, Quaternion.identity);
+
+		m_Particles = newParticles.GetComponentInChildren<ParticleSystem> ();
+
+		newParticles.transform.parent = transform;
+	}
+
+	void Update()
+	{
+		if(!m_FirstUpdate)
+		{
+			m_FirstUpdate = true;
+
+			Color effectColor = Color.white;
+			
+			if(m_Effects.Count >= 3)
+			{
+				effectColor = new Color(255, 165, 0);
+			}
+			else if(m_Effects.Count >= 1)
+			{
+				effectColor = new Color(160, 32, 240);
+			}
+
+			m_Particles.startColor = effectColor;
+		}
 	}
 	
     void OnTriggerStay(Collider other)
