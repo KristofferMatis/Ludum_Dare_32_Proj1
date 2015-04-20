@@ -15,7 +15,7 @@ public enum MiscEffectType
 
 public class MiscEffects : MonoBehaviour 
 {
-    MiscEffectType m_Type;
+    protected MiscEffectType m_Type;
 
     protected const string EFFECT_TYPE_FLAMING = "Flaming";
     protected const string EFFECT_TYPE_SCALING = "Scaling";

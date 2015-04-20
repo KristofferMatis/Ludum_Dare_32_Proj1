@@ -151,6 +151,9 @@ public class ClickHandler
         {//swapping out the base weapon
             if(!checkBaseWeaponMounts(slot2.getItem()) || slot2.getItem().BaseWeapon == null)
             {
+                m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
+                m_ItemBeingDragged.IsBeingDragged = false;
+                m_ItemBeingDragged = null;
                 return;
             }
             isSwappingBaseWeapon = true;
@@ -159,6 +162,9 @@ public class ClickHandler
 		{//swapping out the base weapon
             if (!checkBaseWeaponMounts(slot1.getItem()) || slot1.getItem().BaseWeapon == null)
             {
+                m_ItemBeingDragged.DraggedToPos = m_ItemBeingDragged.MountedTo.i_MountPoint.position;
+                m_ItemBeingDragged.IsBeingDragged = false;
+                m_ItemBeingDragged = null;
                 return;
             }
             Item TempItem = slot2.OnDisMount();

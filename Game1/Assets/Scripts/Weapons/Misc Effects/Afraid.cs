@@ -3,11 +3,10 @@ using System.Collections;
 
 public class Afraid : MonoBehaviour
 {
-	// Use this for initialization
-	void Start ()
-	{
-	
-	}
+    void Start()
+    {
+        //m_Type = MiscEffectType.e_Afraid;
+    }
 	
 	// Update is called once per frame
 	void Update () 

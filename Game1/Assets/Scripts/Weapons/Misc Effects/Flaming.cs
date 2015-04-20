@@ -26,6 +26,8 @@ public class Flaming : MiscEffects
 		m_FlameParticles.transform.localScale = Vector3.one;
 
 		m_FlameParticles.gameObject.layer = gameObject.layer;
+
+        m_Type = MiscEffectType.e_Flaming;
 	}
 
 	protected override void DoEffectVirtual (Health otherHealth)

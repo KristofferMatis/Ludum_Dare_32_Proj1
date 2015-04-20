@@ -10,6 +10,8 @@ public class Scaling : MiscEffects
 	{
 		m_MinScale = Constants.SCALING_EFFECT_MIN_SCALE;
 		m_MaxScale = Constants.SCALING_EFFECT_MAX_SCALE;
+
+        m_Type = MiscEffectType.e_Scaling;
 	}
 
 	protected override void DoEffectVirtual (Health otherHealth)

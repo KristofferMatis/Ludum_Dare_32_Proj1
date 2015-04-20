@@ -88,8 +88,10 @@ public class CraftingMenu : Singleton<CraftingMenu>
             m_BaseWeaponSlot.getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_BaseWeaponSlot.getItem().transform;
 
-            MeshCollider meshCollider = m_BaseWeaponSlot.getItem().gameObject.AddComponent<MeshCollider>();
-            meshCollider.sharedMesh = meshCollider.GetComponentInChildren<MeshFilter>().mesh;
+			BoxCollider childBox = m_BaseWeaponSlot.getItem().gameObject.GetComponentInChildren<BoxCollider>();
+            BoxCollider boxCollider = m_BaseWeaponSlot.getItem().gameObject.AddComponent<BoxCollider>();            
+            boxCollider.center = childBox.center;
+            boxCollider.size = childBox.size;
 
             Transform[] objects = m_BaseWeaponSlot.getItem().gameObject.GetComponentsInChildren<Transform>();
             for (int c = 0; c < objects.Length; c++)
@@ -128,8 +130,10 @@ public class CraftingMenu : Singleton<CraftingMenu>
             m_InventorySlots[i].getItem().transform.localScale = artClone.transform.localScale;
             artClone.transform.parent = m_InventorySlots[i].getItem().transform;
 
-            MeshCollider meshCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<MeshCollider>();
-            meshCollider.sharedMesh = meshCollider.GetComponentInChildren<MeshFilter>().mesh;
+			BoxCollider childBox = m_BaseWeaponSlot.getItem().gameObject.GetComponentInChildren<BoxCollider>();
+            BoxCollider boxCollider = m_InventorySlots[i].getItem().gameObject.AddComponent<BoxCollider>();
+            boxCollider.center = childBox.center;
+            boxCollider.size = childBox.size;
 
             Transform[] objects = m_InventorySlots[i].getItem().gameObject.GetComponentsInChildren<Transform>();
             for (int c = 0; c < objects.Length; c++)
@@ -221,7 +225,7 @@ public class CraftingMenu : Singleton<CraftingMenu>
                 {
                     for (int c = 0; c < m_AttachmentSlots.Length; c++)
                     {
-                        if (m_AttachmentSlots[c].getItem() == null && m_AttachmentSlots[i].IsEnabled)
+                        if (m_AttachmentSlots[c].getItem() == null && m_AttachmentSlots[c].IsEnabled)
                         {
                             m_AttachmentSlots[c].OnMount(m_AttachmentSlots[i].OnDisMount());
                         }

@@ -96,6 +96,9 @@ public class Item : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        if (m_MountedTo != null && m_MountedTo.i_MountPoint != null)
+            transform.forward = m_MountedTo.i_MountPoint.forward;
+
         if (!m_IsBeingDragged)
         {
             if (m_MountedTo != null && m_MountedTo.i_MountPoint != null)
