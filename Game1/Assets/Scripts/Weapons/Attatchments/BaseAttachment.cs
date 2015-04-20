@@ -176,7 +176,7 @@ public class BaseAttachment : MonoBehaviour
 		}
 		else
 		{
-			if(health.GetComponentInChildren<BaseAttachment>() != this && (m_IsDrunk || health.CompareTag(tag)))
+			if(health.GetComponentInChildren<BaseAttachment>() != this && (m_IsDrunk || !health.CompareTag(tag)))
 			{
 				Vector3 knockbackSpeed = (health.transform.position - transform.position).normalized;
 				knockbackSpeed.y = Constants.KNOCKBACK_VERTICAL_SPEED;
