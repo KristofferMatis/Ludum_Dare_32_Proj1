@@ -69,7 +69,6 @@ public class Health : MonoBehaviour
 			}
 		}
 
-		return;
 		if(m_UnderwaterParticles.transform.position.y < m_Water.transform.position.y)
 		{
 			m_CurrentHealth -= m_UnderwaterDamageRate * Time.deltaTime;
