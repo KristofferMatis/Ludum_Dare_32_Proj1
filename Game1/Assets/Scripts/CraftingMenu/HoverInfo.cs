@@ -13,8 +13,8 @@ public class HoverInfo
 	Vector2 m_TextOffset = new Vector2 (15.0f, 10.0f);
 
 
-    string[] m_Stats = new string[8];
-	string[] m_StatsBaseString = new string[] { "ITEM : ", "TYPE : ", "MISC EFFECTS : ", "DAMAGE : ", "KNOCKBACK : ", "WEIGHT : ", "MOVE SET : ", "ATTACHMENT SLOTS : " };
+    string[] m_Stats = new string[9];
+	string[] m_StatsBaseString = new string[] { "ITEM : ", "TYPE : ", "MISC EFFECTS : ", "", "DAMAGE : ", "KNOCKBACK : ", "WEIGHT : ", "MOVE SET : ", "ATTACHMENT SLOTS : " };
 
     public ClickHandler clickHandler { get; set; }
 
@@ -31,7 +31,7 @@ public class HoverInfo
     { 
         ItemName,
         ItemType,
-        MiscEffects,
+        MiscEffects = 3,
         Damage,
         Knockback,     
         Weight,
@@ -135,7 +135,7 @@ public class HoverInfo
 
             if (m_ItemThisFrame.BaseWeapon != null)
             {
-                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 3.0f;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
                 //m_PositionText
                 for (int i = 0; i < m_Stats.Length; i++)
                 {
@@ -145,7 +145,7 @@ public class HoverInfo
             }
             else
             {
-                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 1.0f;
                 for (int i = 0; i < m_Stats.Length - 2; i++)
                 {
                     GUI.Label(m_PositionText, m_Stats[i]);
@@ -166,7 +166,7 @@ public class HoverInfo
                 GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
                 m_PositionText.position = m_PositionBG.position + m_TextOffset;
 
-                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 1.0f;
 
                 for (int i = 0; i < m_SlotThisFrame.Instructions.Length; i++)
                 {
@@ -183,7 +183,7 @@ public class HoverInfo
                 GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
                 m_PositionText.position = m_PositionBG.position + m_TextOffset;
 
-                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 1.0f;
 
                 for (int i = 0; i < slot.Instructions.Length; i++)
                 {
@@ -200,7 +200,7 @@ public class HoverInfo
                 GUI.DrawTexture(m_PositionBG, m_TextBG, ScaleMode.StretchToFill);
                 m_PositionText.position = m_PositionBG.position + m_TextOffset;
 
-                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 2.0f;
+                m_PositionText.height = m_PositionBG.height / (float)m_Stats.Length - 1.0f;
 
                 for (int i = 0; i < slot2.Instructions.Length; i++)
                 {

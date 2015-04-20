@@ -47,7 +47,7 @@ public class WeaponDrop : MonoBehaviour
         float counter = 1.0f;
         for (float random = Random.Range(0.0f, 1.0f); random < Mathf.Pow(i_SpecialEffectsChance, counter); random = Random.Range(0.0f, 1.0f))
         {
-            counter += 1.0f;
+            counter += 0.1f;
             addEffect();
         }
 

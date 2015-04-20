@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
                 m_Animator.PlayAnimation(PlayerAnimator.Animations.Idle);
             }
 
-			m_CurrentSpeed *= ((!InputManager.Instance.PlayerSprint()) ? MoveSpeed: RunSpeed) * Time.deltaTime;
+			m_CurrentSpeed *= (((!InputManager.Instance.PlayerSprint()) ? MoveSpeed: RunSpeed) - CraftingMenu.Instance.i_AttackPlayer.m_WeaponEquipped.m_Stats.m_Weight )* Time.deltaTime;
 
 			m_CurrentSpeed.y = previousVerticalSpeed;
 		}

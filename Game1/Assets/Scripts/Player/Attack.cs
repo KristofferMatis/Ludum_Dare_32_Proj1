@@ -10,18 +10,18 @@ public class Attack : MonoBehaviour
 
 	public WeaponDrop m_InitialWeapon;
 
-	float m_StartUpTimer;
-	float m_RecoveryTimer;
+	protected float m_StartUpTimer;
+	protected float m_RecoveryTimer;
 
-	bool m_WeaponDrawn;
-	bool m_IsAttacking;
+	protected bool m_WeaponDrawn;
+	protected bool m_IsAttacking;
 
 	public float m_LerpSpeed = 15.0f;
 	public float m_RotationSpeed = 25.0f;
 
-	float m_DrunkTimer;
+	protected float m_DrunkTimer;
 
-    PlayerAnimator m_Animator;
+	protected PlayerAnimator m_Animator;
 
 	AudioSource m_AudioSource;
 
@@ -46,11 +46,6 @@ public class Attack : MonoBehaviour
 		{
 			if (m_WeaponDrawn)
 			{
-				if(InputManager.Instance.PlayerAttack1())
-				{
-					DoAttack();
-				}
-
 				m_WeaponEquipped.transform.parent = m_HandPivotPoint;
 
 				if(m_IsAttacking)
