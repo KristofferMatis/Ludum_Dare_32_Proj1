@@ -116,6 +116,7 @@ public class EnemyController : MonoBehaviour
 		//Chasing
 		case EnemyState.Chase:
 		{
+			MusicManager.Instance.SetAggro();
 			MoveTowards(m_PlayerTransform.position);
 			break;
 		}	
@@ -135,6 +136,7 @@ public class EnemyController : MonoBehaviour
 		//Searching
 		case EnemyState.Attack:
 		{
+			MusicManager.Instance.SetAggro();
 			if (!m_Attack.IsAttacking())
 			{
 				m_Attack.DoAttack();

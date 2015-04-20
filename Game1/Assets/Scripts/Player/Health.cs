@@ -32,9 +32,9 @@ public class Health : MonoBehaviour
 
 	AudioSource m_AudioSource;
 
-	public AudioClip m_FireClip;
-	public AudioClip m_DeathClip;
-	public AudioClip m_HurtClip;
+	public AudioClip[] m_FireClips;
+	public AudioClip[] m_DeathClips;
+	public AudioClip[] m_HurtClips;
 
 	// Use this for initialization
 	void Start () 
@@ -132,7 +132,7 @@ public class Health : MonoBehaviour
 			Application.LoadLevel ("SplashScene");
 		}
 
-		m_AudioSource.PlayOneShot (m_DeathClip);
+		m_AudioSource.PlayOneShot (m_DeathClips[Random.Range (0, m_DeathClips.Length)]);
 	}
 
 	void Knockback(Vector3 knockback)
@@ -146,7 +146,7 @@ public class Health : MonoBehaviour
 			m_Movement.Knockback(knockback);
 		}
 
-		m_AudioSource.PlayOneShot (m_HurtClip);
+		m_AudioSource.PlayOneShot (m_HurtClips[Random.Range (0, m_HurtClips.Length)]);
 	}
 		
 	public void SetOnFire(float time, float damageRate, GameObject flameParticles)
@@ -162,7 +162,7 @@ public class Health : MonoBehaviour
 
 			m_FlameParticles = flameObject;
 
-			m_AudioSource.PlayOneShot(m_FireClip);
+			m_AudioSource.PlayOneShot(m_FireClips[Random.Range (0, m_FireClips.Length)]);
 		}
 	}
 

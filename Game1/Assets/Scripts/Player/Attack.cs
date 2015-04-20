@@ -23,6 +23,10 @@ public class Attack : MonoBehaviour
 
     PlayerAnimator m_Animator;
 
+	AudioSource m_AudioSource;
+
+	public AudioClip[] m_AttackClips;
+
 	void Start()
 	{
 		if(m_WeaponEquipped)
@@ -31,6 +35,8 @@ public class Attack : MonoBehaviour
             DrawWeapon(true);
 		}
         m_Animator = gameObject.GetComponentInChildren<PlayerAnimator>();
+
+		m_AudioSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -133,6 +139,9 @@ public class Attack : MonoBehaviour
                         break;
                 }
             }
+
+			m_AudioSource.PlayOneShot (m_AttackClips[Random.Range (0, m_AttackClips.Length)]);
+
 			m_IsAttacking = true;
 		}
 	}
