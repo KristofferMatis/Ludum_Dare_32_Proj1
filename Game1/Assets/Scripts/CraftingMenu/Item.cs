@@ -27,7 +27,7 @@ public class Item : MonoBehaviour
         get { return Attachment.m_AttachmentName; }
     }
 
-    string m_MiscEffects = "n/a";
+    string m_MiscEffects = "None";
     public string MiscEffects
     {
         get { return m_MiscEffects; }

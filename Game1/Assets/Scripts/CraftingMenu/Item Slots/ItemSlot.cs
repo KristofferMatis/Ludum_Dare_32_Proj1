@@ -6,7 +6,8 @@ public class ItemSlot : MonoBehaviour
     public Transform i_MountPoint;
     protected Item m_Item;
 
-    protected string[] INSTRUCTIONS = new string[] { "This is an Inventory", "Slot, Any Item Can", "Be Placed Here" };
+    protected string[] INSTRUCTIONS = new string[] {    "INVENTORY SLOT", 
+                                                        "Accepts ANY Item"};
     public string[] Instructions
     {
 		get { return INSTRUCTIONS; }

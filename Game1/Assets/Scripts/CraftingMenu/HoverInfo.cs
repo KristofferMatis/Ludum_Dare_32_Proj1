@@ -14,12 +14,18 @@ public class HoverInfo
 
 
     string[] m_Stats = new string[9];
-	string[] m_StatsBaseString = new string[] { "Item : ", "Item Type : ", "Misc Effects : ", "Damage : ", "Knockback : ", "StartUpTime : ", "RecoveryTime : ", "AttackType : ", "MountPoints : " };
+	string[] m_StatsBaseString = new string[] { "ITEM : ", "TYPE : ", "MISC EFFECTS : ", "DAMAGE : ", "KNOCKBACK : ", "WIND UP : ", "RECOVERY : ", "MOVE SET : ", "ATTACHMENT SLOTS : " };
 
     public ClickHandler clickHandler { get; set; }
 
-    int update = 0;
-    int gui = 0;
+    Color m_GUI_Color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    Vector3 m_MousePos = Vector2.zero;
+
+    bool m_MinFadeAchieved = false;
+    const float FADE_TIME = 2.0f;
+    const float MIN_FADE_TIME = 4.0f;
+    float m_Timer = 0.0f;
+
 
     enum Stats
     { 
@@ -37,8 +43,8 @@ public class HoverInfo
     public void Start() 
     {
         m_TextBG = Resources.Load<Texture>(TEXT_BG_PATH);
-        m_PositionBG = new Rect(0.0f, 0.0f, 190.0f, 195.0f);
-        m_PositionText = new Rect(0.0f, 0.0f, 190.0f, 0.0f);
+        m_PositionBG = new Rect(0.0f, 0.0f, 200.0f, 210.0f);
+        m_PositionText = new Rect(0.0f, 0.0f, 195.0f, 0.0f);
         m_OffsetX *= Screen.width;
 	}
 	
@@ -48,6 +54,29 @@ public class HoverInfo
         if (!CraftingMenu.Instance.IsActive)
             return;
 
+        if(m_MousePos != Input.mousePosition)
+        {
+            m_MousePos = Input.mousePosition;
+            m_MinFadeAchieved = false;
+            m_Timer = 0.0f;
+            m_GUI_Color = Color.white;
+        }
+        else
+        {
+            m_Timer += Time.deltaTime;
+            if(!m_MinFadeAchieved)
+            {
+                if(m_Timer >= MIN_FADE_TIME)
+                {
+                    m_MinFadeAchieved = true;
+                    m_Timer = 0.0f;
+                }
+            }
+            else
+            {
+                m_GUI_Color.a = 1.0f - Mathf.Clamp01(m_Timer / FADE_TIME);
+            }
+        }
 
         RaycastHit[] hitInfo;
         Item[] items;
@@ -96,8 +125,9 @@ public class HoverInfo
 
     public void onGUI()
     {
+        GUI.color = m_GUI_Color;
         if (m_ItemThisFrame != null)
-        {
+        {            
             m_PositionBG.position = Input.mousePosition;
 
             m_PositionBG.position = new Vector2(m_PositionBG.position.x - m_OffsetX - m_PositionBG.width, Screen.height - m_PositionBG.y);
@@ -199,6 +229,7 @@ public class HoverInfo
                 }
             }
         }
+        GUI.color = Color.white;
     }
 
     public void setm_ItemThisFrameToNull()

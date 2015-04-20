@@ -43,11 +43,19 @@ public class ItemRemove : ItemSlot
     {
         if (i_IsBoatDrop)
         {
-            INSTRUCTIONS = new string[] { "This is The Boat", "Slot, Drag Items Here", "To Build The Boat", "WARNING: They Will Be", "DELETED.", "Items Still Needed:" };
+            INSTRUCTIONS = new string[] {   "-->>BUILD BOAT<<--",
+                                            "Items ADDED HERE", 
+                                            "BUILD THE BOAT.", 
+                                            "Items will be", 
+                                            "PERMANENTLY CONSUMED.", 
+                                            "Items NEEDED:" };
         }
         else
         {
-            INSTRUCTIONS = new string[] { "This is The Trash", "Drag Items Here To", "Delete Them" };
+            INSTRUCTIONS = new string[] {   " -->>TRASH<<--", 
+                                            "Accepts ANY Item.", 
+                                            "Items will be",
+                                            "PERMANENTLY DESTROYED."};
         }
 
     }

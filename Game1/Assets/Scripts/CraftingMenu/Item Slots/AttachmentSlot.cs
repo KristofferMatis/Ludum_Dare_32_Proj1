@@ -45,21 +45,19 @@ public class AttachmentSlot : ItemSlot
 
         UpdateMaterials();
 
-        NEW_INSTRUCTIONS[0] = new string[] {    "This is an Attachment", 
-                                                "Slot, Any Item Can", 
-                                                "Be Placed Here", 
-                                                "This Slot Is Currently", 
-                                                "Disabled. To Enable It", 
-                                                "Equip a Weapon in the", 
-                                                "Weapon Base Slot or a", 
-                                                "Weapon With More", 
-                                                "MountPoints" };
+        NEW_INSTRUCTIONS[0] = new string[] {    "-->>(DISABLED)<<--", 
+                                                "To ENABLE This Slot,", 
+                                                "EQUIP a WEAPON with", 
+                                                "more ATTACHMENT SLOTS."};
 
-        NEW_INSTRUCTIONS[1] = new string[] {    "This is an Attachment", 
-                                                "Slot, Any Item Can", 
-                                                "Be Placed Here.", 
-                                                "Items Added Here Will", 
-                                                "Be Added To Your Weapon" };
+        NEW_INSTRUCTIONS[1] = new string[] {    "ATTACHMENT SLOT:", 
+                                                "Accepts ANY ITEM.", 
+                                                "Items ADDED will be", 
+                                                "ADDED to your WEAPON.",
+                                                "",
+                                                "Items ADDED to a WEAPON",
+                                                "INCREASE the WEAPON's",
+                                                "BASE STATS" };
 	}
 	
     public override bool CanAcceptItem(Item item)

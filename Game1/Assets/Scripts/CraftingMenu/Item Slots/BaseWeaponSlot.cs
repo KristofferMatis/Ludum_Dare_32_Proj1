@@ -7,13 +7,11 @@ public class BaseWeaponSlot : ItemSlot
 	// Use this for initialization
 	void Start ()
     {
-        INSTRUCTIONS = new string[] {   "This is The Weapon Base", 
-                                        "Slot, Only Weapons Can", 
-                                        "Be Placed Here.", 
-                                        "Your Weapon Will Determine",
-                                        "Your Attack Type and", 
-                                        "How Many Attachment Slots", 
-                                        "You Have" };
+        INSTRUCTIONS = new string[] {   "WEAPON BASE SLOT:", 
+                                        "Accepts ONLY WEAPONS.", 
+                                        "WEAPONS determine",
+                                        "MOVE SET and total", 
+                                        "ATTACHMENT SLOTS."};
 	}
 	
 	// Update is called once per frame
