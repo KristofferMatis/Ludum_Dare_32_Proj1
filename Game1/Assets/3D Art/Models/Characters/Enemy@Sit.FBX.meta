@@ -1,94 +1,86 @@
 fileFormatVersion: 2
-guid: 70ac1687a29e2194f9de9d165e3803b2
-timeCreated: 1429552509
+guid: fc372336d791ac94b9cce2c0b1ee31dd
+timeCreated: 1429572846
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Barrel
-    100002: Base HumanHead
-    100004: Base HumanLArmCollarbone
-    100006: Base HumanLArmDigit11
-    100008: Base HumanLArmDigit21
-    100010: Base HumanLArmDigit22
-    100012: Base HumanLArmDigit23
-    100014: Base HumanLArmForearm
-    100016: Base HumanLArmPalm
-    100018: Base HumanLArmUpperarm
-    100020: Base HumanLLegCalf
-    100022: Base HumanLLegDigit11
-    100024: Base HumanLLegFoot
-    100026: Base HumanLLegPlatform
-    100028: Base HumanLLegThigh
-    100030: Base HumanNeck1
-    100032: Base HumanNeck2
-    100034: Base HumanPelvis
-    100036: Base HumanRArmCollarbone
-    100038: Base HumanRArmDigit11
-    100040: Base HumanRArmDigit21
-    100042: Base HumanRArmDigit22
-    100044: Base HumanRArmDigit23
-    100046: Base HumanRArmForearm
-    100048: Base HumanRArmPalm
-    100050: Base HumanRArmUpperarm
-    100052: Base HumanRibcage
-    100054: Base HumanRLegCalf
-    100056: Base HumanRLegDigit11
-    100058: Base HumanRLegFoot
-    100060: Base HumanRLegPlatform
-    100062: Base HumanRLegThigh
-    100064: Base HumanSpine1
-    100066: Base HumanSpine2
-    100068: Base HumanSpine3
-    100070: Base HumanSpine4
-    100072: Char
-    100074: D_Barrel
-    100076: D_Hand
-    100078: //RootNode
-    400000: Barrel
-    400002: Base HumanHead
-    400004: Base HumanLArmCollarbone
-    400006: Base HumanLArmDigit11
-    400008: Base HumanLArmDigit21
-    400010: Base HumanLArmDigit22
-    400012: Base HumanLArmDigit23
-    400014: Base HumanLArmForearm
-    400016: Base HumanLArmPalm
-    400018: Base HumanLArmUpperarm
-    400020: Base HumanLLegCalf
-    400022: Base HumanLLegDigit11
-    400024: Base HumanLLegFoot
-    400026: Base HumanLLegPlatform
-    400028: Base HumanLLegThigh
-    400030: Base HumanNeck1
-    400032: Base HumanNeck2
-    400034: Base HumanPelvis
-    400036: Base HumanRArmCollarbone
-    400038: Base HumanRArmDigit11
-    400040: Base HumanRArmDigit21
-    400042: Base HumanRArmDigit22
-    400044: Base HumanRArmDigit23
-    400046: Base HumanRArmForearm
-    400048: Base HumanRArmPalm
-    400050: Base HumanRArmUpperarm
-    400052: Base HumanRibcage
-    400054: Base HumanRLegCalf
-    400056: Base HumanRLegDigit11
-    400058: Base HumanRLegFoot
-    400060: Base HumanRLegPlatform
-    400062: Base HumanRLegThigh
-    400064: Base HumanSpine1
-    400066: Base HumanSpine2
-    400068: Base HumanSpine3
-    400070: Base HumanSpine4
-    400072: Char
-    400074: D_Barrel
-    400076: D_Hand
-    400078: //RootNode
-    4300000: Char
-    7400000: Sprint
+    100000: Base HumanHead
+    100002: Base HumanLArmCollarbone
+    100004: Base HumanLArmDigit11
+    100006: Base HumanLArmDigit21
+    100008: Base HumanLArmDigit22
+    100010: Base HumanLArmDigit23
+    100012: Base HumanLArmForearm
+    100014: Base HumanLArmPalm
+    100016: Base HumanLArmUpperarm
+    100018: Base HumanLLegCalf
+    100020: Base HumanLLegDigit11
+    100022: Base HumanLLegFoot
+    100024: Base HumanLLegThigh
+    100026: Base HumanNeck1
+    100028: Base HumanNeck2
+    100030: Base HumanPelvis
+    100032: Base HumanRArmCollarbone
+    100034: Base HumanRArmDigit11
+    100036: Base HumanRArmDigit21
+    100038: Base HumanRArmDigit22
+    100040: Base HumanRArmDigit23
+    100042: Base HumanRArmForearm
+    100044: Base HumanRArmPalm
+    100046: Base HumanRArmUpperarm
+    100048: Base HumanRibcage
+    100050: Base HumanRLegCalf
+    100052: Base HumanRLegDigit11
+    100054: Base HumanRLegFoot
+    100056: Base HumanRLegThigh
+    100058: Base HumanSpine1
+    100060: Base HumanSpine2
+    100062: Base HumanSpine3
+    100064: Base HumanSpine4
+    100066: Char001
+    100068: D_Hand
+    100070: //RootNode
+    400000: Base HumanHead
+    400002: Base HumanLArmCollarbone
+    400004: Base HumanLArmDigit11
+    400006: Base HumanLArmDigit21
+    400008: Base HumanLArmDigit22
+    400010: Base HumanLArmDigit23
+    400012: Base HumanLArmForearm
+    400014: Base HumanLArmPalm
+    400016: Base HumanLArmUpperarm
+    400018: Base HumanLLegCalf
+    400020: Base HumanLLegDigit11
+    400022: Base HumanLLegFoot
+    400024: Base HumanLLegThigh
+    400026: Base HumanNeck1
+    400028: Base HumanNeck2
+    400030: Base HumanPelvis
+    400032: Base HumanRArmCollarbone
+    400034: Base HumanRArmDigit11
+    400036: Base HumanRArmDigit21
+    400038: Base HumanRArmDigit22
+    400040: Base HumanRArmDigit23
+    400042: Base HumanRArmForearm
+    400044: Base HumanRArmPalm
+    400046: Base HumanRArmUpperarm
+    400048: Base HumanRibcage
+    400050: Base HumanRLegCalf
+    400052: Base HumanRLegDigit11
+    400054: Base HumanRLegFoot
+    400056: Base HumanRLegThigh
+    400058: Base HumanSpine1
+    400060: Base HumanSpine2
+    400062: Base HumanSpine3
+    400064: Base HumanSpine4
+    400066: Char001
+    400068: D_Hand
+    400070: //RootNode
+    4300000: Char001
+    7400000: Sit
     9500000: //RootNode
-    13700000: Char
+    13700000: Char001
   materials:
     importMaterials: 1
     materialName: 0
@@ -106,10 +98,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sprint
+      name: Sit
       takeName: Take 001
-      firstFrame: 360
-      lastFrame: 420
+      firstFrame: 554
+      lastFrame: 767
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -130,8 +122,6 @@ ModelImporter:
       events: []
       transformMask:
       - path: 
-        weight: 1
-      - path: Base HumanLLegPlatform
         weight: 1
       - path: Base HumanPelvis
         weight: 1
@@ -164,12 +154,6 @@ ModelImporter:
         weight: 1
       - path: Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanSpine3/Base
           HumanSpine4/Base HumanRibcage
-        weight: 1
-      - path: Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanSpine3/Base
-          HumanSpine4/Base HumanRibcage/Barrel
-        weight: 1
-      - path: Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanSpine3/Base
-          HumanSpine4/Base HumanRibcage/Barrel/D_Barrel
         weight: 1
       - path: Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanSpine3/Base
           HumanSpine4/Base HumanRibcage/Base HumanLArmCollarbone
@@ -246,9 +230,7 @@ ModelImporter:
           HumanSpine4/Base HumanRibcage/Base HumanRArmCollarbone/Base HumanRArmUpperarm/Base
           HumanRArmForearm/Base HumanRArmPalm/D_Hand
         weight: 1
-      - path: Base HumanRLegPlatform
-        weight: 1
-      - path: Char
+      - path: Char001
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
