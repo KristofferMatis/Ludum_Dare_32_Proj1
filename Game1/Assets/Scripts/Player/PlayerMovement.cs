@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
 	Vector3 m_CurrentSpeed;
 	float m_Gravity = -10.0f;
 
+    PlayerAnimator m_Animator;
+
     // Use this for initialization
     void Start()
     {
 		mainCam = GameObject.FindGameObjectWithTag ("MainCamera");
         m_PlayerController = GetComponent<CharacterController>();
+        m_Animator = gameObject.GetComponentInChildren<PlayerAnimator>();
     }
 
     // Update is called once per frame
@@ -45,7 +48,12 @@ public class PlayerMovement : MonoBehaviour
 			if (m_CurrentSpeed != Vector3.zero)
 	        {
 				transform.rotation = Quaternion.LookRotation(m_CurrentSpeed, Vector3.up);
+                m_Animator.PlayAnimation((!InputManager.Instance.PlayerSprint()) ? PlayerAnimator.Animations.Run : PlayerAnimator.Animations.Sprint);
 	        }
+            else
+            {
+                m_Animator.PlayAnimation(PlayerAnimator.Animations.Idle);
+            }
 
 			m_CurrentSpeed *= ((!InputManager.Instance.PlayerSprint()) ? MoveSpeed: RunSpeed) * Time.deltaTime;
 

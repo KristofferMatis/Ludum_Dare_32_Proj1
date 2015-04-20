@@ -17,9 +17,11 @@ public class Attack : MonoBehaviour
 	bool m_IsAttacking;
 
 	public float m_LerpSpeed = 15.0f;
-	public float m_RotationSpeed = 5.0f;
+	public float m_RotationSpeed = 25.0f;
 
 	float m_DrunkTimer;
+
+    PlayerAnimator m_Animator;
 
 	void Start()
 	{
@@ -28,6 +30,7 @@ public class Attack : MonoBehaviour
 			EquipWeapon (m_WeaponEquipped);
             DrawWeapon(true);
 		}
+        m_Animator = gameObject.GetComponentInChildren<PlayerAnimator>();
 	}
 	
 	// Update is called once per frame
@@ -37,6 +40,11 @@ public class Attack : MonoBehaviour
 		{
 			if (m_WeaponDrawn)
 			{
+				if(InputManager.Instance.PlayerAttack1())
+				{
+					DoAttack();
+				}
+
 				m_WeaponEquipped.transform.parent = m_HandPivotPoint;
 
 				if(m_IsAttacking)
@@ -107,6 +115,24 @@ public class Attack : MonoBehaviour
 		if(m_WeaponEquipped != null)
 		{
 			m_StartUpTimer = m_WeaponEquipped.TotalStats.m_StartUpTime;
+
+            if (m_Animator != null)
+            {
+                switch (m_WeaponEquipped.m_Stats.m_AttackType)
+                {
+                    case "Bash":
+                    	m_Animator.PlayAnimation(PlayerAnimator.Animations.Bash);
+                        break;
+                    case "Thrust":
+						m_Animator.PlayAnimation(PlayerAnimator.Animations.Stab);
+                        break;
+                    case "Slash":
+						m_Animator.PlayAnimation(PlayerAnimator.Animations.Slash);
+                        break;
+                    default:
+                        break;
+                }
+            }
 			m_IsAttacking = true;
 		}
 	}
