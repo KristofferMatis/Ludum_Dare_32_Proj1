@@ -44,7 +44,7 @@ public class Item : MonoBehaviour
     {
         get { return m_MountedTo; }
     }
-    const float ITEM_LERP_SPEED = 10.0f;
+    const float ITEM_LERP_SPEED = 35.0f;
 
     WeaponDrop m_WeaponDrop = null;
     public WeaponDrop Drop
