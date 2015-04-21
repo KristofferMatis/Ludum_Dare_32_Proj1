@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyAnimator : MonoBehaviour 
 {
 	public Animator i_Animator;
-	public enum Animations
+	public enum EnemyAnimations
 	{
 		Idle,
 		Sprint,
@@ -20,13 +20,13 @@ public class EnemyAnimator : MonoBehaviour
 		"Death",   
 		"Attack",};
 	
-	public void PlayAnimation(Animations animation)
+	public void PlayAnimation(EnemyAnimations animation)
 	{
-		if(animation > Animations.Death)
+		if(animation > EnemyAnimations.Death)
 		{//Attack or Transition
 			i_Animator.Play(m_AnimationNames[(int)animation], m_AnimationLayers[(int)animation]);            
 		}
-		else if(animation <= Animations.Death)
+		else if(animation <= EnemyAnimations.Death)
 		{//basic motion or Death
 			i_Animator.Play(m_AnimationNames[(int)animation], m_AnimationLayers[(int)animation]);
 		}
