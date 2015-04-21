@@ -77,6 +77,14 @@ public class HordeController : MonoBehaviour
 		hordePos /= m_Enemies.Count;
 		return hordePos;
 	}
+
+	/// <summary>
+	/// //Gets the average position of this horde of enemies
+	/// </summary>
+	public int GetHordeCount ()
+	{
+		return m_Enemies.Count;
+	}
 	
 	/// <summary>
 	/// Spawn a number of enemies of provided type, and starting in a predefined state

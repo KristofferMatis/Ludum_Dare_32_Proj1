@@ -24,8 +24,12 @@ public class HordeSpawner : MonoBehaviour
 	public int SpecialSpawnCount = 0;
 	public int DifficultyAdjustment = 2;
 
+	const int MAX_ENEMIES = 50;
+
 	//Enemy prefabs
 	public List<GameObject> SpawnableEnemies;
+
+	public bool ScatterOnly = false;
 
 	//Horde Game Object
 	GameObject m_HordeGameObject;
@@ -56,6 +60,16 @@ public class HordeSpawner : MonoBehaviour
 				}
 				m_TimeSinceLastSpawn = m_MaxTimeBetweenSpawns;
 
+				int count = 0;
+				for (int i = 0; i < m_Hordes.Count; i++)
+				{
+					count += m_Hordes[i].GetHordeCount();
+				}
+				if (count > MAX_ENEMIES)
+				{
+					return;
+				}
+
 				//Spawn basic horde
 				SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 				SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
@@ -81,14 +95,16 @@ public class HordeSpawner : MonoBehaviour
 		if (SpawnableEnemies.Count > 0)
 		{
 			//Spawn basic horde
-			SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
-			SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
-
-			//Spawn specials
-			for (int i = 0; i < SpecialSpawnCount; i++)
+			if (!ScatterOnly)
 			{
-				m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+				SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
+				//Spawn specials
+				for (int i = 0; i < SpecialSpawnCount; i++)
+				{
+					m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+				}
 			}
+			SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 		}
 
 		//Reset time between spawns when the day ends
