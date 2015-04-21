@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class PlayerAttack : Attack 
-{
-	
-
+{	
 	// Update is called once per frame
 	void Update () 
 	{
@@ -22,6 +20,13 @@ public class PlayerAttack : Attack
 				if(m_IsAttacking)
 				{
 					m_WeaponEquipped.ToggleCollider(true);
+
+					m_Timer -= Time.deltaTime;
+
+					if(m_Timer <= 0.0f)
+					{
+						m_IsAttacking = false;
+					}
 				}
 				else
 				{

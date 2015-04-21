@@ -159,6 +159,8 @@ public class BaseAttachment : MonoBehaviour
 
 	void OnTriggerEnter(Collider otherCollider)
 	{
+		Debug.Log (tag + " : " + otherCollider.tag);
+
 		Health otherHealth = otherCollider.GetComponent<Health>();
 
 		if(otherHealth != null)

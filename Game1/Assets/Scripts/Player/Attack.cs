@@ -27,6 +27,9 @@ public class Attack : MonoBehaviour
 
 	public AudioClip[] m_AttackClips;
 
+	float m_AttackTime = 0.5f;
+	protected float m_Timer;
+
 	void Start()
 	{
 		if(m_WeaponEquipped)
@@ -51,6 +54,13 @@ public class Attack : MonoBehaviour
 				if(m_IsAttacking)
 				{
 					m_WeaponEquipped.ToggleCollider(true);
+
+					m_Timer -= Time.deltaTime;
+
+					if(m_Timer <= 0.0f)
+					{
+						m_IsAttacking = false;
+					}
 				}
 				else
 				{
@@ -116,6 +126,8 @@ public class Attack : MonoBehaviour
 		if(m_WeaponEquipped != null)
 		{
 			//m_StartUpTimer = m_WeaponEquipped.TotalStats.m_StartUpTime;
+
+			m_Timer = m_AttackTime;
 
             if (m_Animator != null)
             {
