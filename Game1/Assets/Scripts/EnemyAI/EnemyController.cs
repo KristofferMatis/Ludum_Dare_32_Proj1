@@ -79,7 +79,7 @@ public class EnemyController : MonoBehaviour
 		m_Agent = (NavMeshAgent)GetComponent<NavMeshAgent> ();
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
 		m_Attack = GetComponent<Attack>();
-		m_Animator = GetComponent<EnemyAnimator> ();
+		m_Animator = transform.GetChild(0).GetComponent<EnemyAnimator> ();
 		SetState (state);
 	}
 

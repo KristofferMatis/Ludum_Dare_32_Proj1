@@ -148,7 +148,7 @@ public class Health : MonoBehaviour
 		{
 			m_Controller.Knockback(knockback);
 		}
-		else
+		else if(m_Movement)
 		{
 			m_Movement.Knockback(knockback);
 		}
