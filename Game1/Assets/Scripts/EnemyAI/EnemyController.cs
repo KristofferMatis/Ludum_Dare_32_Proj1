@@ -79,7 +79,7 @@ public class EnemyController : MonoBehaviour
 		m_Agent = (NavMeshAgent)GetComponent<NavMeshAgent> ();
 		m_PlayerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
 		m_Attack = GetComponent<Attack>();
-		m_Animator = transform.GetChild(0).GetComponent<EnemyAnimator> ();
+		m_Animator = GetComponentInChildren<EnemyAnimator> ();
 		SetState (state);
 	}
 
@@ -268,7 +268,11 @@ public class EnemyController : MonoBehaviour
 			//Set speeds
 			m_Agent.speed = WANDER_SPEED;
 			m_Agent.acceleration = WANDER_ACCELERATION;
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+			}
 
 			//Set timer
 			m_SearchTimer = -1f;
@@ -288,7 +292,11 @@ public class EnemyController : MonoBehaviour
 
 			//Set timer
 			m_SearchTimer = SEARCH_TIMER;
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+			}
 
 			//Set own search position
 			if (m_Horde == null) {
@@ -306,7 +314,11 @@ public class EnemyController : MonoBehaviour
 			//Set speeds
 			m_Agent.speed = CHASE_SPEED;
 			m_Agent.acceleration = CHASE_ACCELERATION;
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Sprint);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Sprint);
+			}
 
 			//Set timer
 			m_SearchTimer = -1f;
@@ -322,7 +334,11 @@ public class EnemyController : MonoBehaviour
 			//Set speeds
 			m_Agent.speed = ATTACK_SPEED;
 			m_Agent.acceleration = ATTACK_ACCELERATION;
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Attack);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Attack);
+			}
 			
 			//Set timer
 			m_SearchTimer = -1f;
@@ -342,7 +358,11 @@ public class EnemyController : MonoBehaviour
 			
 			//Set timer
 			m_SearchTimer = -1f;
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Run);
+			}
 			
 			//Tell horde player found
 			if (m_Horde != null)
@@ -358,7 +378,12 @@ public class EnemyController : MonoBehaviour
 				m_Horde.RemoveEnemy(this);
 			}
 			m_Agent.Stop();
-			m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Death);
+
+			if(m_Animator)
+			{
+				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Death);
+			}
+
 			Destroy(this);
 		}
 	}
