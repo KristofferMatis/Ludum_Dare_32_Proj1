@@ -35,6 +35,8 @@ public class Health : MonoBehaviour
 	public AudioClip[] m_FireClips;
 	public AudioClip[] m_DeathClips;
 	public AudioClip[] m_HurtClips;
+    //TODO:
+    public AudioClip[] m_EnemyVoiceClips;
 
 	// Use this for initialization
 	void Start () 
@@ -105,6 +107,8 @@ public class Health : MonoBehaviour
 		if(m_CanBeHitThisFrame)
 		{
 			m_CanBeHitThisFrame = false;
+
+            m_AudioSource.PlayOneShot(m_FireClips[Random.Range(0, m_FireClips.Length)]);
 
 			m_CurrentHealth -= damage;
 
