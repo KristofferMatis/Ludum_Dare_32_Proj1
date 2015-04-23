@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Attack : MonoBehaviour 
+public class Attack : MonoBehaviour
 {
 	public Transform m_MenuPivotPoint;
 	public Transform m_HandPivotPoint;

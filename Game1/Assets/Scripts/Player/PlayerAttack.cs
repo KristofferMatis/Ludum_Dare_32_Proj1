@@ -1,65 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAttack : Attack 
+public class PlayerAttack : Attack, AnimationCallBackListener
 {	
 	// Update is called once per frame
+    public bool i_CanSpam = true; //TODO remove this line
+    bool m_CanAttack = true;
 	void Update () 
 	{
-		if(m_WeaponEquipped != null)
+        base.Update();
+
+        if (!m_CanAttack && !i_CanSpam)
+            return;
+
+		if(m_WeaponEquipped == null)
+		    return;
+
+		if (!m_WeaponDrawn)
+			return;
+
+		if(InputManager.Instance.PlayerAttack1())
 		{
-			if (m_WeaponDrawn)
-			{
-				if(InputManager.Instance.PlayerAttack1())
-				{
-					DoAttack();
-				}
-
-				m_WeaponEquipped.transform.parent = m_HandPivotPoint;
-				
-				if(m_IsAttacking)
-				{
-					m_WeaponEquipped.ToggleCollider(true);
-
-					m_Timer -= Time.deltaTime;
-
-					if(m_Timer <= 0.0f)
-					{
-						m_IsAttacking = false;
-					}
-				}
-				else
-				{
-					m_WeaponEquipped.ToggleCollider(false);
-				}
-				
-				if(m_DrunkTimer > 0.0f)
-				{
-					m_WeaponEquipped.SetDrunk (true);
-				}
-				else
-				{					
-					m_WeaponEquipped.SetDrunk (false);
-				}
-			}
-			else
-			{
-				m_WeaponEquipped.transform.parent = m_MenuPivotPoint;
-			}
-			
-			m_WeaponEquipped.transform.localPosition = Vector3.Lerp (m_WeaponEquipped.transform.localPosition, Vector3.zero, m_LerpSpeed * Time.deltaTime);
-			m_WeaponEquipped.transform.localScale = Vector3.Lerp (m_WeaponEquipped.transform.localScale, Vector3.one, m_LerpSpeed * Time.deltaTime);
-			
-			if(!m_WeaponDrawn && m_WeaponEquipped.transform.localPosition.magnitude < 0.1f)
-			{
-				m_WeaponEquipped.transform.RotateAround(m_WeaponEquipped.transform.position, Vector3.up, m_RotationSpeed * Time.deltaTime);
-			}
-			else
-			{
-				m_WeaponEquipped.transform.localRotation = Quaternion.Lerp(m_WeaponEquipped.transform.localRotation, Quaternion.identity, m_LerpSpeed * Time.deltaTime);
-			}
-		}
-		
-		m_DrunkTimer -= Time.deltaTime;
+			DoAttack();
+            m_CanAttack = false;
+		}        
 	}
+
+    public void OnAnimationCallBack(AnimationEvents animationEvent)
+    {
+        switch (animationEvent)
+        {
+            case AnimationEvents.AttackStart:
+                break;
+            case AnimationEvents.WindUpDone:
+                break;
+            case AnimationEvents.AttackDone:
+                break;
+            case AnimationEvents.RecoveryDone:
+                m_CanAttack = true;
+                break;
+        };
+    }
 }

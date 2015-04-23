@@ -10,13 +10,14 @@ public interface AnimationCallBackListener
 public enum AnimationEvents
 {
 	AttackStart,
-	AttackHalf,
-	AttackDone
+	WindUpDone,
+	AttackDone,
+	RecoveryDone
 };
 
 public class AnimationCallBackManager : MonoBehaviour 
 {
-	string[] m_AnimationEvents = new string[]{"Attack Start", "Attack Half", "Attack Done"};
+	string[] m_AnimationEvents = new string[]{"Attack Start", "Wind Up Done", "Attack Done", "Recovery Done"};
 	List<AnimationCallBackListener> m_Listeners = new List<AnimationCallBackListener> ();
 	
 	public void AnimationCallBack(string animationEvent)

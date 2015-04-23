@@ -345,6 +345,8 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerMoveRightLeft()
     {
+        return (Input.GetKey(KeyCode.A)) ? -1.0f : (Input.GetKey(KeyCode.D)) ? 1.0f : 0.0f;
+
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
@@ -367,6 +369,8 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerMoveForwardBack()
     {
+        return (Input.GetKey(KeyCode.W)) ? 1.0f : (Input.GetKey(KeyCode.S)) ? -1.0f : 0.0f;
+
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Move Right
@@ -389,6 +393,8 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerLookRightLeft()
     {
+        return Input.GetAxis(MOUSE_X);
+
         if(i_MouseIsEnabled)
         {
             return Input.GetAxis(MOUSE_X);
@@ -416,6 +422,7 @@ public class InputManager : Singleton<InputManager>
 
     public float PlayerLookUpDown()
     {
+        return Input.GetAxis(MOUSE_Y);
         if(i_MouseIsEnabled)
         {
             return Input.GetAxis(MOUSE_Y);
@@ -443,6 +450,8 @@ public class InputManager : Singleton<InputManager>
 
     public bool PlayerJump()
     {
+        return Input.GetKey(KeyCode.Space);
+
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not jump
@@ -486,6 +495,7 @@ public class InputManager : Singleton<InputManager>
 
     public bool PlayerAttack1()
     {
+        return Input.GetMouseButton(0);
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Attack1
@@ -529,6 +539,7 @@ public class InputManager : Singleton<InputManager>
 
     public bool PlayerSprint()
     {
+        return Input.GetKey(KeyCode.LeftShift);
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Attack1
@@ -572,6 +583,7 @@ public class InputManager : Singleton<InputManager>
 
     public bool PlayerInteract()
     {
+        return Input.GetKey(KeyCode.E);
         for (int i = 0; i < Buttons.Length; i++)
         {
             //checks to see if the player action is not Attack1
