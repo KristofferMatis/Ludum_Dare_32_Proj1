@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class WaterTide : MonoBehaviour
@@ -15,7 +15,7 @@ public class WaterTide : MonoBehaviour
 	void Update ()
 	{
 		m_Timer += Time.deltaTime;
-		transform.position = m_InitialPosition - Vector3.up * HEIGHT_CHANGE * (0.5f - 0.5f * Mathf.Cos (m_Timer / (DayNightCycle.DAY_LENGTH + DayNightCycle.NIGHT_LENGTH) * 2.0f * Mathf.PI));
+		//transform.position = m_InitialPosition - Vector3.up * HEIGHT_CHANGE * (0.5f - 0.5f * Mathf.Cos (m_Timer / (DayNightCycle.m_DayLength + DayNightCycle.m_NightLength) * 2.0f * Mathf.PI));
 	}
 
 	void OnTriggerEnter (Collider collider)

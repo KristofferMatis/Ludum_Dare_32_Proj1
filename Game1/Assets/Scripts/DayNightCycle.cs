@@ -10,12 +10,14 @@ public class DayNightCycle : MonoBehaviour
 	public bool m_IsDay = true;
 
 	//Length of day and night
-	public const float DAY_LENGTH = 240f;
-	public const float NIGHT_LENGTH = 30f;
+	public float m_DayLength = 240f;
+	public float m_NightLength = 30f;
 	public float m_TimeMultiplier = 1f;
 	float m_CycleTimer = 0f;
 
-	public float m_DayStartAngle = 45.0f;
+	public float m_SunRiseAngle = 45.0f;
+	float m_DayStartAngle;
+	float m_DayEndAngle;
 
 	float m_DayTimeRotationSpeed;
 	float m_NightTimeRotationSpeed;
@@ -30,34 +32,37 @@ public class DayNightCycle : MonoBehaviour
 	bool m_Transitioning;
 
 	float m_CurrentAngle;
-	float m_TargetAngle;
 
 
 	void Start ()
 	{
+		m_DayStartAngle = m_SunRiseAngle;
+		m_DayEndAngle = 180.0f - m_SunRiseAngle;
+		m_CurrentAngle = m_DayStartAngle;
+
 		if (m_IsDay)
 		{
-			m_DayLight.transform.eulerAngles = new Vector3(m_DayStartAngle, 0.0f, 0.0f);
+			m_DayLight.transform.eulerAngles = new Vector3(m_CurrentAngle, 0.0f, 0.0f);
 			m_DayLight.SetActive (true);
 			m_NightLight.SetActive (false);
 
-			m_CycleTimer = DAY_LENGTH;
+			m_CycleTimer = m_DayLength;
 		}
 		else
 		{
-			m_NightLight.transform.eulerAngles = new Vector3(m_DayStartAngle, 0.0f, 0.0f);
+			m_NightLight.transform.eulerAngles = new Vector3(m_CurrentAngle, 0.0f, 0.0f);
 			m_NightLight.SetActive (true);
 			m_DayLight.SetActive (false);
 			
-			m_CycleTimer = NIGHT_LENGTH;
+			m_CycleTimer = m_NightLength;
 		}
 
 		//Find objects
 		m_Spawners = GameObject.FindObjectsOfType<HordeSpawner> ();
 		m_WeaponSpawner = GameObject.FindObjectOfType<WeaponsSpawningManager> ();
 
-		m_DayTimeRotationSpeed = Mathf.PI / DAY_LENGTH;
-		m_NightTimeRotationSpeed = Mathf.PI / NIGHT_LENGTH;
+		m_DayTimeRotationSpeed = (180.0f - 2.0f * m_SunRiseAngle) / m_DayLength;
+		m_NightTimeRotationSpeed = (180.0f - 2.0f * m_SunRiseAngle) / m_NightLength;
 	}
 
 	// Update is called once per frame
@@ -67,26 +72,22 @@ public class DayNightCycle : MonoBehaviour
 		{
 			if(m_IsDay)
 			{
-				//Rotate direction light
-				m_DayLight.transform.Rotate(new Vector3 (m_DayTimeRotationSpeed * Time.deltaTime, 0f, 0f));
-				m_NightLight.transform.eulerAngles = new Vector3(m_DayLight.transform.eulerAngles.x + 180.0f, 0.0f, 0.0f);
+				float lerpAmount = EnemyWaveManager.Instance.MaxNumberOfEnemies > 0 ? 1.0f - (EnemyWaveManager.Instance.NumberOfEnemies / EnemyWaveManager.Instance.MaxNumberOfEnemies) : 0.0f;
+				float angleForRemainingEnemies = Mathf.Lerp (m_DayStartAngle, m_DayEndAngle, lerpAmount);
+				m_CurrentAngle = Mathf.Lerp (m_CurrentAngle, angleForRemainingEnemies, m_DayTimeRotationSpeed * Time.deltaTime);
 			}
 			else
 			{
-				//Rotate direction light
-				m_NightLight.transform.Rotate(new Vector3 (m_NightTimeRotationSpeed * Time.deltaTime, 0f, 0f));
-				m_DayLight.transform.eulerAngles = new Vector3(m_NightLight.transform.eulerAngles.x + 180.0f, 0.0f, 0.0f);
+				float lerpAmount = 1.0f - m_CycleTimer / m_NightLength;
+				float angleForRemainingEnemies = Mathf.Lerp (m_DayStartAngle, m_DayEndAngle, lerpAmount);
+				m_CurrentAngle = Mathf.Lerp (m_CurrentAngle, angleForRemainingEnemies, m_NightTimeRotationSpeed * Time.deltaTime);
 			}
 		}
 		else
 		{
-			//Rotate direction light
-			m_DayLight.transform.Rotate(new Vector3 (m_TransitionRotationSpeed * Time.deltaTime, 0f, 0f));
-			m_NightLight.transform.eulerAngles = new Vector3(m_DayLight.transform.eulerAngles.x + 180.0f, 0.0f, 0.0f);
-
 			m_CurrentAngle += m_TransitionRotationSpeed * Time.deltaTime;
 
-			if(m_CurrentAngle > m_TargetAngle)
+			if(m_CurrentAngle > m_DayStartAngle)
 			{
 				if(m_IsDay)
 				{
@@ -100,26 +101,14 @@ public class DayNightCycle : MonoBehaviour
 				m_Transitioning = false;
 			}
 		}
+		
+		//Rotate direction light
+		m_DayLight.transform.eulerAngles = new Vector3 (m_CurrentAngle, 0f, 0f);
+		m_NightLight.transform.forward = - m_DayLight.transform.forward;
 
-		//Cycle day and night
-		m_CycleTimer -= Time.deltaTime * m_TimeMultiplier;
-		if (m_CycleTimer < 0f)
+		if(m_IsDay && m_CurrentAngle > m_DayEndAngle - 1.0f)
 		{
-			//Set day
 			FinishDay ();
-
-			//Weapon spawns
-			if (m_WeaponSpawner != null)
-			{
-				if (m_IsDay)
-				{
-					m_WeaponSpawner.SpawnPlane(this);
-				}
-				else
-				{
-					m_WeaponSpawner.StopSmoke();
-				}
-			}
 		}
 	}
 
@@ -141,22 +130,27 @@ public class DayNightCycle : MonoBehaviour
 	{
 		m_IsDay = !m_IsDay;
 
-		m_CycleTimer = m_IsDay ? DAY_LENGTH : NIGHT_LENGTH;
+		m_CycleTimer = m_IsDay ? m_DayLength : m_NightLength;
 
 		m_Transitioning = true;
 
 		if(m_IsDay)
 		{
 			m_DayLight.SetActive(true);
-			m_CurrentAngle = m_DayLight.transform.eulerAngles.x;
 		}
 		else
 		{
 			m_NightLight.SetActive(true);
-			m_CurrentAngle = m_NightLight.transform.eulerAngles.x;
 		}
 
 		int numberOfTurns = (int)m_CurrentAngle / 360;
-		m_TargetAngle = (numberOfTurns + 1) * 360.0f + m_DayStartAngle;
+		m_DayStartAngle = (numberOfTurns + 1) * 360.0f + m_SunRiseAngle;
+		m_DayEndAngle = (numberOfTurns + 1) * 360.0f + 180.0f - m_SunRiseAngle;
+
+		if(!m_IsDay)
+		{
+			m_DayStartAngle -= 180.0f;
+			m_DayEndAngle -= 180.0f;
+		}
 	}
 }

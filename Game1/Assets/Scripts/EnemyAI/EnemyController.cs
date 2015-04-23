@@ -53,6 +53,8 @@ public class EnemyController : MonoBehaviour
 
 	EnemyAnimator m_Animator;
 
+	public bool m_AffectsEnemyCount = false;
+
 
 	//Current enemy state
 	public enum EnemyState
@@ -88,6 +90,11 @@ public class EnemyController : MonoBehaviour
 	{
 		m_LeashPosition = transform.position;
 		OnSpawn (m_State);
+
+		if(m_AffectsEnemyCount)
+		{
+			EnemyWaveManager.Instance.AddEnemy();
+		}
 	}
 
 	//Each frame
@@ -373,6 +380,11 @@ public class EnemyController : MonoBehaviour
 		//Dead
 		else
 		{
+			if(m_AffectsEnemyCount)
+			{
+				EnemyWaveManager.Instance.RemoveEnemy();
+			}
+
 			if (m_Horde != null)
 			{
 				m_Horde.RemoveEnemy(this);
