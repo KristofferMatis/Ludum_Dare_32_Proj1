@@ -90,11 +90,6 @@ public class EnemyController : MonoBehaviour
 	{
 		m_LeashPosition = transform.position;
 		OnSpawn (m_State);
-
-		if(m_AffectsEnemyCount)
-		{
-			EnemyWaveManager.Instance.AddEnemy();
-		}
 	}
 
 	//Each frame

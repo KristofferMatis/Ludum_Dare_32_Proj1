@@ -25,9 +25,9 @@ public class WeaponsSpawningManager : MonoBehaviour
 
 	public AudioSource m_PlaneAudioSource;
 
-	Transform m_NextPlanePoint;
+	bool m_IsSpawning;
 
-	DayNightCycle m_DayNightCycle;
+	Transform m_NextPlanePoint;
 
 	void Start()
 	{
@@ -47,30 +47,33 @@ public class WeaponsSpawningManager : MonoBehaviour
 			m_PlaneSmoke.startSize = newSize;
 		}
 
-		m_SpawnTimer -= Time.deltaTime;
-
-		if(m_SpawnTimer <= 0.0f)
+		if(m_IsSpawning)
 		{
-			m_SpawnTimer = m_SpawnTime;
+			m_SpawnTimer -= Time.deltaTime;
 
-			SpawnNewItems();
-		}
+			if(m_SpawnTimer <= 0.0f)
+			{
+				m_SpawnTimer = m_SpawnTime;
 
-		if(m_PlaneSpawnTimer > 0.0f)
-		{
-			m_PlaneSpawnTimer -= Time.deltaTime;
+				SpawnNewItems();
+			}
 
-			if(m_PlaneSpawnTimer <= 0.0f)
-			{			
-				m_PlaneSmoke.transform.parent = m_NextPlanePoint;
-				m_PlaneSmoke.transform.localPosition = Vector3.zero;
-				m_PlaneSmoke.Play ();
-				
-				m_PlaneSmoke.startSize = 1.0f;
-				
-				m_SmokeIsDisappearing = false;
+			if(m_PlaneSpawnTimer > 0.0f)
+			{
+				m_PlaneSpawnTimer -= Time.deltaTime;
 
-				m_DayNightCycle.SpawnEnemies();
+				if(m_PlaneSpawnTimer <= 0.0f)
+				{			
+					m_PlaneSmoke.transform.parent = m_NextPlanePoint;
+					m_PlaneSmoke.transform.localPosition = Vector3.zero;
+					m_PlaneSmoke.Play ();
+					
+					m_PlaneSmoke.startSize = 1.0f;
+					
+					m_SmokeIsDisappearing = false;
+
+					EnemyWaveManager.Instance.SpawnEnemies();
+				}
 			}
 		}
 	}
@@ -78,6 +81,8 @@ public class WeaponsSpawningManager : MonoBehaviour
 	public void StopSmoke()
 	{
 		m_SmokeIsDisappearing = true;
+
+		m_IsSpawning = false;
 	}
 
 	void SpawnNewItems()
@@ -90,9 +95,9 @@ public class WeaponsSpawningManager : MonoBehaviour
 		m_PlaneAudioSource.PlayOneShot (m_WeaponDropSound);
 	}
 
-	public void SpawnPlane(DayNightCycle dayNightCycle)
+	public void SpawnPlane()
 	{		
-		m_DayNightCycle = dayNightCycle;
+		m_IsSpawning = true;
 
 		m_NextPlanePoint = m_PlaneSmokeSpawnPoints [Random.Range (0, m_PlaneSmokeSpawnPoints.Count)];
 

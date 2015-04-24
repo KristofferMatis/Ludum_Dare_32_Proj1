@@ -5,7 +5,7 @@ public class HordeSpawner : MonoBehaviour
 {
 	//The hordes of enemies
 	List<HordeController> m_Hordes;
-	bool IsDay = true;
+	bool IsDay = false;
 
 	//The player
 	Transform m_PlayerTransform;
@@ -33,6 +33,8 @@ public class HordeSpawner : MonoBehaviour
 
 	//Horde Game Object
 	GameObject m_HordeGameObject;
+
+	int m_NumberOfWaveSpawned;
 
 
 	//Iinitialization
@@ -65,7 +67,7 @@ public class HordeSpawner : MonoBehaviour
 				{
 					count += m_Hordes[i].GetHordeCount();
 				}
-				if (count > MAX_ENEMIES)
+				if (count > EnemyWaveManager.Instance.MaxNumberOfEnemies)
 				{
 					return;
 				}

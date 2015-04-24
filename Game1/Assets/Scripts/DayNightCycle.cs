@@ -12,7 +12,6 @@ public class DayNightCycle : MonoBehaviour
 	//Length of day and night
 	public float m_DayLength = 240f;
 	public float m_NightLength = 30f;
-	public float m_TimeMultiplier = 1f;
 	float m_CycleTimer = 0f;
 
 	public float m_SunRiseAngle = 45.0f;
@@ -25,9 +24,6 @@ public class DayNightCycle : MonoBehaviour
 	public float m_TransitionRotationSpeed;
 
 	WeaponsSpawningManager m_WeaponSpawner;
-	
-	//Spawner
-	HordeSpawner[] m_Spawners;
 
 	bool m_Transitioning;
 
@@ -35,7 +31,10 @@ public class DayNightCycle : MonoBehaviour
 
 
 	void Start ()
-	{
+	{		
+		//Find objects
+		m_WeaponSpawner = GameObject.FindObjectOfType<WeaponsSpawningManager> ();
+
 		m_DayStartAngle = m_SunRiseAngle;
 		m_DayEndAngle = 180.0f - m_SunRiseAngle;
 		m_CurrentAngle = m_DayStartAngle;
@@ -47,6 +46,11 @@ public class DayNightCycle : MonoBehaviour
 			m_NightLight.SetActive (false);
 
 			m_CycleTimer = m_DayLength;
+
+			if(m_WeaponSpawner)
+			{
+				m_WeaponSpawner.SpawnPlane();
+			}
 		}
 		else
 		{
@@ -55,11 +59,12 @@ public class DayNightCycle : MonoBehaviour
 			m_DayLight.SetActive (false);
 			
 			m_CycleTimer = m_NightLength;
-		}
 
-		//Find objects
-		m_Spawners = GameObject.FindObjectsOfType<HordeSpawner> ();
-		m_WeaponSpawner = GameObject.FindObjectOfType<WeaponsSpawningManager> ();
+			if(m_WeaponSpawner)
+			{
+				m_WeaponSpawner.StopSmoke();
+			}
+		}
 
 		m_DayTimeRotationSpeed = (180.0f - 2.0f * m_SunRiseAngle) / m_DayLength;
 		m_NightTimeRotationSpeed = (180.0f - 2.0f * m_SunRiseAngle) / m_NightLength;
@@ -112,19 +117,6 @@ public class DayNightCycle : MonoBehaviour
 		}
 	}
 
-	public void SpawnEnemies()
-	{
-		//Enemy spawners
-		if (m_Spawners.Length > 0)
-		{
-			//Tell all spawners the day
-			for (int i = 0; i < m_Spawners.Length; i++)
-			{
-				m_Spawners[i].SetDay(m_IsDay);
-			}
-		}
-	}
-
 	[ContextMenu("Finish day")]
 	public void FinishDay()
 	{
@@ -151,6 +143,18 @@ public class DayNightCycle : MonoBehaviour
 		{
 			m_DayStartAngle -= 180.0f;
 			m_DayEndAngle -= 180.0f;
+		}
+
+		if(m_WeaponSpawner)
+		{
+			if(m_IsDay)
+			{
+				m_WeaponSpawner.SpawnPlane();
+			}
+			else
+			{
+				m_WeaponSpawner.StopSmoke();
+			}
 		}
 	}
 }
