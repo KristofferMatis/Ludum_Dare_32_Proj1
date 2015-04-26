@@ -23,7 +23,7 @@ public class WeaponsSpawningManager : MonoBehaviour
 	public List<AudioClip> m_PlaneCrashSounds;
 	public AudioClip m_WeaponDropSound;
 
-	public AudioSource m_PlaneAudioSource;
+	//public AudioSource m_PlaneAudioSource;
 
 	bool m_IsSpawning;
 
@@ -92,7 +92,7 @@ public class WeaponsSpawningManager : MonoBehaviour
 		Vector3 leashZone = Random.insideUnitSphere * m_LeashDistance;
 		Instantiate (m_DropOffPrefab, dropoffPoint.position + leashZone, dropoffPoint.rotation);
 
-		m_PlaneAudioSource.PlayOneShot (m_WeaponDropSound);
+		//m_PlaneAudioSource.PlayOneShot (m_WeaponDropSound);
 	}
 
 	public void SpawnPlane()
@@ -105,6 +105,6 @@ public class WeaponsSpawningManager : MonoBehaviour
 
 		m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSounds[randomIndex]);
 
-		m_PlaneSpawnTimer = m_PlaneCrashSounds[randomIndex].length;
+		//m_PlaneSpawnTimer = m_PlaneCrashSounds[randomIndex].length;
 	}
 }

@@ -23,9 +23,9 @@ public class Attack : MonoBehaviour
 
 	protected PlayerAnimator m_Animator;
 
-	AudioSource m_AudioSource;
+	//AudioSource m_AudioSource;
 
-	public AudioClip[] m_AttackClips;
+	//public AudioClip[] m_AttackClips;
 
 	float m_AttackTime = 0.5f;
 	protected float m_Timer;
@@ -39,7 +39,7 @@ public class Attack : MonoBehaviour
 		}
         m_Animator = gameObject.GetComponentInChildren<PlayerAnimator>();
 
-		m_AudioSource = GetComponent<AudioSource> ();
+		//m_AudioSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -147,10 +147,10 @@ public class Attack : MonoBehaviour
                 }
             }
 
-			if(m_AttackClips.Length > 0)
-			{
-				m_AudioSource.PlayOneShot (m_AttackClips[Random.Range (0, m_AttackClips.Length)]);
-			}
+			//if(m_AttackClips.Length > 0)
+			//{
+			//	m_AudioSource.PlayOneShot (m_AttackClips[Random.Range (0, m_AttackClips.Length)]);
+			//}
 
 			m_IsAttacking = true;
 		}
