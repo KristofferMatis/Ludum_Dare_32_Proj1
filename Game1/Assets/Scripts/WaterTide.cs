@@ -3,23 +3,49 @@ using System.Collections;
 
 public class WaterTide : MonoBehaviour
 {
-	const float HEIGHT_CHANGE = 16.75f;
-	Vector3 m_InitialPosition;
-	float m_Timer = 0.0f;
+	public float m_TopPosition;
+	public float m_BottomPosition;
 
-	void Start ()
+	public float m_TideSpeed;
+	public float m_WaveSpeed;
+
+	public float m_WaveHeight;
+
+	float m_Timer;
+
+	float m_CurrentWaveCenter;
+
+	DayNightCycle m_DayNightCycle;
+
+	void Start()
 	{
-		m_InitialPosition = transform.position;
+		m_DayNightCycle = FindObjectOfType<DayNightCycle> ();
+
+		m_CurrentWaveCenter = transform.position.y;
 	}
 
 	void Update ()
 	{
-		m_Timer += Time.deltaTime;
-		//transform.position = m_InitialPosition - Vector3.up * HEIGHT_CHANGE * (0.5f - 0.5f * Mathf.Cos (m_Timer / (DayNightCycle.m_DayLength + DayNightCycle.m_NightLength) * 2.0f * Mathf.PI));
-	}
+		float targetCenter = m_TopPosition;
 
-	void OnTriggerEnter (Collider collider)
-	{
-		//Check if they are too below us and kill them <- Done in Health ;-)
+		if(m_DayNightCycle.m_IsDay)
+		{
+			if(EnemyWaveManager.Instance.MaxNumberOfEnemies > 0)
+			{
+				targetCenter = Mathf.Lerp(m_BottomPosition, m_TopPosition, (1.0f - EnemyWaveManager.Instance.NumberOfEnemies / EnemyWaveManager.Instance.MaxNumberOfEnemies));
+			}
+			else
+			{
+				targetCenter = m_BottomPosition;
+			}
+		}
+
+		m_CurrentWaveCenter = Mathf.Lerp (m_CurrentWaveCenter, targetCenter, m_TideSpeed * Time.deltaTime);
+
+		m_Timer += Time.deltaTime * m_WaveSpeed;
+
+		Vector3 newPosition = transform.position;
+		newPosition.y = m_CurrentWaveCenter + m_WaveHeight * Mathf.Cos (m_Timer);
+		transform.position = newPosition;
 	}
 }

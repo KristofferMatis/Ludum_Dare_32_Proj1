@@ -83,6 +83,8 @@ public class WeaponsSpawningManager : MonoBehaviour
 		m_SmokeIsDisappearing = true;
 
 		m_IsSpawning = false;
+
+		EnemyWaveManager.Instance.StartNight();
 	}
 
 	void SpawnNewItems()
@@ -103,8 +105,13 @@ public class WeaponsSpawningManager : MonoBehaviour
 
 		int randomIndex = Random.Range (0, m_PlaneCrashSounds.Count);
 
-		m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSounds[randomIndex]);
+		//m_NextPlanePoint.GetComponent<AudioSource>().PlayOneShot (m_PlaneCrashSounds[randomIndex]);
 
-		//m_PlaneSpawnTimer = m_PlaneCrashSounds[randomIndex].length;
+		m_PlaneSpawnTimer = m_PlaneCrashSounds[randomIndex].length;
+
+		EnemyWaveManager.Instance.MaxNumberOfEnemies = 0;
+		EnemyWaveManager.Instance.NumberOfEnemies = 0;
+		EnemyWaveManager.Instance.NumberOfSpawnedEnemies = 0;
+
 	}
 }

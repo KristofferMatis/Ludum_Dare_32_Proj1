@@ -15,7 +15,13 @@ public class EnemyWaveManager : Singleton<EnemyWaveManager>
 	public float NumberOfEnemies 
 	{
 		get;
-		protected set;
+		set;
+	}
+
+	public float NumberOfSpawnedEnemies 
+	{
+		get;
+		set;
 	}
 
 	public float NumberOfWaves 
@@ -44,11 +50,26 @@ public class EnemyWaveManager : Singleton<EnemyWaveManager>
 		m_Spawners = GameObject.FindObjectsOfType<HordeSpawner> ();
 	}
 
+	public void StartNight()
+	{
+		//Enemy spawners
+		if (m_Spawners.Length > 0)
+		{
+			//Tell all spawners the day
+			for (int i = 0; i < m_Spawners.Length; i++)
+			{
+				m_Spawners[i].SetDay(false);
+			}
+		}
+	}
+
 	public void SpawnEnemies()
 	{
 		m_Day++;
 
 		CalculateNumberOfEnemiesThisDay ();
+		
+		MaxNumberOfEnemies = 0;
 
 		//Enemy spawners
 		if (m_Spawners.Length > 0)
@@ -59,6 +80,8 @@ public class EnemyWaveManager : Singleton<EnemyWaveManager>
 				m_Spawners[i].SetDay(true);
 			}
 		}
+
+		NumberOfEnemies = MaxNumberOfEnemies;
 	}
 
 	void CalculateNumberOfEnemiesThisDay()

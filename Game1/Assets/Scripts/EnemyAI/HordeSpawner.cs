@@ -36,6 +36,8 @@ public class HordeSpawner : MonoBehaviour
 
 	int m_NumberOfWaveSpawned;
 
+	int m_EnemiesInAWave = 0;
+
 
 	//Iinitialization
 	void Start ()
@@ -67,20 +69,26 @@ public class HordeSpawner : MonoBehaviour
 				{
 					count += m_Hordes[i].GetHordeCount();
 				}
-				if (count > EnemyWaveManager.Instance.MaxNumberOfEnemies)
+				if (EnemyWaveManager.Instance.NumberOfSpawnedEnemies >= EnemyWaveManager.Instance.MaxNumberOfEnemies)
 				{
 					return;
 				}
 
-				//Spawn basic horde
-				SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 				SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
 
-				//Spawn specials
-				for (int i = 0; i < SpecialSpawnCount; i++)
+				if(!ScatterOnly)
 				{
-					m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+					//Spawn basic horde
+					SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
+
+					//Spawn specials
+					for (int i = 0; i < SpecialSpawnCount; i++)
+					{
+						m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+					}
 				}
+
+				EnemyWaveManager.Instance.NumberOfSpawnedEnemies += m_EnemiesInAWave;
 			}
 		}
 	}
@@ -91,28 +99,60 @@ public class HordeSpawner : MonoBehaviour
 	public void SetDay (bool isDay)
 	{
 		IsDay = isDay;
-		BasicSpawnCount += DifficultyAdjustment;
-		SpecialSpawnCount += DifficultyAdjustment;
 
-		if (SpawnableEnemies.Count > 0)
+		if(IsDay)
 		{
-			//Spawn basic horde
-			if (!ScatterOnly)
-			{
-				SpawnHorde (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
-				//Spawn specials
-				for (int i = 0; i < SpecialSpawnCount; i++)
+			if (SpawnableEnemies.Count > 0)
+			{			
+				m_EnemiesInAWave = 0;
+
+				BasicSpawnCount += DifficultyAdjustment;
+				SpecialSpawnCount += DifficultyAdjustment;
+
+				GameObject enemyPrefab = null;
+
+				//Spawn basic horde
+				if (!ScatterOnly)
 				{
-					m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)], EnemyController.EnemyState.Wander);
+					enemyPrefab = SpawnableEnemies[0];
+					SpawnHorde (BasicSpawnCount, enemyPrefab, EnemyController.EnemyState.Wander);
+
+					if(enemyPrefab.GetComponent<EnemyController>().m_AffectsEnemyCount)
+					{
+						m_EnemiesInAWave += BasicSpawnCount;
+					}
+
+					//Spawn specials
+					for (int i = 0; i < SpecialSpawnCount; i++)
+					{
+						enemyPrefab = SpawnableEnemies[Random.Range(0, SpawnableEnemies.Count)];
+						m_Hordes[m_Hordes.Count -1].Spawn(SpecialSpawnCount, enemyPrefab, EnemyController.EnemyState.Wander);
+
+						if(enemyPrefab.GetComponent<EnemyController>().m_AffectsEnemyCount)
+						{
+							m_EnemiesInAWave += SpecialSpawnCount;
+						}
+					}
+				}
+
+				enemyPrefab = SpawnableEnemies[0];
+				SpawnScatteredEnemies (BasicSpawnCount, enemyPrefab, EnemyController.EnemyState.Wander);
+
+				if(enemyPrefab.GetComponent<EnemyController>().m_AffectsEnemyCount)
+				{
+					m_EnemiesInAWave += BasicSpawnCount;
 				}
 			}
-			SpawnScatteredEnemies (BasicSpawnCount, SpawnableEnemies[0], EnemyController.EnemyState.Wander);
-		}
 
-		//Reset time between spawns when the day ends
-		if (IsDay)
-		{
-			m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
+			EnemyWaveManager.Instance.MaxNumberOfEnemies += EnemyWaveManager.Instance.NumberOfWaves * m_EnemiesInAWave;
+
+			EnemyWaveManager.Instance.NumberOfSpawnedEnemies += m_EnemiesInAWave;
+
+			//Reset time between spawns when the day ends
+			if (IsDay)
+			{
+				m_MaxTimeBetweenSpawns = INITIAL_SPAWN_TIME;
+			}
 		}
 	}
 
