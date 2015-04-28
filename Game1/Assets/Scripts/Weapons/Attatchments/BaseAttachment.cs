@@ -229,23 +229,38 @@ public class BaseAttachment : MonoBehaviour
 				switch(miscEffectType)
 				{
 				case MiscEffectType.e_Afraid:
-					m_MiscEffects.Add (gameObject.AddComponent<Afraid>());
+					if(!GetComponent<Afraid>())
+					{
+						m_MiscEffects.Add (gameObject.AddComponent<Afraid>());
+					}
 					break;
 
 				case MiscEffectType.e_Drunk:
-					m_MiscEffects.Add (gameObject.AddComponent<Drunk>());
+					if(!GetComponent<Drunk>())
+					{
+						m_MiscEffects.Add (gameObject.AddComponent<Drunk>());
+					}
 					break;
 
 				case MiscEffectType.e_Flaming:
-					m_MiscEffects.Add (gameObject.AddComponent<Flaming>());
+					if(!GetComponent<Flaming>())
+					{
+						m_MiscEffects.Add (gameObject.AddComponent<Flaming>());
+					}
 					break;
 
 				case MiscEffectType.e_Scaling:
-					m_MiscEffects.Add (gameObject.AddComponent<Scaling>());
+					if(!GetComponent<Scaling>())
+					{
+						m_MiscEffects.Add (gameObject.AddComponent<Scaling>());
+					}
 					break;
 
 				case MiscEffectType.e_Slow:
-					m_MiscEffects.Add (gameObject.AddComponent<Slow>());
+					if(!GetComponent<Slow>())
+					{
+						m_MiscEffects.Add (gameObject.AddComponent<Slow>());
+					}
 					break;
 				}
 			}
