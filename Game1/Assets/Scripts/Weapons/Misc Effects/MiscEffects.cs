@@ -7,6 +7,7 @@ public enum MiscEffectType
 	e_Scaling,
 	e_Drunk,
 	e_Afraid,
+	e_Slow,
 	Count,
 }
 
@@ -18,7 +19,8 @@ public class MiscEffects : MonoBehaviour
     protected const string EFFECT_TYPE_FLAMING = "Flaming";
     protected const string EFFECT_TYPE_SCALING = "Scaling";
     protected const string EFFECT_TYPE_DRUNK = "Drunk";
-    protected const string EFFECT_TYPE_AFRAID = "Afraid";
+	protected const string EFFECT_TYPE_AFRAID = "Afraid";
+	protected const string EFFECT_TYPE_SLOW = "Sticky";
     public string EffectType
     {
         get 
@@ -32,7 +34,9 @@ public class MiscEffects : MonoBehaviour
                 case MiscEffectType.e_Drunk:
                     return EFFECT_TYPE_DRUNK;
                 case MiscEffectType.e_Afraid:
-                    return EFFECT_TYPE_AFRAID;
+					return EFFECT_TYPE_AFRAID;
+				case MiscEffectType.e_Slow:
+					return EFFECT_TYPE_SLOW;
                 default:
                     return "";
             };

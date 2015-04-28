@@ -21,6 +21,10 @@ public class WeaponCrate : MonoBehaviour
 
 	public List<GameObject> m_WeaponPrefabs;
 
+	Dictionary<float, List<GameObject>> m_ItemRarities = new Dictionary<float, List<GameObject>>();
+
+	List<float> m_Keys = new List<float>();
+
 	void Start()
 	{
 		//m_ParachuteAnimation.Play(Constants.PARACHUTE_FLIGHT_ANIMATION);
@@ -32,6 +36,8 @@ public class WeaponCrate : MonoBehaviour
 				m_Planks.Add(child.GetComponent<Rigidbody>());
 			}
 		}
+
+		PopulateRarityContainer ();
 	}
 	
 	// Update is called once per frame
@@ -49,10 +55,7 @@ public class WeaponCrate : MonoBehaviour
 				{
 					BreakBarrel(hitInfo.point);
 
-					if(Random.value <= m_ChanceOfSpawningWeapon)
-					{
-						SpawnWeapon (m_Barrel.position);
-					}
+					SpawnWeapon (m_Barrel.position);
 
 					m_IsBroken = true;
 				}
@@ -78,6 +81,52 @@ public class WeaponCrate : MonoBehaviour
 
 	void SpawnWeapon(Vector3 position)
 	{        
-        Instantiate (m_WeaponPrefabs [Random.Range (0, m_WeaponPrefabs.Count)], position, Quaternion.identity);
+		GameObject prefabToInstantiate = GetWeaponPrefabForRarity (Random.value);
+
+		if(prefabToInstantiate)
+		{
+        	Instantiate (prefabToInstantiate, position, Quaternion.identity);
+		}
     }
+
+	void PopulateRarityContainer()
+	{
+		foreach(GameObject prefab in m_WeaponPrefabs)
+		{
+			string type = prefab.GetComponent<WeaponDrop>().i_GamePrefab.GetComponent<BaseAttachment>().m_AttachmentName;
+
+			float rarity = 0.0f;
+
+			if(CraftingRecipesManager.Instance.ItemRarity(type) > 0)
+			{
+				rarity = 1.0f / CraftingRecipesManager.Instance.ItemRarity (type);
+			}
+
+			if(!m_ItemRarities.ContainsKey(rarity))
+			{
+				m_ItemRarities.Add (rarity, new List<GameObject>());
+
+				m_Keys.Add (rarity);
+			}
+			
+			m_ItemRarities[rarity].Add (prefab);
+		}
+
+		m_Keys.Sort ();
+	}
+
+	GameObject GetWeaponPrefabForRarity(float rarity)
+	{
+		GameObject result = null;
+
+		foreach(float key in m_Keys)
+		{
+			if(result == null && rarity <= key)
+			{
+				result = m_ItemRarities[key][Random.Range (0, m_ItemRarities[key].Count)];
+			}
+		}
+
+		return result;
+	}
 }

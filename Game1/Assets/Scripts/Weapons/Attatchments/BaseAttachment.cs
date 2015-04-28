@@ -197,14 +197,58 @@ public class BaseAttachment : MonoBehaviour
 
 		m_MiscEffects.Clear ();
 
-		foreach(MiscEffects effect in GetComponentsInChildren<MiscEffects>())
+		/*foreach(MiscEffects effect in GetComponentsInChildren<MiscEffects>())
 		{
 			m_MiscEffects.Add (effect);
-		}
+		}*/
+
+		CreateEffects ();
 	}
 
 	public void SetDrunk(bool isDrunk)
 	{
 		m_IsDrunk = isDrunk;
+	}
+
+	void CreateEffects()
+	{
+		List<string> attachments = new List<string> ();
+
+		foreach(BaseAttachment attachment in GetComponentsInChildren<BaseAttachment>())
+		{
+			if(attachment != this)
+			{
+				attachments.Add (attachment.m_AttachmentName);
+			}
+		}
+
+		if(attachments.Count >= 3)
+		{
+			foreach(MiscEffectType miscEffectType in CraftingRecipesManager.Instance.GetEffectsFromAttachments(attachments))
+			{
+				switch(miscEffectType)
+				{
+				case MiscEffectType.e_Afraid:
+					m_MiscEffects.Add (gameObject.AddComponent<Afraid>());
+					break;
+
+				case MiscEffectType.e_Drunk:
+					m_MiscEffects.Add (gameObject.AddComponent<Drunk>());
+					break;
+
+				case MiscEffectType.e_Flaming:
+					m_MiscEffects.Add (gameObject.AddComponent<Flaming>());
+					break;
+
+				case MiscEffectType.e_Scaling:
+					m_MiscEffects.Add (gameObject.AddComponent<Scaling>());
+					break;
+
+				case MiscEffectType.e_Slow:
+					m_MiscEffects.Add (gameObject.AddComponent<Slow>());
+					break;
+				}
+			}
+		}
 	}
 }

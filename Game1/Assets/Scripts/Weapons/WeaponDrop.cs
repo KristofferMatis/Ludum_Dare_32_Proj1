@@ -16,7 +16,7 @@ public class WeaponDrop : MonoBehaviour
         {
             if (m_MenuPrefab == null)
             {
-                m_MenuPrefab = addEffects((GameObject)Instantiate(i_MenuPrefab, i_OriginalItemHidingSpot, Quaternion.identity)); 
+                m_MenuPrefab = (GameObject)Instantiate(i_MenuPrefab, i_OriginalItemHidingSpot, Quaternion.identity); 
             }
             return m_MenuPrefab;
         }
@@ -30,7 +30,7 @@ public class WeaponDrop : MonoBehaviour
         {
             if (m_GamePrefab == null)
             {
-                m_GamePrefab = addEffects((GameObject)Instantiate(i_GamePrefab, i_OriginalItemHidingSpot, Quaternion.identity));
+                m_GamePrefab = (GameObject)Instantiate(i_GamePrefab, i_OriginalItemHidingSpot, Quaternion.identity);
             }
             return m_GamePrefab;
         }
@@ -44,23 +44,18 @@ public class WeaponDrop : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        float counter = 1.0f;
-        for (float random = Random.Range(0.0f, 1.0f); random < Mathf.Pow(i_SpecialEffectsChance, counter); random = Random.Range(0.0f, 1.0f))
-        {
-            counter += 0.1f;
-            addEffect();
-        }
-
 		GameObject newWeapon = (GameObject)Instantiate (GamePrefab, transform.position, Quaternion.identity);
 		newWeapon.transform.parent = transform;
 
 		string type = "Standard";
 
-		if(m_Effects.Count >= 3)
+		int rarity = CraftingRecipesManager.Instance.ItemRarity (newWeapon.GetComponent<BaseAttachment> ().m_AttachmentName);
+
+		if(rarity >= 3)
 		{
 			type = "ReallyFuckingGood";
 		}
-		else if(m_Effects.Count >= 1)
+		else if(rarity >= 2)
 		{
 			type = "Awesome";
 		}
