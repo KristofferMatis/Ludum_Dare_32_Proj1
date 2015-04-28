@@ -14,10 +14,10 @@ public class EnemyController : MonoBehaviour
 	const float SIGHT_ANGLE = 0f;
 
 	//Speed of the enemy
-	const float WANDER_SPEED = 2.0f;
-	const float SEARCH_SPEED = 6.0f;
-	const float CHASE_SPEED = 10.0f;
-	const float ATTACK_SPEED = 8.0f;
+	public float WANDER_SPEED = 2.0f;
+	public float SEARCH_SPEED = 6.0f;
+	public float CHASE_SPEED = 10.0f;
+	public float ATTACK_SPEED = 8.0f;
 	const float WANDER_ACCELERATION = 0.5f;
 	const float SEARCH_ACCELERATION = 5.0f;
 	const float CHASE_ACCELERATION = 10.0f;

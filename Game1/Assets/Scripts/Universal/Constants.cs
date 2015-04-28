@@ -17,4 +17,6 @@ public static class Constants
 	public const float SCALING_EFFECT_MIN_SCALE = 0.5f;
 	public const float SCALING_EFFECT_MAX_SCALE = 2.0f;
 	public const float DRUNK_EFFECT_DURATION = 10.0f;
+	public const float SLOW_EFFECT_SPEED_RATE = 0.5f;
+	public const float SLOW_EFFECT_TIME = 10.0f;
 }
