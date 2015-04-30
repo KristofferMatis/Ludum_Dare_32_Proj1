@@ -5,7 +5,7 @@ public class MusicManager : Singleton<MusicManager>
 {
 	AudioSource[] m_AudioSources;
 
-	float m_AggroStateTime = 30.0f;
+	float m_AggroStateTime = 5.0f;
 	float m_AggroStateTimer;
 
 	public float m_FadeInSpeed = 0.5f;
