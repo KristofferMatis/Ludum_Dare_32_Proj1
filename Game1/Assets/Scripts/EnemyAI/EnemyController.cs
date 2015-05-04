@@ -386,6 +386,8 @@ public class EnemyController : MonoBehaviour
 			}
 			m_Agent.Stop();
 
+			GetComponent<Collider>().enabled = false;
+
 			if(m_Animator)
 			{
 				m_Animator.PlayAnimation(EnemyAnimator.EnemyAnimations.Death);

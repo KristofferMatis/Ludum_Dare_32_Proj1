@@ -2,13 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Boat : MonoBehaviour 
+public class Boat : InteractiveObject 
 {
 	public int m_NumberOfStates;
 	int m_CurrentState;
 
 	public List<GameObject> m_Chunks;
 	List<Transform> m_MountPoints = new List<Transform>();
+
+	bool m_IsDone = false;
 
 	void Start()
 	{
@@ -20,19 +22,30 @@ public class Boat : MonoBehaviour
 
 	public void BuildUp(GameObject gameObjectToMountOnBoat)
 	{
-		gameObjectToMountOnBoat.transform.parent = m_MountPoints [m_CurrentState];
-		gameObjectToMountOnBoat.transform.localPosition = Vector3.zero;
-		gameObjectToMountOnBoat.transform.localRotation = Quaternion.identity;
-
-		m_CurrentState++;
-
-		if (m_CurrentState >= m_NumberOfStates)
+		if(!m_IsDone)
 		{
-			// TODO: Win screen -> raft + player floating away ;-)
+			gameObjectToMountOnBoat.transform.parent = m_MountPoints [m_CurrentState];
+			gameObjectToMountOnBoat.transform.localPosition = Vector3.zero;
+			gameObjectToMountOnBoat.transform.localRotation = Quaternion.identity;
+
+			m_CurrentState++;
+
+			if (m_CurrentState >= m_NumberOfStates)
+			{
+				m_IsDone = true;
+			}
+			else
+			{
+				m_Chunks[m_CurrentState].SetActive (true);
+			}
 		}
-		else
+	}
+
+	protected override void PlayerInteract (PlayerMovement player)
+	{
+		if(m_IsDone)
 		{
-			m_Chunks[m_CurrentState].SetActive (true);
+			// TODO: win screen !!!
 		}
 	}
 }

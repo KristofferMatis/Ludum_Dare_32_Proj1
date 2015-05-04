@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WeaponDrop : MonoBehaviour 
+public class WeaponDrop : InteractiveObject 
 {
 	public AudioClip m_ItemPickUpSound;
 
@@ -63,35 +63,29 @@ public class WeaponDrop : MonoBehaviour
 		GameObject newParticles = (GameObject)Instantiate (Resources.Load<GameObject>("Prefabs/Weapons/Weapons/Drops/ItemDropLight" + type), transform.position, Quaternion.identity);
 		newParticles.transform.parent = transform;
 	}
-	
-    void OnTriggerStay(Collider other)
-    {
-        if(other.CompareTag(Constants.PLAYER_TAG))
-        {//the player found us
-            if(InputManager.Instance.PlayerInteract())
-            {
-                if(Inventory.Instance.setAttachment(this))
-                {
-                    //TODO: handle entering inventory properly
-                    
-					for (int i = 0; i < transform.childCount; i++)
-                    {
-						Destroy(transform.GetChild(i).gameObject);
-                    }
-                    transform.position = i_OriginalItemHidingSpot;
 
-					if(other.GetComponent<AudioSource>())
-					{
-						other.GetComponent<AudioSource>().PlayOneShot (m_ItemPickUpSound);
-					}
-                }
-                else
-                {
-                    //handle inventory full
-                }
-            }
-        }
-    }
+	protected override void PlayerInteract (PlayerMovement other)
+	{
+		if(Inventory.Instance.setAttachment(this))
+		{
+			//TODO: handle entering inventory properly
+			
+			for (int i = 0; i < transform.childCount; i++)
+			{
+				Destroy(transform.GetChild(i).gameObject);
+			}
+			transform.position = i_OriginalItemHidingSpot;
+			
+			if(other.GetComponent<AudioSource>())
+			{
+				other.GetComponent<AudioSource>().PlayOneShot (m_ItemPickUpSound);
+			}
+		}
+		else
+		{
+			//handle inventory full
+		}
+	}
 
     void addEffect()
     {

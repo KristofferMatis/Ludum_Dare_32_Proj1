@@ -1,26 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CraftingTable : MonoBehaviour 
+public class CraftingTable : InteractiveObject 
 {
-
-	// Use this for initialization
-	void Start () 
+	protected override void PlayerInteract (PlayerMovement player)
 	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
-
-	void OnTriggerStay(Collider otherCollider)
-	{
-		if(otherCollider.CompareTag(Constants.PLAYER_TAG) && InputManager.Instance.PlayerInteract())
-		{
-			CraftingMenu.Instance.m_CraftingCamera.SetIsOn(true);
-		}
+		CraftingMenu.Instance.m_CraftingCamera.SetIsOn(true);
 	}
 }
