@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Boat : InteractiveObject 
 {
-	public int m_NumberOfStates;
 	int m_CurrentState;
 
 	public List<GameObject> m_Chunks;
@@ -30,7 +29,7 @@ public class Boat : InteractiveObject
 
 			m_CurrentState++;
 
-			if (m_CurrentState >= m_NumberOfStates)
+			if (m_CurrentState >= m_Chunks.Count)
 			{
 				m_IsDone = true;
 			}
@@ -45,7 +44,7 @@ public class Boat : InteractiveObject
 	{
 		if(m_IsDone)
 		{
-			// TODO: win screen !!!
+			WinSequenceManager.Instance.StartWinSequence();
 		}
 	}
 }

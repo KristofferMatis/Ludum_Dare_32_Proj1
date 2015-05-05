@@ -40,7 +40,7 @@ public class BoatManager : Singleton<BoatManager>
 	{
 		m_Boat = GetComponent<Boat> ();
 
-		for(int i = 0; i < m_Boat.m_NumberOfStates; i++)
+		for(int i = 0; i < m_Boat.m_Chunks.Count; i++)
 		{
 			int random = Random.Range (0, m_ObjectTypesPossible.Count);
 			m_ObjectTypesNecessary.Add (m_ObjectTypesPossible[random], true);
