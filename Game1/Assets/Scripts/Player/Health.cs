@@ -130,10 +130,9 @@ public class Health : MonoBehaviour
 		}
 		else if (m_Movement != null)
 		{
-			// TODO: have player die
+			m_Movement.Die ();
 
-			//for now i'll just send us straight to the splash screen
-			Application.LoadLevel ("SplashScene");
+			LoseSequenceManager.Instance.StartLoseSequence();
 		}
 
 		//if(m_DeathClips.Length > 0)

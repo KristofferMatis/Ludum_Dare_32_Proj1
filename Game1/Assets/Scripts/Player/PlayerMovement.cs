@@ -80,4 +80,11 @@ public class PlayerMovement : MonoBehaviour
 		
 		m_KnockbackTimer = Constants.KNOCKBACK_TIME;
 	}
+
+	public void Die()
+	{
+		m_KnockbackTimer = Mathf.Infinity;
+
+		m_Animator.PlayAnimation(PlayerAnimator.Animations.Death);
+	}
 }
